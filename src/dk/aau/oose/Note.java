@@ -1,5 +1,7 @@
 package dk.aau.oose;
 
+//LOL comment LOL LOL LOL
+
 @Deprecated
 public class Note {
 	
