@@ -78,7 +78,8 @@ public class NoteMatrix {
 		NoteMatrix nm = new NoteMatrix(rows, cols);
 		for(int r = 0; r < nm.getRows(); r++){
 			for(int c = 0; c < nm.getColumns(); c++){
-				nm.setNote(r, c, (int) Math.round(Math.random() * 3f));
+				if(Math.random() > 0.7)
+					nm.setNote(r, c, (int) Math.round(Math.random() * 3f));
 			}
 		}
 		return nm;

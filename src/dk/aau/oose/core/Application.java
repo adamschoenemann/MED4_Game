@@ -4,6 +4,7 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
 import dk.aau.oose.NoteMatrix;
+import dk.aau.oose.osc.MaxMSP;
 
 /**
  * Application starting point
@@ -11,13 +12,14 @@ import dk.aau.oose.NoteMatrix;
  */
 public class Application {
 	public static void main(String[] args) throws SlickException {
+		MaxMSP.Connect("127.0.0.1", 7400);
 		//Creates a new instance of the game engine
 		AppGameContainer app = new AppGameContainer(GameWorld.getInstance());
 		//Sets the resolution
-		app.setDisplayMode(800, 600, false);
+		app.setDisplayMode(1200, 400, false);
 		//Sets the update interval to 50 times per second
 		app.setMinimumLogicUpdateInterval(20);
-		//Starts te game
+		//Starts the game
 		app.start();
 	}
 }

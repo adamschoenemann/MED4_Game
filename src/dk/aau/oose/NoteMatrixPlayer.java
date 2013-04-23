@@ -8,6 +8,7 @@ public class NoteMatrixPlayer {
 	private static final String LABEL = "note";
 	private NoteMatrix nm;
 	private int sleepTime;
+	private Thread playThread;
 	
 	public NoteMatrixPlayer(NoteMatrix matrix, int tempo){
 		nm = matrix;
@@ -15,22 +16,39 @@ public class NoteMatrixPlayer {
 		System.out.println("Sleep time:" + sleepTime);
 	}
 	
+	// TODO: Use threads? (clean up) or timers
 	public void play(){
-		for(int colIndex = 0; colIndex < nm.getColumns(); colIndex++){
-			for(int rowIndex = 0; rowIndex < nm.getRows(); rowIndex++){
-				int note = nm.getNote(rowIndex, colIndex);
-				if(note > 0){
-					int position = nm.getRows() - rowIndex;
-					sendNote(position, note, sleepTime);
-					System.out.println("Note: " + position);
+		playThread = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				for(int colIndex = 0; colIndex < nm.getColumns(); colIndex++){
+					for(int rowIndex = 0; rowIndex < nm.getRows(); rowIndex++){
+						int note = nm.getNote(rowIndex, colIndex);
+						if(note > 0){
+							int position = nm.getRows() - rowIndex;
+							sendNote(position, note, sleepTime);
+							System.out.println("Note: " + position);
+						}
+					}
+					try {
+						System.out.println("---------");
+						Thread.sleep(sleepTime);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+						return;
+					}
 				}
+				
 			}
-			try {
-				System.out.println("---------");
-				Thread.sleep(sleepTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		});
+		playThread.start();
+	}
+	
+	public void stop(){
+		if(playThread == null) return;
+		if(playThread.isAlive()){
+			playThread.interrupt();
 		}
 	}
 	

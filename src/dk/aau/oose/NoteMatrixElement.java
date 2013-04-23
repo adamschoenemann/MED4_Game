@@ -10,7 +10,12 @@ public class NoteMatrixElement extends AGameElement {
 	private final NoteMatrix nm;
 	private final int width, height, colWidth, rowHeight;
 	private final Graphics gfx = GameWorld.getGameContainer().getGraphics();
-	private Color fgColor = new Color(0xff);
+	private static final Color[] colors = {
+		Color.black,
+		Color.blue.darker(0.6f),
+		Color.blue.darker(0.3f), 
+		Color.blue
+		};
 	
 	/**
 	 * 
@@ -33,12 +38,7 @@ public class NoteMatrixElement extends AGameElement {
 		for(int rows = 0; rows < nm.getRows(); rows++){
 			for(int cols = 0; cols < nm.getColumns(); cols++){
 				int note = nm.getNote(rows, cols);
-				if(note > 0){
-					fgColor.a = 0.1f;
-					gfx.setColor(fgColor);
-				} else {
-					gfx.setColor(Color.black);
-				}
+				gfx.setColor(colors[note]);
 				int startX = cols * colWidth;
 				int startY = rows * rowHeight;
 				gfx.fillRect(startX, startY, startX + colWidth, startY + rowHeight);
