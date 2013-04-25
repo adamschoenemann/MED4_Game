@@ -8,6 +8,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import dk.aau.oose.core.GameWorld;
+import dk.aau.oose.noteline.Note;
 import dk.aau.oose.noteline.NoteLine;
 import dk.aau.oose.noteline.NoteLineElement;
 import dk.aau.oose.noteline.NoteLinePlayer;
@@ -48,8 +49,25 @@ public class Game {
 		*/
 		
 		// NoteLine
-		NoteLine nl = NoteLine.newTestInstance(5, 8);
-		NoteLinePlayer nlp = new NoteLinePlayer(nl, 1, 180);
+		int maxNote = 10, numBeats = 16;
+		NoteLine nl;
+		//nl = NoteLine.newTestInstance(maxNote, numBeats);
+		
+		// Hand-made
+		nl = new NoteLine(maxNote, numBeats);
+		int[][] comp = {
+				{1, 1}, {2, 1}, {3, 1}, {4, 1},
+				{5, 0}, {5, 0}, {5, 1}, {5, 0},
+				{9, 1}, {9, 0}, {1, 1}, {2, 0},
+				{2, 0}, {5, 1}, {4, 1}, {1, 0}
+		};
+		
+		for(int i = 0; i < nl.getNumBeats(); i++){
+			Note note = nl.getNote(i);
+			note.setValue(comp[i][0]);
+			note.setDistinct((comp[i][1] == 1) ? true : false);
+		}
+		NoteLinePlayer nlp = new NoteLinePlayer(nl, 1, 5, 180);
 		NoteLineElement nle = new NoteLineElement(nlp, gc.getWidth(), gc.getHeight());
 		nle.setColor(Color.blue);
 		System.out.println(nl);
