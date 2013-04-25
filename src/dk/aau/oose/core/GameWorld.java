@@ -14,13 +14,14 @@ import dk.aau.oose.IGameElement;
  * Game support class
  * @author Paolo Burelli
  */
+
 public class GameWorld extends BasicGame {
 	
 	private ArrayList<IGameElement> gameElements,addBuffer,removeBuffer;
 	private GameContainer gameContainer;
 	private static GameWorld instance;
 	private Game game;
-	
+
 	/**
 	 * Singleton constructor
 	 * @return the singleton instance
@@ -95,18 +96,33 @@ public class GameWorld extends BasicGame {
 		return getInstance().gameContainer;
 	}
 	
+	
+	/*
+	public GameWorld(IGame game){
+		super(game.getTitle());
+		this.game = game;
+		addBuffer = new ArrayList<IGameElement>();
+		removeBuffer = new ArrayList<IGameElement>();
+		gameElements = new ArrayList<IGameElement>();
+		instance = this;
+		
+	}
+	*/
+	
 	/**
 	 * Constructor
 	 * @param gameName Title of the game
 	 */
-	private GameWorld()
+	
+	protected GameWorld()
 	{
 		super(Game.title);
 		addBuffer = new ArrayList<IGameElement>();
 		removeBuffer = new ArrayList<IGameElement>();
 		gameElements = new ArrayList<IGameElement>();
 	}
-
+	
+	
 	/**
 	 * Initialisation callback
 	 */
@@ -115,7 +131,6 @@ public class GameWorld extends BasicGame {
 		//Assign container
 		gameContainer = gc;
 		
-		//Create new game
 		game = new Game();
 	}
 

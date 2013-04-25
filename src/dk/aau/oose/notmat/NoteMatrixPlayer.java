@@ -12,16 +12,7 @@ public class NoteMatrixPlayer {
 	private NoteMatrix nm;
 	private int sleepTime;
 	private Thread playThread;
-	private Timer beat;
-	private TimerTask timerTask = new TimerTask(){
 
-		@Override
-		public void run() {
-			System.out.println("timerTask!");
-			
-		}
-		
-	};
 	
 	public NoteMatrixPlayer(NoteMatrix matrix, int tempo){
 		nm = matrix;
