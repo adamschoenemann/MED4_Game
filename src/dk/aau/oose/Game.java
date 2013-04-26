@@ -61,6 +61,7 @@ public class Game {
 				{9, 1}, {9, 0}, {1, 1}, {2, 0},
 				{2, 0}, {5, 1}, {4, 1}, {1, 0}
 		};
+		assert(comp.length == numBeats);
 		
 		for(int i = 0; i < nl.getNumBeats(); i++){
 			Note note = nl.getNote(i);

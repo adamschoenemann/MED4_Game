@@ -2,6 +2,7 @@ package dk.aau.oose;
 
 
 
+import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
@@ -15,6 +16,9 @@ public class Grid extends AGameElement {
 	private final Graphics gfx = GameWorld.getGameContainer().getGraphics();
 	private Color bgColor = Color.white;
 	private Color fgColor = Color.black;
+	// FIXME: This should be made more customizable (getter/setter)
+	private Vector2f superDivisions = new Vector2f(4f, 5f);
+	private Color superColor = Color.white;
 	
 	/**
 	 * Grid Constructor. Specify width, height, columns and rows
@@ -33,6 +37,11 @@ public class Grid extends AGameElement {
 		this.cellHeight = height / (float) rows;
 	}
 	
+	public void setSuperDivisions(int cols, int rows){
+		superDivisions.x = cols;
+		superDivisions.y = rows;
+	}
+	
 	public void setForegroundColor(Color col){
 		fgColor = col;
 	}
@@ -46,10 +55,13 @@ public class Grid extends AGameElement {
 		gfx.setColor(bgColor);
 		gfx.fillRect(0, 0, width, height);
 		gfx.setColor(fgColor);
+		
 		for(int r = 0; r < rows; r++){
+			gfx.setColor((superDivisions.y > 0 && (r % superDivisions.y == 0)) ? superColor : fgColor);
 			gfx.drawLine(0, r * cellHeight, width, r * cellHeight);
 		}
 		for(int c = 0; c < cols; c++){
+			gfx.setColor((superDivisions.x > 0 && (c % superDivisions.x == 0)) ? superColor : fgColor);
 			gfx.drawLine(c * cellWidth, 0, c * cellWidth, height);
 		}
 		
