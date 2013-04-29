@@ -4,6 +4,8 @@ import org.lwjgl.util.vector.Vector2f;
 
 import dk.aau.oose.core.GameWorld;
 
+@Deprecated
+@SuppressWarnings
 public abstract class AGameElement implements IGameElement, ITransform {
 	
 	private final Vector2f pos = new Vector2f(0, 0);

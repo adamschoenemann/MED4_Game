@@ -29,4 +29,8 @@ public class Note {
 	public boolean isDistinct(){
 		return this.distinct;
 	}
+	
+	public String toString(){
+		return ("(" + val + ", " + (distinct ? 1:0) + ")");
+	}
 }

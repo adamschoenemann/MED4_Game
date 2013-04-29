@@ -5,23 +5,22 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import dk.aau.oose.AGameElement;
-import dk.aau.oose.ITransform;
+import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
 
-public class NoteMatrixElement extends AGameElement implements ITransform {
+public class NoteMatrixElement extends GameElement {
 	
 	private final NoteMatrix nm;
 	private final NoteMatrixPlayer nmp;
-	private final int width, height, colWidth, rowHeight;
-	private final Graphics gfx = GameWorld.getGameContainer().getGraphics();
+	private final int colWidth, rowHeight;
+	//private final Graphics gfx = GameWorld.getGameContainer().getGraphics();
 	private static final Color[] colors = {
 		Color.black,
 		Color.blue.darker(0.6f),
 		Color.blue.darker(0.3f), 
 		Color.blue
 		};
-	private Vector2f pos;
+	
 	
 	/**
 	 * 
@@ -32,17 +31,15 @@ public class NoteMatrixElement extends AGameElement implements ITransform {
 	public NoteMatrixElement(NoteMatrix nm, int width, int height){
 		this.nm = nm;
 		this.nmp = new NoteMatrixPlayer(nm, 180);
-		this.width = width;
-		this.height = height;
+		setDimensions(width, height);
 		this.rowHeight = height / nm.getRows();
 		this.colWidth = width / nm.getColumns();
-		this.pos = new Vector2f(0, 0);
 	}
 	
 	@Override
-	public void draw() {
+	public void onDraw(Graphics gfx) {
 		gfx.pushTransform();
-		gfx.translate(pos.x, pos.y);
+		gfx.translate(getPosition().x, getPosition().y);
 		for(int rows = 0; rows < nm.getRows(); rows++){
 			for(int cols = 0; cols < nm.getColumns(); cols++){
 				int note = nm.getNote(rows, cols);
@@ -57,7 +54,7 @@ public class NoteMatrixElement extends AGameElement implements ITransform {
 	}
 
 	@Override
-	public void update() {
+	public void onUpdate() {
 		Input input = GameWorld.getGameContainer().getInput();
 
 		try {
@@ -93,7 +90,7 @@ public class NoteMatrixElement extends AGameElement implements ITransform {
 	}
 	
 	public int getColumnIndex(float x){
-		int colIndex = (int) Math.floor((x - pos.x) / colWidth);
+		int colIndex = (int) Math.floor((x - getPosition().x) / colWidth);
 		// Out of bounds
 		if(colIndex < 0 || colIndex >= nm.getColumns()){
 			throw new IndexOutOfBoundsException("Invalid x coordinates given");
@@ -102,7 +99,7 @@ public class NoteMatrixElement extends AGameElement implements ITransform {
 	}
 	
 	public int getRowIndex(float y){
-		int rowIndex = (int) Math.floor((y - this.pos.y) / rowHeight);
+		int rowIndex = (int) Math.floor((y - getPosition().y) / rowHeight);
 		// Out of bounds
 		if(rowIndex < 0 || rowIndex >= nm.getRows()){
 			throw new IndexOutOfBoundsException("Invalid y coordinates given");
@@ -141,24 +138,6 @@ public class NoteMatrixElement extends AGameElement implements ITransform {
 		return nmp;
 	}
 
-
-	@Override
-	public Vector2f getPosition() {
-		return pos;
-	}
-
-
-	@Override
-	public void setPosition(Vector2f pos) {
-		this.pos.x = pos.x;
-		this.pos.y = pos.y;
-	}
-	
-	public void setPosition(float x, float y){
-		pos.x = x;
-		pos.y = y;
-	}
-	
 	
 	
 }

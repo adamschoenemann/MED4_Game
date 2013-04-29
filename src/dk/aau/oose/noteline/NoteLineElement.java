@@ -5,12 +5,11 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import dk.aau.oose.AGameElement;
 import dk.aau.oose.Grid;
-import dk.aau.oose.ITransform;
+import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
 
-public class NoteLineElement extends AGameElement {
+public class NoteLineElement extends GameElement {
 	
 	private static final float X_PADDING = 5f;
 	private Vector2f cellDim;
@@ -34,7 +33,7 @@ public class NoteLineElement extends AGameElement {
 	}
 	
 	@Override
-	public void draw() {
+	public void onDraw(Graphics gfx) {
 		gfx = GameWorld.getGameContainer().getGraphics();
 		float height = getDimensions().y;
 		gfx.pushTransform();
@@ -69,23 +68,12 @@ public class NoteLineElement extends AGameElement {
 	}
 	
 	@Override
-	public void update() {
-		Input input = GameWorld.getGameContainer().getInput();
-		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
-			float mx = input.getMouseX(), my = input.getMouseY();
-			if(input.isKeyDown(Input.KEY_LSHIFT)){
-				int noteHeight = calculateNoteHeight(my);
-				int index = calculateNoteIndex(mx);
-				nl.setNoteValue(noteHeight, index);
-			} else {
-				int index = calculateNoteIndex(mx);
-				nlp.playNoteAt(index);
-				System.out.println("Index: " + index);
-			}
-		}
-		if(input.isKeyPressed(Input.KEY_SPACE)){
-			nlp.play();
-		}
+	public void onUpdate() {
+		
+	}
+	
+	public NoteLinePlayer getNoteLinePlayer(){
+		return nlp;
 	}
 	
 	public void setColor(Color col){

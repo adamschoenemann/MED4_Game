@@ -6,14 +6,15 @@ import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
 
-public class Grid extends AGameElement {
+public class Grid extends GameElement {
 	
 	private final float width, height;
 	private final int cols, rows;
 	private final float cellWidth, cellHeight;
-	private final Graphics gfx = GameWorld.getGameContainer().getGraphics();
+	//private final Graphics gfx = GameWorld.getGameContainer().getGraphics();
 	private Color bgColor = Color.white;
 	private Color fgColor = Color.black;
 	// FIXME: This should be made more customizable (getter/setter)
@@ -51,7 +52,7 @@ public class Grid extends AGameElement {
 	}
 	
 	@Override
-	public void draw() {
+	public void onDraw(Graphics gfx) {
 		gfx.setColor(bgColor);
 		gfx.fillRect(0, 0, width, height);
 		gfx.setColor(fgColor);
@@ -68,7 +69,7 @@ public class Grid extends AGameElement {
 	}
 
 	@Override
-	public void update() {
+	public void onUpdate() {
 		// TODO Auto-generated method stub
 		
 	}

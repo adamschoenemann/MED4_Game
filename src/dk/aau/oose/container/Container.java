@@ -3,29 +3,14 @@ package dk.aau.oose.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.aau.oose.AGameElement;
-
-public class ContainerElement extends AGameElement implements IContainer<ContainerElement> {
+public class Container<ChildType extends IChild> implements IContainer<ChildType>, IChild {
 	
-	private ContainerElement parent;
-	private final List<ContainerElement> children = new ArrayList<ContainerElement>();
+	private IContainer<?> parent;
+	private final List<ChildType> children = new ArrayList<ChildType>();
 	
-	@Override
-	public void draw() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public boolean hasChildren() {
-		// TODO Auto-generated method stub
-		return false;
+		return (children.size() > 0);
 	}
 
 	@Override
@@ -34,18 +19,27 @@ public class ContainerElement extends AGameElement implements IContainer<Contain
 	}
 
 	@Override
-	public ContainerElement getChildAt(int index) {
+	public ChildType getChildAt(int index) {
 		return children.get(index);
 	}
-
+	
+	public boolean hasChild(ChildType child){
+		for(int i = 0; i < children.size(); i++){
+			if(children.get(i) == child){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
-	public void addChild(ContainerElement child) {
+	public void addChild(ChildType child) {
 		children.add(child);
 		child.setParent(this);
 	}
 
 	@Override
-	public void addChildAt(ContainerElement child, int index) {
+	public void addChildAt(ChildType child, int index) {
 		if(index > children.size()){
 			throw new IllegalArgumentException();
 		}
@@ -58,7 +52,7 @@ public class ContainerElement extends AGameElement implements IContainer<Contain
 	}
 
 	@Override
-	public boolean removeChild(ContainerElement child) {
+	public boolean removeChild(ChildType child) {
 		if(child.getParent() == this) {
 			child.setParent(null);
 			return children.remove(child);
@@ -68,14 +62,14 @@ public class ContainerElement extends AGameElement implements IContainer<Contain
 	}
 
 	@Override
-	public ContainerElement removeChildAt(int index) {
-		ContainerElement ele = children.remove(index);
+	public ChildType removeChildAt(int index) {
+		ChildType ele = children.remove(index);
 		ele.setParent(null);
 		return ele;
 	}
 
 	@Override
-	public ContainerElement getParent() {
+	public IContainer<?> getParent() {
 		return parent;
 	}
 	
@@ -105,7 +99,7 @@ public class ContainerElement extends AGameElement implements IContainer<Contain
 	}
 
 	@Override
-	public void setParent(ContainerElement ele) {
+	public void setParent(IContainer<?> ele) {
 		this.parent = ele;
 	}
 

@@ -8,7 +8,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import dk.aau.oose.Game;
-import dk.aau.oose.IGameElement;
 
 /**
  * Game support class
@@ -17,7 +16,7 @@ import dk.aau.oose.IGameElement;
 
 public class GameWorld extends BasicGame {
 	
-	private ArrayList<IGameElement> gameElements,addBuffer,removeBuffer;
+	private ArrayList<GameElement> gameElements,addBuffer,removeBuffer;
 	private GameContainer gameContainer;
 	private static GameWorld instance;
 	private Game game;
@@ -36,7 +35,7 @@ public class GameWorld extends BasicGame {
 	 * Returns the game objects currently present on screen
 	 * @return Current alive game objects
 	 */
-	public static ArrayList<IGameElement> getGameObjects() {
+	public static ArrayList<GameElement> getGameObjects() {
 		return getInstance().gameElements;
 	}
 
@@ -44,7 +43,7 @@ public class GameWorld extends BasicGame {
 	 * Add one game object to the game
 	 * @param go the game object to be added
 	 */
-	public static void add(IGameElement go){
+	public static void add(GameElement go){
 		getInstance().addBuffer.add(go);
 	}
 	
@@ -53,7 +52,7 @@ public class GameWorld extends BasicGame {
 	 * @param <T>
 	 * @param go a list containing all the game objects
 	 */
-	public static <T> void add(ArrayList<? extends IGameElement> gos){
+	public static <T> void add(ArrayList<? extends GameElement> gos){
 		getInstance().addBuffer.addAll(gos);
 	}
 	
@@ -61,7 +60,7 @@ public class GameWorld extends BasicGame {
 	 * Remove one game object from the game
 	 * @param go the game object to be added
 	 */
-	public static void remove(IGameElement go){
+	public static void remove(GameElement go){
 		getInstance().removeBuffer.add(go);
 	}
 	
@@ -70,7 +69,7 @@ public class GameWorld extends BasicGame {
 	 * @param <T>
 	 * @param go a list containing all the game objects
 	 */
-	public static <T> void remove(ArrayList<? extends IGameElement> gos){
+	public static <T> void remove(ArrayList<? extends GameElement> gos){
 		getInstance().addBuffer.removeAll(gos);
 	}
 	
@@ -79,9 +78,9 @@ public class GameWorld extends BasicGame {
 	 * @param specific game object class
 	 * @return number of instances
 	 */
-	public static int getNumberOf(Class<? extends IGameElement> type){
+	public static int getNumberOf(Class<? extends GameElement> type){
 		int count =0;
-		for (IGameElement go:getGameObjects())
+		for (GameElement go:getGameObjects())
 			if (type.isInstance(go))
 				count++;
 		return count;
@@ -101,9 +100,9 @@ public class GameWorld extends BasicGame {
 	public GameWorld(IGame game){
 		super(game.getTitle());
 		this.game = game;
-		addBuffer = new ArrayList<IGameElement>();
-		removeBuffer = new ArrayList<IGameElement>();
-		gameElements = new ArrayList<IGameElement>();
+		addBuffer = new ArrayList<GameElement>();
+		removeBuffer = new ArrayList<GameElement>();
+		gameElements = new ArrayList<GameElement>();
 		instance = this;
 		
 	}
@@ -117,9 +116,9 @@ public class GameWorld extends BasicGame {
 	protected GameWorld()
 	{
 		super(Game.title);
-		addBuffer = new ArrayList<IGameElement>();
-		removeBuffer = new ArrayList<IGameElement>();
-		gameElements = new ArrayList<IGameElement>();
+		addBuffer = new ArrayList<GameElement>();
+		removeBuffer = new ArrayList<GameElement>();
+		gameElements = new ArrayList<GameElement>();
 	}
 	
 	
@@ -140,16 +139,16 @@ public class GameWorld extends BasicGame {
 	public void update(GameContainer gc, int delta) throws SlickException
 	{
 		//Update all the game objects
-		for (IGameElement go: gameElements)
+		for (GameElement go: gameElements)
 			go.update();
 		
 		//Clear removed objects
-		for (IGameElement go: removeBuffer)
+		for (GameElement go: removeBuffer)
 			gameElements.remove(go);
 		removeBuffer.clear();
 		
 		//Add new objects
-		for (IGameElement go: addBuffer)
+		for (GameElement go: addBuffer)
 			gameElements.add(go);
 		addBuffer.clear();
 
@@ -163,7 +162,7 @@ public class GameWorld extends BasicGame {
 	public void render(GameContainer gc, Graphics g) throws SlickException
 	{
 		//Draw all the game objects
-		for (IGameElement go: gameElements)
+		for (GameElement go: gameElements)
 			go.draw();
 	}
 }
