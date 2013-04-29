@@ -10,7 +10,7 @@ public class NoteLinePlayer {
 	private final NoteLine nl;
 	private final int startOctave;
 	private final int notesPerOctave;
-	private final int noteDuration;
+	private final int beatDuration;
 	
 
 	/**
@@ -24,22 +24,37 @@ public class NoteLinePlayer {
 		this.nl = nl;
 		this.startOctave = startOctave;
 		this.notesPerOctave = notesPerOctave;
-		this.noteDuration = 1000 * 60 / tempo;
+		this.beatDuration = 1000 * 60 / tempo;
 	}
 	
 	public void play(){
-		int length = 1;
-		for(int i = 0; i < nl.getNumBeats(); i += length){
-			length = playNoteAt(i);
+		int noteDuration = 1;
+		for(int i = 0; i < nl.getNumBeats(); i += noteDuration){
+			noteDuration = playNoteAt(i);
 			try {
-				Thread.sleep(noteDuration * length);
+				Thread.sleep(noteDuration);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
+	/**
+	 * Plays the target note.
+	 * @param pos Position of wanted note in the NoteLine's Note array.
+	 * @return Duration of target note in milliseconds.
+	 */
 	public int playNoteAt(int pos){
+		int noteDuration = getNoteDurationAt(pos);
+		playNote(nl.getNote(pos).getValue(), noteDuration);
+		return noteDuration;
+	}
+	
+	/**
+	 * @param pos Position of wanted note in the NoteLine's Note array
+	 * @return Duration of target note in milliseconds.
+	 */
+	public int getNoteDurationAt(int pos){
 		int noteVal = nl.getNote(pos).getValue();
 		// Play multi-beat notes
 		int mult = 1;
@@ -51,11 +66,11 @@ public class NoteLinePlayer {
 				i++){
 			
 			mult++;
-		} 
-		playNote(nl.getNote(pos).getValue(), noteDuration * mult);
-		return mult;
+		}
+		
+		return beatDuration * mult;
 	}
-	
+
 
 	private void playNote(int note, int duration){
 		// First calculate actual value based on octaves
@@ -86,8 +101,8 @@ public class NoteLinePlayer {
 		return nl;
 	}
 	
-	public int getSleepTime(){
-		return noteDuration;
+	public int getBeatDuration(){
+		return beatDuration;
 	}
 	
 	public static void main(String[] args) throws InterruptedException{
@@ -100,7 +115,7 @@ public class NoteLinePlayer {
 		
 		for(int i = 0; i <= 30; i++){
 			System.out.print(i + ": ");
-			nlp.playNote(i, nlp.getSleepTime());
+			nlp.playNote(i, nlp.getBeatDuration());
 			Thread.sleep(200);
 		}
 		

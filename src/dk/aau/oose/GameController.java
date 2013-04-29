@@ -42,7 +42,7 @@ public class GameController extends GameElement {
 
 		System.out.println(nl);
 		createCtrl = new CreateController(nlv);
-		playCtrl = new PlayController(nlv, 20000); //TODO change value to something that makes sense
+		playCtrl = new PlayController(nlv, Input.KEY_J); // TODO possibly change default key from 'j' to something else
 		this.addChild(createCtrl);
 		this.addChild(playCtrl);
 		GameElement switchButton = new AButton("Switch Modes!", 200, 40){
