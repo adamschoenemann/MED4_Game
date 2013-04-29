@@ -9,16 +9,17 @@ import dk.aau.oose.container.Container;
 import dk.aau.oose.display.IDrawable;
 import dk.aau.oose.display.ITransform;
 import dk.aau.oose.display.Transform;
+import dk.aau.oose.util.MathUtils;
 
 /**
  * Basic game content element
  * @author Paolo Burelli
  */
 public abstract class GameElement extends Container<GameElement> implements IDrawable, ITransform {
-	
+
 	private final Transform transform = new Transform();
 	private final Vector2f dimensions = new Vector2f();
-		
+	
 	public abstract void onUpdate();
 	public abstract void onDraw(Graphics gfx);
 	
@@ -38,9 +39,11 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 		for(int i = 0; i < numChildren(); i++){
 			getChildAt(i).draw();
 		}
-		
 		gfx.popTransform();
-		
+
+//		Vector2f globalPos = localToGlobal(new Vector2f(100, 0));
+//		gfx.setColor(Color.green);
+//		gfx.drawRect(globalPos.x, globalPos.y, 1f, 1f);
 	}
 
 	
@@ -98,14 +101,46 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 	}
 	
 	public Vector2f globalToLocal(Vector2f input){
-		Vector2f output = new Vector2f(input.x - getDimensions().x * getScale().x,
-				input.y - getDimensions().y * getScale().y);
+		
 		GameElement parent = (GameElement) getParent();
-		while(parent != null){
-			output = parent.globalToLocal(output);
-			parent = (GameElement) parent.getParent();
+		if(parent != null){
+			input = parent.globalToLocal(input);
 		}
-		return output;
+		
+		// Subtract position and scale
+		input.x -= getPosition().x * getScale().x;
+		input.y -= getPosition().y * getScale().y;
+
+		// Subtract rotation
+		double rads = MathUtils.degToRad(getRotation());
+		float newX = (float) (input.x * Math.cos(rads) + input.y * Math.sin(rads));
+		float newY = (float) (-input.x * Math.sin(rads) + input.y * Math.cos(rads)) ;
+		input.x = newX;
+		input.y = newY;
+		
+		
+		
+		return input;
+	}
+	
+	public Vector2f localToGlobal(Vector2f input){
+		
+		// Subtract rotation
+		double rads = MathUtils.degToRad(getRotation());
+		float newX = (float) (input.x * Math.cos(rads) - input.y * Math.sin(rads));
+		float newY = (float) (input.x * Math.sin(rads) + input.y * Math.cos(rads)) ;
+		input.x = newX;
+		input.y = newY;
+		
+		// Subtract position and scale
+		input.x += getPosition().x * getScale().x;
+		input.y += getPosition().y * getScale().y;
+		
+		GameElement parent = (GameElement) getParent();
+		if(parent != null){
+			input = parent.localToGlobal(input);
+		}
+		return input;
 	}
 	
 	public Transform getTransform(){
