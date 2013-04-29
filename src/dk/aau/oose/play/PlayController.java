@@ -11,15 +11,7 @@ import dk.aau.oose.noteline.NoteLinePlayer;
 
 public class PlayController extends GameElement {
 	
-<<<<<<< HEAD
-	private NoteLineView nle;
-	private NoteLinePlayer nlp;
-	private NoteLine nl;
-	
-	public PlayController(NoteLineView nle){
-		this.nle = nle;
-		this.nlp = nle.getNoteLinePlayer();
-=======
+
 	private NoteLineView nlv;
 	private NoteLinePlayer nlp;
 	private NoteLine nl;
@@ -45,7 +37,6 @@ public class PlayController extends GameElement {
 	public PlayController(NoteLineView nlv, int jumpKey){
 		this.nlv = nlv;
 		this.nlp = nlv.getNoteLinePlayer();
->>>>>>> lort
 		this.nl = nlp.getNoteLine();
 		this.jumpKey = jumpKey;
 	}

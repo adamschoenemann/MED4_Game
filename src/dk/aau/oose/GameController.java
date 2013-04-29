@@ -11,10 +11,6 @@ import dk.aau.oose.core.GameWorld;
 import dk.aau.oose.create.CreateController;
 import dk.aau.oose.noteline.Note;
 import dk.aau.oose.noteline.NoteLine;
-<<<<<<< HEAD
-=======
-import dk.aau.oose.noteline.NoteLineView;
->>>>>>> lort
 import dk.aau.oose.noteline.NoteLinePlayer;
 import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.play.PlayController;
@@ -41,16 +37,12 @@ public class GameController extends GameElement {
 			note.setDistinct((comp[i][1] == 1) ? true : false);
 		}
 		NoteLinePlayer nlp = new NoteLinePlayer(nl, 1, 5, 180);
-<<<<<<< HEAD
 		NoteLineView nlv = new NoteLineView(nlp, gc.getWidth(), gc.getHeight());
 		nlv.setColor(Color.blue);
-=======
-		NoteLineView nle = new NoteLineView(nlp, gc.getWidth(), gc.getHeight());
-		nle.setColor(Color.blue);
->>>>>>> lort
+
 		System.out.println(nl);
 		createCtrl = new CreateController(nlv);
-		playCtrl = new PlayController(nlv);
+		playCtrl = new PlayController(nlv, 20000); //TODO change value to something that makes sense
 		this.addChild(createCtrl);
 		this.addChild(playCtrl);
 		GameElement switchButton = new AButton("Switch Modes!", 200, 40){
