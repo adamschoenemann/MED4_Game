@@ -11,6 +11,7 @@ public class NoteLinePlayer {
 	private final int startOctave;
 	private final int notesPerOctave;
 	private final int beatDuration;
+	private boolean nextNoteIsPure;
 	
 
 	/**
@@ -90,10 +91,12 @@ public class NoteLinePlayer {
 		msg.add(octave);
 		msg.add(duration);
 		
-		boolean purity = true;
-		msg.add(purity);
+		//boolean purity = true;
+		//msg.add(purity);
+		msg.add(nextNoteIsPure);
+		nextNoteIsPure = false;
 		
-		System.out.format("Note: %d, %d, %d, %b\n", value, octave, duration, purity);
+		System.out.format("Note: %d, %d, %d, %b\n", value, octave, duration, nextNoteIsPure); //purity
 		MaxMSP.send(msg);
 	}
 	
@@ -103,6 +106,11 @@ public class NoteLinePlayer {
 	
 	public int getBeatDuration(){
 		return beatDuration;
+	}
+	
+	//TODO remove nextNoteIsPure from NoteLinePlayer
+	public void setNextNoteIsPure(boolean nextNoteIsPure){
+		this.nextNoteIsPure = nextNoteIsPure;
 	}
 	
 	public static void main(String[] args) throws InterruptedException{

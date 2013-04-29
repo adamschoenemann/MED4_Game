@@ -24,14 +24,18 @@ public class PlayController extends GameElement {
 	private int nextJumpIndex = 0;
 	private long startTime;
 	
+	private boolean nextNoteIsPerfect;
+	
 	private static final int TIME_FOR_PERFECT_NOTE = 15,
-							 TIME_FOR_FAILED_NOTE = 100;
+							 TIME_FOR_FAILED_NOTE = 100,
+							 TIME_FOR_LISTENING_FOR_INPUT = 200, // TODO ok value?
+							 START_TIME_OFFSET = 0;
 						
 	
 	
 	/**
 	 * @param nlv 
-	 * @param jumpKey Must accord to the final static keys found in Input.KEY_...
+	 * @param jumpKey Must accord to the values found in Input.KEY_...
 	 */
 	public PlayController(NoteLineView nlv, int jumpKey){
 		System.out.println("Constructing PlayController...");
@@ -61,45 +65,54 @@ public class PlayController extends GameElement {
 		assert noOfBeats > 0;
 		
 		expectedKeyDownTimes = new int[noOfBeats];
-		expectedKeyDownTimes[0] = nlp.getNoteDurationAt(0);
-		for(int i = 1; i < noOfBeats; i++){
-			if(nlp.getNoteLine().getNote(i-1).isDistinct())
-				expectedKeyDownTimes[i] = nlp.getNoteDurationAt(i);
+		expectedKeyDownTimes[0] = START_TIME_OFFSET;
+		int expectedKeyDownTimesIndex = 1;
+		for(int i = 0; i < noOfBeats; i++){
+			if( i == 0 ||  nlp.getNoteLine().getNote(i - 1).isDistinct()){
+				expectedKeyDownTimes[expectedKeyDownTimesIndex] = nlp.getNoteDurationAt(i) + expectedKeyDownTimes[expectedKeyDownTimesIndex - 1];
+				expectedKeyDownTimesIndex++;
+			}
+			
 		}
 		
 		System.out.println("Perfect jump times:");
-		for(int i = 0; i < expectedKeyDownTimes.length; i++){
-			System.out.println("index " + i + ": " + expectedKeyDownTimes[i]);
+		for(int i = 0; i < expectedKeyDownTimesIndex; i++){
+			System.out.print("index " + i + ": " + expectedKeyDownTimes[i]);
+			if(i > 0)
+				System.out.println(" (difference from last is " + (expectedKeyDownTimes[i] - expectedKeyDownTimes[i -1]) + ")");
+			else
+				System.out.println();
 		}
 		System.out.println("Initiated perfect jump times.");		
 	}
 
 	@Override
 	public void onUpdate() {
-		/*int timeToNearestPerfectJump = getTimeToNearestPerfectJump();
+		int timeToNearestPerfectJump = getTimeToNearestPerfectJump();
 		input = GameWorld.getGameContainer().getInput();
 		
 		
 		//Check whether 
 		//	1) we are close enough to a jump to care about user input and
 		//	2) if that is the case, whether the user inputs correct stuff
-		if(Math.abs(timeToNearestPerfectJump) < TIME_FOR_FAILED_NOTE
+		if(Math.abs(timeToNearestPerfectJump) < TIME_FOR_LISTENING_FOR_INPUT
 			&& input.isKeyDown(jumpKey) ){
 			
+			if(Math.abs(timeToNearestPerfectJump) < TIME_FOR_FAILED_NOTE){
+				nlp.setNextNoteIsPure(true);
+			}  // Else leave next note at the default fail state
 			
+			
+			//Calculate points, and display floating point thingy 
 			
 		}
 		
 		//	3) If so, 
-		
-		
-		if( true ){ //Or if too much time has elapsed since last expected jump command
-			updatePrecision();
-			
-		}*/
+
 				
 	}
 
+	@Deprecated
 	private void updatePrecision() {
 		
 		// TODO Measure time off
