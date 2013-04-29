@@ -10,7 +10,7 @@ public class NoteLinePlayer {
 	private final NoteLine nl;
 	private final int startOctave;
 	private final int notesPerOctave;
-	private final int sleepTime;
+	private final int noteDuration;
 	
 
 	/**
@@ -24,7 +24,7 @@ public class NoteLinePlayer {
 		this.nl = nl;
 		this.startOctave = startOctave;
 		this.notesPerOctave = notesPerOctave;
-		this.sleepTime = 1000 * 60 / tempo;
+		this.noteDuration = 1000 * 60 / tempo;
 	}
 	
 	public void play(){
@@ -32,7 +32,7 @@ public class NoteLinePlayer {
 		for(int i = 0; i < nl.getNumBeats(); i += length){
 			length = playNoteAt(i);
 			try {
-				Thread.sleep(sleepTime * length);
+				Thread.sleep(noteDuration * length);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -52,7 +52,7 @@ public class NoteLinePlayer {
 			
 			mult++;
 		} 
-		playNote(nl.getNote(pos).getValue(), sleepTime * mult);
+		playNote(nl.getNote(pos).getValue(), noteDuration * mult);
 		return mult;
 	}
 	
@@ -87,7 +87,7 @@ public class NoteLinePlayer {
 	}
 	
 	public int getSleepTime(){
-		return sleepTime;
+		return noteDuration;
 	}
 	
 	public static void main(String[] args) throws InterruptedException{

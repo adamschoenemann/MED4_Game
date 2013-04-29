@@ -9,7 +9,7 @@ import dk.aau.oose.Grid;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
 
-public class NoteLineElement extends GameElement {
+public class NoteLineView extends GameElement {
 	
 	private static final float X_PADDING = 5f;
 	private Vector2f cellDim;
@@ -20,7 +20,7 @@ public class NoteLineElement extends GameElement {
 	private final Grid grid;
 	
 	
-	public NoteLineElement(NoteLinePlayer nlp, float width, float height){
+	public NoteLineView(NoteLinePlayer nlp, float width, float height){
 		this.nlp = nlp;
 		this.nl = nlp.getNoteLine();
 		setDimensions(new Vector2f(width, height));

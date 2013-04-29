@@ -16,9 +16,9 @@ import dk.aau.oose.display.Transform;
  */
 public abstract class GameElement extends Container<GameElement> implements IDrawable, ITransform {
 	
-	private Transform transform = new Transform();
-	private Vector2f dimensions = new Vector2f();
-	
+	private final Transform transform = new Transform();
+	private final Vector2f dimensions = new Vector2f();
+		
 	public abstract void onUpdate();
 	public abstract void onDraw(Graphics gfx);
 	
@@ -35,17 +35,14 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 		gfx.translate(getPosition().x, getPosition().y);
 		gfx.rotate(0, 0, getRotation());
 		onDraw(gfx);
-		drawChildren(gfx);
+		for(int i = 0; i < numChildren(); i++){
+			getChildAt(i).draw();
+		}
 		
 		gfx.popTransform();
 		
 	}
-	
-	public void drawChildren(Graphics gfx){
-		for(int i = 0; i < numChildren(); i++){
-			getChildAt(i).draw();
-		}
-	}
+
 	
 	@Override
 	public Vector2f getPosition() {
@@ -98,6 +95,21 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 	public void setDimensions(float x, float y){
 		dimensions.x = x;
 		dimensions.y = y;
+	}
+	
+	public Vector2f globalToLocal(Vector2f input){
+		Vector2f output = new Vector2f(input.x - getDimensions().x * getScale().x,
+				input.y - getDimensions().y * getScale().y);
+		GameElement parent = (GameElement) getParent();
+		while(parent != null){
+			output = parent.globalToLocal(output);
+			parent = (GameElement) parent.getParent();
+		}
+		return output;
+	}
+	
+	public Transform getTransform(){
+		return transform;
 	}
 	
 	

@@ -3,14 +3,16 @@ package dk.aau.oose;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
+import dk.aau.oose.core.AButton;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
 import dk.aau.oose.create.CreateController;
 import dk.aau.oose.noteline.Note;
 import dk.aau.oose.noteline.NoteLine;
-import dk.aau.oose.noteline.NoteLineElement;
 import dk.aau.oose.noteline.NoteLinePlayer;
+import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.play.PlayController;
 
 public class GameController extends GameElement {
@@ -35,13 +37,26 @@ public class GameController extends GameElement {
 			note.setDistinct((comp[i][1] == 1) ? true : false);
 		}
 		NoteLinePlayer nlp = new NoteLinePlayer(nl, 1, 5, 180);
-		NoteLineElement nle = new NoteLineElement(nlp, gc.getWidth(), gc.getHeight());
-		nle.setColor(Color.blue);
+		NoteLineView nlv = new NoteLineView(nlp, gc.getWidth(), gc.getHeight());
+		nlv.setColor(Color.blue);
 		System.out.println(nl);
-		createCtrl = new CreateController(nle);
-		playCtrl = new PlayController(nle);
+		createCtrl = new CreateController(nlv);
+		playCtrl = new PlayController(nlv);
 		this.addChild(createCtrl);
 		this.addChild(playCtrl);
+		GameElement switchButton = new AButton("Switch Modes!", 200, 40){
+
+			@Override
+			public void onUpdate() {
+				Input input = GameWorld.getGameContainer().getInput();
+				if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
+					int mx = input.getMouseX(), my = input.getMouseY();
+					
+				}
+				
+			}
+			
+		};
 	}
 
 	@Override

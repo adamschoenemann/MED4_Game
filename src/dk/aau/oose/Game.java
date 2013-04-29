@@ -10,7 +10,7 @@ import org.newdawn.slick.SlickException;
 import dk.aau.oose.core.GameWorld;
 import dk.aau.oose.noteline.Note;
 import dk.aau.oose.noteline.NoteLine;
-import dk.aau.oose.noteline.NoteLineElement;
+import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.noteline.NoteLinePlayer;
 import dk.aau.oose.notmat.NoteMatrixPlayer;
 

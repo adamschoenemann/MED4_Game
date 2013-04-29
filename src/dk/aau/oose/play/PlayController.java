@@ -4,16 +4,16 @@ import org.newdawn.slick.Graphics;
 
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLine;
-import dk.aau.oose.noteline.NoteLineElement;
+import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.noteline.NoteLinePlayer;
 
 public class PlayController extends GameElement {
 	
-	private NoteLineElement nle;
+	private NoteLineView nle;
 	private NoteLinePlayer nlp;
 	private NoteLine nl;
 	
-	public PlayController(NoteLineElement nle){
+	public PlayController(NoteLineView nle){
 		this.nle = nle;
 		this.nlp = nle.getNoteLinePlayer();
 		this.nl = nlp.getNoteLine();

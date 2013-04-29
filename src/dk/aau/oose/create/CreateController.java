@@ -9,16 +9,16 @@ import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
 import dk.aau.oose.noteline.Note;
 import dk.aau.oose.noteline.NoteLine;
-import dk.aau.oose.noteline.NoteLineElement;
+import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.noteline.NoteLinePlayer;
 
 public class CreateController extends GameElement {
 	
 	public NoteLine nl;
-	public NoteLineElement nle;
+	public NoteLineView nle;
 	public NoteLinePlayer nlp;
 	
-	public CreateController(NoteLineElement nle) {
+	public CreateController(NoteLineView nle) {
 		// NoteLine
 		this.nle = nle;
 		this.nlp = nle.getNoteLinePlayer();
