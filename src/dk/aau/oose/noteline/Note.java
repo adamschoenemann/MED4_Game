@@ -1,6 +1,6 @@
 package dk.aau.oose.noteline;
 
-public class Note {
+public class Note implements Cloneable {
 	
 	private int val;
 	private boolean distinct;
@@ -32,5 +32,10 @@ public class Note {
 	
 	public String toString(){
 		return ("(" + val + ", " + (distinct ? 1:0) + ")");
+	}
+	
+	@Override
+	public Note clone(){
+		return new Note(this.val, this.distinct);
 	}
 }

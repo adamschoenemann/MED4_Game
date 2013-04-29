@@ -12,27 +12,30 @@ public class NoteLine {
 		for(int i = 0; i < numBeats; i++){
 			beats[i] = new Note(0);
 		}
+		for(int i = 0; i < numBeats; i++){
+			fixDistinct(i);
+		}
 	}
 	
 	public void setNoteValue(int val, int pos){
 		Note note = getNote(pos);
 		note.setValue(val);
-		// Only for error checking
-		// Doesn't actually change any state (setValue already did that)
 		setNote(note, pos);
 	}
 	
 	public void setNote(Note note, int pos){
 		int val = note.getValue();
 		if(val <= MAX_NOTE && val >= 0) {
-			beats[pos] = note;
+			beats[pos].setValue(note.getValue());
+			beats[pos].setDistinct(note.isDistinct());
 		} else {
 			throw new IllegalArgumentException("Invalid note value");
 		}
+		fixDistinct(pos);
 	}
 	
 	public Note getNote(int pos){
-		return beats[pos];
+		return beats[pos].clone();
 	}
 	
 	public int getNumBeats(){
@@ -52,6 +55,28 @@ public class NoteLine {
 		}
 		
 		return nl;
+	}
+	
+	public void fixDistinct(int index){
+		if(index == getNumBeats() - 1){
+			beats[index].setDistinct(true);
+			return;
+		}
+		if(beats[index].isDistinct() == false){
+			int val = beats[index].getValue();
+			int nextVal = beats[index + 1].getValue();
+			if(val != nextVal){
+				beats[index].setDistinct(true);
+			}	
+		}
+		if(index > 0 && beats[index - 1].isDistinct() == false){
+			int val = beats[index].getValue();
+			int prevVal = beats[index - 1].getValue();
+			if(val != prevVal){
+				beats[index - 1].setDistinct(true);
+			}
+		}
+		
 	}
 	
 	public String toString(){

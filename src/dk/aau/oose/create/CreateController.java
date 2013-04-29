@@ -33,12 +33,17 @@ public class CreateController extends GameElement {
 		Input input = GameWorld.getGameContainer().getInput();
 		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
 			float mx = input.getMouseX(), my = input.getMouseY();
+			int noteHeight = nle.calculateNoteHeight(my);
+			int index = nle.calculateNoteIndex(mx);
 			if(input.isKeyDown(Input.KEY_LSHIFT)){
-				int noteHeight = nle.calculateNoteHeight(my);
-				int index = nle.calculateNoteIndex(mx);
 				nl.setNoteValue(noteHeight, index);
-			} else {
-				int index = nle.calculateNoteIndex(mx);
+			}
+			else if(input.isKeyDown(Input.KEY_LCONTROL)){
+				Note note = nl.getNote(index);
+				note.setDistinct(!note.isDistinct());
+				nl.setNote(note, index);
+			}
+			else {
 				nlp.playNoteAt(index);
 				System.out.println("Index: " + index);
 			}

@@ -35,6 +35,7 @@ public class GameController extends GameElement {
 			Note note = nl.getNote(i);
 			note.setValue(comp[i][0]);
 			note.setDistinct((comp[i][1] == 1) ? true : false);
+			nl.setNote(note, i);
 		}
 		NoteLinePlayer nlp = new NoteLinePlayer(nl, 1, 5, 180);
 		NoteLineView nlv = new NoteLineView(nlp, gc.getWidth(), gc.getHeight());
