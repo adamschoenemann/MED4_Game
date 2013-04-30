@@ -14,7 +14,6 @@ public class Grid extends GameElement {
 	private final float width, height;
 	private final int cols, rows;
 	private final float cellWidth, cellHeight;
-	//private final Graphics gfx = GameWorld.getGameContainer().getGraphics();
 	private Color bgColor = Color.white;
 	private Color fgColor = Color.black;
 	// FIXME: This should be made more customizable (getter/setter)

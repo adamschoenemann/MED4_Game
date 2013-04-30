@@ -25,6 +25,8 @@ public class PlayTest extends BasicGame {
 	public GameContainer gc;
 	public GameElement testEle;
 	public GameElement distanceEle;
+	public GameElement runnerEle;
+	public static final int DIFF_THRESH = 160;
 	
 	public PlayTest() {
 		super("PlayTest");
@@ -36,6 +38,7 @@ public class PlayTest extends BasicGame {
 		nlv.draw();
 		testEle.draw();
 		distanceEle.draw();
+		runnerEle.draw();
 	}
 
 	@Override
@@ -43,7 +46,7 @@ public class PlayTest extends BasicGame {
 		GameElement.setGameContainer(gc);
 		this.gc = gc;
 		nl = NoteLine.newTestInstance(10, 16);
-		nlp = new NoteLinePlayer(nl, 1, 5, 160);
+		nlp = new NoteLinePlayer(nl, 1, 5, 100);
 		nlv = new NoteLineView(nlp, 
 				gc.getWidth(), 
 				gc.getHeight());
@@ -69,6 +72,16 @@ public class PlayTest extends BasicGame {
 			}
 			
 		};
+		
+		runnerEle = new GameElement(){
+			
+			@Override
+			public void onDraw(Graphics gfx){
+				gfx.setColor(Color.magenta);
+				gfx.drawOval(-25, -50, 50, 50);
+			}
+			
+		};
 	}
 
 	@Override
@@ -83,11 +96,15 @@ public class PlayTest extends BasicGame {
 						index, 
 						elapsed,
 						nextTime);
-				
+				float xpos = (float) elapsed / totalTime * gc.getWidth(); 
 				testEle.setPosition(
-						(float) elapsed / totalTime * gc.getWidth(),
+						xpos,
 						0);
 				distanceEle.setPosition( ((elapsed + (elapsed - nextTime)) / (float) totalTime) * gc.getWidth(), gc.getHeight() / 2f);
+				Note note = nl.getNote(playThread.getIndex());
+				runnerEle.setPosition((float) elapsed / totalTime * gc.getWidth(),
+						gc.getHeight() - (note.getValue() * nlv.getCellDimensions().y));
+				
 			}
 			else if(!playThread.isAlive()){
 				playThread = null;
@@ -103,6 +120,16 @@ public class PlayTest extends BasicGame {
 			if(playThread == null){
 				playThread = new PlayThread(nlp);
 				playThread.start();
+			}
+		}
+		if(key == Input.KEY_A){
+			if(playThread != null && playThread.isAlive()){
+				long curTime = System.currentTimeMillis() - playThread.getStartTime();
+				long diff = Math.abs(curTime - playThread.getNextNoteTime());
+				if(diff < DIFF_THRESH){
+					playThread.getNoteLinePlayer().setNextNoteIsPure(true);
+				}
+				System.out.println("Diff: " + diff);
 			}
 		}
 		

@@ -11,7 +11,7 @@ public class NoteLinePlayer {
 	private final int startOctave;
 	private final int notesPerOctave;
 	private final int beatDuration;
-	private boolean nextNoteIsPure = true;
+	private boolean nextNoteIsPure = false;
 
 	
 
@@ -97,7 +97,7 @@ public class NoteLinePlayer {
 		//boolean purity = true;
 		//msg.add(purity);
 		msg.add(nextNoteIsPure);
-		nextNoteIsPure = true;
+		nextNoteIsPure = false;
 		
 		System.out.format("Note: %d, %d, %d, %b\n", value, octave, duration, nextNoteIsPure); //purity
 		MaxMSP.send(msg);

@@ -28,6 +28,10 @@ public class PlayThread extends Thread {
 		return nl.getNumBeats() * nlp.getBeatDuration();
 	}
 	
+	public long getStartTime(){
+		return startTime;
+	}
+	
 	public int getIndex(){
 		return index;
 	}
