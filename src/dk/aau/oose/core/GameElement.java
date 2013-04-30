@@ -3,10 +3,10 @@ package dk.aau.oose.core;
 
 
 import org.lwjgl.util.vector.Vector2f;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.InputListener;
-import org.newdawn.slick.MouseListener;
 
 import dk.aau.oose.container.Container;
 import dk.aau.oose.display.IDrawable;
@@ -27,10 +27,15 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	
 	private final Transform transform = new Transform();
 	private final Vector2f dimensions = new Vector2f();
+	private static GameContainer gc;
+	
+	public static void setGameContainer(GameContainer gc){
+		GameElement.gc = gc;
+	}
 	
 	public GameElement(){
-		Input input = GameWorld.getGameContainer().getInput();
-		input.addListener(this);
+//		Input input = GameElement.gc.getInput();
+//		input.addListener(this);
 	}
 	
 	/**
@@ -63,7 +68,7 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	 * Draw the element and all its children
 	 */
 	public final void draw(){
-		Graphics gfx = GameWorld.getGameContainer().getGraphics();
+		Graphics gfx = GameElement.gc.getGraphics();
 		gfx.pushTransform();
 		gfx.translate(getPosition().x, getPosition().y);
 		gfx.rotate(0, 0, getRotation());

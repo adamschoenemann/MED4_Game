@@ -63,9 +63,10 @@ public class CreateController extends GameElement {
 		}
 		if(playThread != null) {
 			if(playThread.isAlive()) {
-				System.out.format("Index: %d, elapsedTime: %d\n", 
+				System.out.format("Index: %d, elapsedTime: %d, nextNoteTime: %d\n", 
 						playThread.getIndex(), 
-						playThread.getElapsedTime());
+						playThread.getElapsedTime(),
+						playThread.getNextNoteTime());
 			} else {
 				playThread = null;
 			}

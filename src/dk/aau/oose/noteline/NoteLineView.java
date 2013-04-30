@@ -38,7 +38,6 @@ public class NoteLineView extends GameElement {
 	
 	@Override
 	public void onDraw(Graphics gfx) {
-		gfx = GameWorld.getGameContainer().getGraphics();
 		float height = getDimensions().y;
 		gfx.pushTransform();
 		gfx.translate(getPosition().x, getPosition().y);

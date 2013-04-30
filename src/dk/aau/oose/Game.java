@@ -7,6 +7,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
 import dk.aau.oose.noteline.Note;
 import dk.aau.oose.noteline.NoteLine;
@@ -36,6 +37,7 @@ public class Game {
 		Log.d("Game starting...");
 		
 		GameContainer gc = GameWorld.getGameContainer();
+		GameElement.setGameContainer(gc);
 		controller = new GameController(10, 16);
 		GameWorld.add(controller);
 		

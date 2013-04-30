@@ -28,6 +28,18 @@ public class PlayThread extends Thread {
 		return index;
 	}
 	
+	public long getNextNoteTime(){
+		if(index == nl.getNumBeats() - 1){
+			return 0;
+		}
+		int i = index;
+		while(nl.getNote(i).isDistinct() == false 
+				&& nl.getNote(i).getValue() == nl.getNote(i + 1).getValue()){
+			++i;
+		}
+		return ++i * nlp.getBeatDuration();
+	}
+	
 	public void setNextNoteIsPure(boolean val){
 		nlp.setNextNoteIsPure(val);
 	}
