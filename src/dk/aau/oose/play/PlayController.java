@@ -8,6 +8,7 @@ import dk.aau.oose.core.GameWorld;
 import dk.aau.oose.noteline.NoteLine;
 import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.noteline.NoteLinePlayer;
+import dk.aau.oose.util.MathUtils;
 
 public class PlayController extends GameElement {
 	
@@ -88,9 +89,11 @@ public class PlayController extends GameElement {
 
 	@Override
 	public void onUpdate() {
+
 		int timeToNearestPerfectJump = getTimeToNearestPerfectJump();
 		input = GameWorld.getGameContainer().getInput();
 		
+		System.out.println("timeToNearestPerfectJump: " + timeToNearestPerfectJump);
 		
 		//Check whether 
 		//	1) we are close enough to a jump to care about user input and
@@ -99,43 +102,27 @@ public class PlayController extends GameElement {
 			&& input.isKeyDown(jumpKey) ){
 			
 			if(Math.abs(timeToNearestPerfectJump) < TIME_FOR_FAILED_NOTE){
-				nlp.setNextNoteIsPure(true);
+				nlp.setNextNoteIsPure(true); //TODO this implementation will be moved.
 			}  // Else leave next note at the default fail state
 			
 			
 			//Calculate points, and display floating point thingy 
-			
+			int points = MathUtils.getValueOnLine(timeToNearestPerfectJump, TIME_FOR_FAILED_NOTE, 0, TIME_FOR_PERFECT_NOTE, 100);
+			if(points < 0)
+				points = 0;
+			else if(points > 100)
+				points = 100;
+			score.add(points, runner.getPosition());
 		}
 		
-		//	3) If so, 
 
-				
-	}
-
-	@Deprecated
-	private void updatePrecision() {
-		
-		// TODO Measure time off
-		int timeToNearestPerfectJump = getTimeToNearestPerfectJump();
-		
-		
-		int absoluteTimeOff = 100; //Temp fixed number - should be the difference between the expected perfect timing and the user's actual timing.
-		float precision;
-		if(absoluteTimeOff <= TIME_FOR_PERFECT_NOTE){
-			precision = 1.0f;
-		} else if(absoluteTimeOff >= TIME_FOR_FAILED_NOTE) {
-			precision = 0.0f;
-		} else {
-			precision = 1.0f - (((float)absoluteTimeOff - TIME_FOR_FAILED_NOTE) / (TIME_FOR_PERFECT_NOTE - TIME_FOR_FAILED_NOTE));
-		}
-		
-		boolean nextJumpIsGood = (absoluteTimeOff < TIME_FOR_FAILED_NOTE) ? true : false;
-		
 		//pass precision information to runner (for animation)
 		
 		//pass precision information to score
 		
 		//pass precision information to music player
+
+				
 	}
 	
 	private int getTimeToNearestPerfectJump(){
@@ -143,6 +130,7 @@ public class PlayController extends GameElement {
 	}
 	
 	private int getTimeSinceStart(){
+		System.out.println("System.currentTimeMillis() - startTime" + System.currentTimeMillis() + " - " + startTime);
 		return (int)(System.currentTimeMillis() - startTime);
 	}
 	
