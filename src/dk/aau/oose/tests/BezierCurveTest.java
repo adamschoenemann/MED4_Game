@@ -25,7 +25,7 @@ public class BezierCurveTest extends BasicGame {
     private Vector2f[] points;
     
     private Vector2f a = new Vector2f(0, 600);
-    private Vector2f b = new Vector2f(800, 600);
+    private Vector2f b = new Vector2f(400, 300);
     private Vector2f weight = new Vector2f(400, 0);
     
 	public BezierCurveTest(int resolution){
