@@ -6,8 +6,12 @@ public class NoteLine {
 	private final int MAX_NOTE;
 	private final Note[] beats;
 	
-	public NoteLine(int steps, int numBeats){
-		this.MAX_NOTE = steps;
+	/**
+	 * @param maxNoteValue The maximum note value. Usually 10 for a range of two octaves.
+	 * @param numBeats The total number of beats in the NoteLine. Usually 128 for 8 * 16 beats.
+	 */
+	public NoteLine(int maxNoteValue, int numBeats){
+		this.MAX_NOTE = maxNoteValue;
 		this.beats = new Note[numBeats];
 		for(int i = 0; i < numBeats; i++){
 			beats[i] = new Note(0);

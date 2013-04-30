@@ -39,7 +39,6 @@ public class PlayController extends GameElement {
 	 * @param jumpKey Must accord to the values found in Input.KEY_...
 	 */
 	public PlayController(NoteLineView nlv, int jumpKey){
-		System.out.println("Constructing PlayController...");
 		this.nlv = nlv;
 		this.nlp = nlv.getNoteLinePlayer();
 		this.nl = nlp.getNoteLine();
@@ -48,7 +47,6 @@ public class PlayController extends GameElement {
 		
 		runner = new Runner(); //TODO probably update constructor parameters
 		score =  new Score();  //TODO probably update constructor parameters
-		System.out.println("Constructed PlayController.");
 	}
 	
 	public void start(){
@@ -65,26 +63,17 @@ public class PlayController extends GameElement {
 		
 		assert noOfBeats > 0;
 		
-		expectedKeyDownTimes = new int[noOfBeats];
-		expectedKeyDownTimes[0] = START_TIME_OFFSET;
+		expectedKeyDownTimes = new int[noOfBeats]; //plus one to allow for an offset at index 0.
+		System.out.println("noOfBeats in playcontroller: " + noOfBeats);
+		expectedKeyDownTimes[0] = START_TIME_OFFSET + nlp.getNoteDurationAt(0);
 		int expectedKeyDownTimesIndex = 1;
-		for(int i = 0; i < noOfBeats; i++){
-			if( i == 0 ||  nlp.getNoteLine().getNote(i - 1).isDistinct()){
+		for(int i = 1; i < noOfBeats; i++){
+			if(nlp.getNoteLine().getNote(i - 1).isDistinct()){
 				expectedKeyDownTimes[expectedKeyDownTimesIndex] = nlp.getNoteDurationAt(i) + expectedKeyDownTimes[expectedKeyDownTimesIndex - 1];
 				expectedKeyDownTimesIndex++;
 			}
 			
 		}
-		
-		System.out.println("Perfect jump times:");
-		for(int i = 0; i < expectedKeyDownTimesIndex; i++){
-			System.out.print("index " + i + ": " + expectedKeyDownTimes[i]);
-			if(i > 0)
-				System.out.println(" (difference from last is " + (expectedKeyDownTimes[i] - expectedKeyDownTimes[i -1]) + ")");
-			else
-				System.out.println();
-		}
-		System.out.println("Initiated perfect jump times.");		
 	}
 
 	@Override
@@ -92,9 +81,7 @@ public class PlayController extends GameElement {
 
 		int timeToNearestPerfectJump = getTimeToNearestPerfectJump();
 		input = GameWorld.getGameContainer().getInput();
-		
-		System.out.println("timeToNearestPerfectJump: " + timeToNearestPerfectJump);
-		
+				
 		//Check whether 
 		//	1) we are close enough to a jump to care about user input and
 		//	2) if that is the case, whether the user inputs correct stuff
@@ -115,6 +102,11 @@ public class PlayController extends GameElement {
 			score.add(points, runner.getPosition());
 		}
 		
+		//FOR TESTING ONLY
+		if(input.isKeyDown(Input.KEY_T)){
+			start();
+		}
+		
 
 		//pass precision information to runner (for animation)
 		
@@ -130,7 +122,6 @@ public class PlayController extends GameElement {
 	}
 	
 	private int getTimeSinceStart(){
-		System.out.println("System.currentTimeMillis() - startTime" + System.currentTimeMillis() + " - " + startTime);
 		return (int)(System.currentTimeMillis() - startTime);
 	}
 	

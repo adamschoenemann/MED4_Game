@@ -26,4 +26,8 @@ public class Runner extends GameElement{
 		this.nextJumpIsGood = nextJumpIsGood;
 	}
 	
+	public void jump(){
+		
+	}
+	
 }
