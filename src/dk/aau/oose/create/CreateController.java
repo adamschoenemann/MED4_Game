@@ -1,7 +1,6 @@
 package dk.aau.oose.create;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
@@ -9,14 +8,16 @@ import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
 import dk.aau.oose.noteline.Note;
 import dk.aau.oose.noteline.NoteLine;
-import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.noteline.NoteLinePlayer;
+import dk.aau.oose.noteline.NoteLineView;
+import dk.aau.oose.play.PlayThread;
 
 public class CreateController extends GameElement {
 	
 	public NoteLine nl;
 	public NoteLineView nle;
 	public NoteLinePlayer nlp;
+	public PlayThread playThread;
 	
 	public CreateController(NoteLineView nle) {
 		// NoteLine
@@ -24,7 +25,13 @@ public class CreateController extends GameElement {
 		this.nlp = nle.getNoteLinePlayer();
 		this.nl = nlp.getNoteLine();
 		this.addChild(nle);
-				
+		nlp.progressCallback = new NoteLinePlayer.Callback() {
+			
+			@Override
+			public void call(int progress) {
+				System.out.println(progress);
+			}
+		};
 		
 	}
 	
@@ -49,13 +56,28 @@ public class CreateController extends GameElement {
 			}
 		}
 		if(input.isKeyPressed(Input.KEY_SPACE)){
-			nlp.play();
+			if(playThread == null){
+				playThread = new PlayThread(nlp);
+				playThread.start();
+			}
 		}
+		if(playThread != null) {
+			if(playThread.isAlive()) {
+				System.out.format("Index: %d, elapsedTime: %d\n", 
+						playThread.getIndex(), 
+						playThread.getElapsedTime());
+			} else {
+				playThread = null;
+			}
+		}
+		
 	}
 
 	@Override
 	public void onDraw(Graphics gfx) {
-		// TODO Auto-generated method stub
+		long ms = System.currentTimeMillis();
+		gfx.setColor(Color.green);
+		gfx.fillOval(100f, 100f, (float) Math.cos(ms) * 100, (float) Math.sin(ms) * 100);
 		
 	}
 

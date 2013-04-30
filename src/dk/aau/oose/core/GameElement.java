@@ -5,6 +5,8 @@ package dk.aau.oose.core;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.InputListener;
+import org.newdawn.slick.MouseListener;
 
 import dk.aau.oose.container.Container;
 import dk.aau.oose.display.IDrawable;
@@ -20,30 +22,38 @@ import dk.aau.oose.display.Transform;
  * @author Adam
  *
  */
-public abstract class GameElement extends Container<GameElement> implements IDrawable, ITransform {
+public class GameElement extends Container<GameElement> implements IDrawable, ITransform, InputListener {
 
+	
 	private final Transform transform = new Transform();
 	private final Vector2f dimensions = new Vector2f();
+	
+	public GameElement(){
+		Input input = GameWorld.getGameContainer().getInput();
+		input.addListener(this);
+	}
 	
 	/**
 	 * Called in the update loop
 	 */
-	public abstract void onUpdate();
+	public void onUpdate(){
+		
+	}
 	/**
 	 * Called in the draw loop. Override to to create visuals
 	 * REMEMBER! call setDimensions() with your graphical dimensions
-	 * in order to the rest of the functionality to work properly
+	 * in order for the rest of the functionality to work properly
 	 * @param gfx - a Graphics to use for drawing 
 	 */
-	public abstract void onDraw(Graphics gfx);
+	public void onDraw(Graphics gfx){
+		
+	}
 	
 	/**
 	 * Update the element and all its children
 	 */
 	public final void update(){
-		this.onUpdate();
-		Input input = GameWorld.getGameContainer().getInput();
-		// TODO: Do something with mousePressed
+		this.onUpdate();		
 		for(int i = 0; i < numChildren(); i++){
 			getChildAt(i).update();
 		}
@@ -223,6 +233,128 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 	
 	public Transform getTransform(){
 		return transform;
+	}
+	
+	@Override
+	public void mouseClicked(int btn, int x, int y, int clickCount) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mousePressed(int btn, int x, int y) {
+		
+		
+	}
+	@Override
+	public void mouseReleased(int btn, int x, int y) {
+		
+		
+	}
+	@Override
+	public void mouseWheelMoved(int change) {
+		
+		
+	}
+	
+	@Override
+	public void inputEnded() {
+		
+		
+	}
+	@Override
+	public void inputStarted() {
+		
+		
+	}
+	@Override
+	public boolean isAcceptingInput() {
+		return true;
+	}
+	@Override
+	public void setInput(Input input) {
+
+	}
+
+	@Override
+	public void keyPressed(int arg0, char arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(int arg0, char arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void controllerButtonPressed(int arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void controllerButtonReleased(int arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void controllerDownPressed(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void controllerDownReleased(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void controllerLeftPressed(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void controllerLeftReleased(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void controllerRightPressed(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void controllerRightReleased(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void controllerUpPressed(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void controllerUpReleased(int arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

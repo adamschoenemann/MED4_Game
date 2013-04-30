@@ -1,5 +1,6 @@
 package dk.aau.oose;
 
+import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -47,22 +48,23 @@ public class GameController extends GameElement {
 		this.addChild(createCtrl);
 		//this.addChild(playCtrl);
 		GameElement switchButton = new AButton("Switch Modes!", 200, 40){
-
+			
 			@Override
-			public void onUpdate() {
-				Input input = GameWorld.getGameContainer().getInput();
-				if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
-					int mx = input.getMouseX(), my = input.getMouseY();
-					System.out.format("Mouse: (%d, %d)", mx, my);
-					if(this.hitTestPoint(this.globalToLocal(mx, my))){
+			public void mousePressed(int btn, int x, int y){
+				//System.out.format("Mouse: (%d, %d)\n", x, y);
+				if(btn == Input.MOUSE_LEFT_BUTTON){
+//					Vector2f localPos = this.globalToLocal(x, y);
+//					System.out.format("Local: (%f, %f)\n", localPos.x, localPos.y);
+					if(this.hitTestPoint(x, y)){
 						System.out.println("clicked!");
 					}
 				}
-				
 			}
 			
 		};
+		GameWorld.getGameContainer().getInput().addListener(switchButton);
 		this.addChild(switchButton);
+		switchButton.setPosition(100, 0);
 	}
 
 	@Override
