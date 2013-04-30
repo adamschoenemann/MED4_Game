@@ -24,6 +24,10 @@ public class PlayThread extends Thread {
 		return System.currentTimeMillis() - startTime;
 	}
 	
+	public long getTotalTime(){
+		return nl.getNumBeats() * nlp.getBeatDuration();
+	}
+	
 	public int getIndex(){
 		return index;
 	}

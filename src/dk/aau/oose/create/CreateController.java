@@ -25,13 +25,7 @@ public class CreateController extends GameElement {
 		this.nlp = nle.getNoteLinePlayer();
 		this.nl = nlp.getNoteLine();
 		this.addChild(nle);
-		nlp.progressCallback = new NoteLinePlayer.Callback() {
-			
-			@Override
-			public void call(int progress) {
-				System.out.println(progress);
-			}
-		};
+
 		
 	}
 	

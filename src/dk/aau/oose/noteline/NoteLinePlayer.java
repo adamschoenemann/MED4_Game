@@ -11,11 +11,8 @@ public class NoteLinePlayer {
 	private final int startOctave;
 	private final int notesPerOctave;
 	private final int beatDuration;
-	private boolean nextNoteIsPure;
-	public static interface Callback {
-		public void call(int progress);
-	}
-	public Callback progressCallback;
+	private boolean nextNoteIsPure = true;
+
 	
 
 	/**
@@ -32,27 +29,18 @@ public class NoteLinePlayer {
 		this.beatDuration = 1000 * 60 / tempo;
 	}
 	
-	public Thread play(){
+	public void play(){
 		
-		Thread thread = new Thread(new Runnable(){
-
-			@Override
-			public void run() {
-				int noteDuration = 1;
-				for(int i = 0; i < nl.getNumBeats(); i += noteDuration){
-					//progressCallback.call(i * beatDuration);
-					noteDuration = playNoteAt(i);
-					try {
-						Thread.sleep(noteDuration * beatDuration);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				Thread.currentThread().interrupt();
+		int noteDuration = 1;
+		for(int i = 0; i < nl.getNumBeats(); i += noteDuration){
+			//progressCallback.call(i * beatDuration);
+			noteDuration = playNoteAt(i);
+			try {
+				Thread.sleep(noteDuration * beatDuration);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-		});
-		thread.start();
-		return thread;
+		}
 	}
 	
 	/**
@@ -109,7 +97,7 @@ public class NoteLinePlayer {
 		//boolean purity = true;
 		//msg.add(purity);
 		msg.add(nextNoteIsPure);
-		nextNoteIsPure = false;
+		nextNoteIsPure = true;
 		
 		System.out.format("Note: %d, %d, %d, %b\n", value, octave, duration, nextNoteIsPure); //purity
 		MaxMSP.send(msg);
@@ -128,24 +116,24 @@ public class NoteLinePlayer {
 		this.nextNoteIsPure = nextNoteIsPure;
 	}
 	
-//	
-//	public static void main(String[] args) throws InterruptedException{
-//		MaxMSP.Connect("127.0.0.1", 7400);
-//		
-//		
-//		NoteLine nl = NoteLine.newTestInstance(5, 16);
-//		System.out.println(nl);
-//		NoteLinePlayer nlp = new NoteLinePlayer(nl, 1, 5, 180);
-//		
-//		for(int i = 0; i <= 30; i++){
-//			System.out.print(i + ": ");
-//			nlp.playNote(i, nlp.getBeatDuration());
-//			Thread.sleep(200);
-//		}
-//		
-//		//nlp.play();
-//		
-//	}
+	
+	public static void main(String[] args) throws InterruptedException{
+		MaxMSP.Connect("127.0.0.1", 7400);
+		
+		
+		NoteLine nl = NoteLine.newTestInstance(5, 16);
+		System.out.println(nl);
+		NoteLinePlayer nlp = new NoteLinePlayer(nl, 1, 5, 180);
+		
+		for(int i = 0; i <= 30; i++){
+			System.out.print(i + ": ");
+			nlp.playNote(i, nlp.getBeatDuration());
+			Thread.sleep(200);
+		}
+		
+		//nlp.play();
+		
+	}
 	
 
 	

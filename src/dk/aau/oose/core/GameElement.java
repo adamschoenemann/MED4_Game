@@ -33,9 +33,13 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 		GameElement.gc = gc;
 	}
 	
+	public static GameContainer getGameContainer(){
+		return gc;
+	}
+	
 	public GameElement(){
-//		Input input = GameElement.gc.getInput();
-//		input.addListener(this);
+		Input input = GameElement.gc.getInput();
+		input.addListener(this);
 	}
 	
 	/**
@@ -291,7 +295,7 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	}
 
 	@Override
-	public void keyPressed(int arg0, char arg1) {
+	public void keyPressed(int key, char c) {
 		// TODO Auto-generated method stub
 		
 	}
