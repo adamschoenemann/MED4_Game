@@ -9,20 +9,34 @@ import dk.aau.oose.container.Container;
 import dk.aau.oose.display.IDrawable;
 import dk.aau.oose.display.ITransform;
 import dk.aau.oose.display.Transform;
-import dk.aau.oose.util.MathUtils;
 
 /**
- * Basic game content element
- * @author Paolo Burelli
+ * Base class for all elements in the game
+ * Extends Container and implements IDrawable and ITransform
+ * Other GameElements can be added as children
+ * Override {@link #onUpdate()} and {@link #onDraw(Graphics)} to provide functionality
+ * and graphics 
+ * @author Adam
+ *
  */
 public abstract class GameElement extends Container<GameElement> implements IDrawable, ITransform {
 
 	private final Transform transform = new Transform();
 	private final Vector2f dimensions = new Vector2f();
 	
+	/**
+	 * Called in the update loop
+	 */
 	public abstract void onUpdate();
+	/**
+	 * Called in the draw loop
+	 * @param gfx - a Graphics to use for drawing 
+	 */
 	public abstract void onDraw(Graphics gfx);
 	
+	/**
+	 * Update the element and all its children
+	 */
 	public final void update(){
 		this.onUpdate();
 		for(int i = 0; i < numChildren(); i++){
@@ -30,6 +44,9 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 		}
 	}
 	
+	/**
+	 * Draw the element and all its children
+	 */
 	public final void draw(){
 		Graphics gfx = GameWorld.getGameContainer().getGraphics();
 		gfx.pushTransform();
@@ -40,10 +57,6 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 			getChildAt(i).draw();
 		}
 		gfx.popTransform();
-
-//		Vector2f globalPos = localToGlobal(new Vector2f(100, 0));
-//		gfx.setColor(Color.green);
-//		gfx.drawRect(globalPos.x, globalPos.y, 1f, 1f);
 	}
 
 	
@@ -112,7 +125,7 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 		input.y -= getPosition().y * getScale().y;
 
 		// Subtract rotation
-		double rads = MathUtils.degToRad(getRotation());
+		double rads = Math.toRadians(getRotation());
 		float newX = (float) (input.x * Math.cos(rads) + input.y * Math.sin(rads));
 		float newY = (float) (-input.x * Math.sin(rads) + input.y * Math.cos(rads)) ;
 		input.x = newX;
@@ -126,7 +139,7 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 	public Vector2f localToGlobal(Vector2f input){
 		
 		// Subtract rotation
-		double rads = MathUtils.degToRad(getRotation());
+		double rads = Math.toRadians(getRotation());
 		float newX = (float) (input.x * Math.cos(rads) - input.y * Math.sin(rads));
 		float newY = (float) (input.x * Math.sin(rads) + input.y * Math.cos(rads)) ;
 		input.x = newX;

@@ -2,14 +2,7 @@ package dk.aau.oose.util;
 
 public class MathUtils {
 	
-	public static double degToRad(double deg){
-		return (deg / 180.0) * Math.PI;
-	}
-	
-	public static double radToDeg(double rad){
-		return rad / Math.PI * 180;
-	}
-	
+
 	//Used to test getValueOnLine
 	/*public static void main(String[] args){
 		System.out.println(getValueOnLine( 1, 0, 0, 2, 2)); // Should be 1
