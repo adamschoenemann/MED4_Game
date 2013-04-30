@@ -43,9 +43,9 @@ public class GameController extends GameElement {
 
 		System.out.println(nl);
 		createCtrl = new CreateController(nlv);
-		playCtrl = new PlayController(nlv, Input.KEY_J); // TODO possibly change default key from 'j' to something else
+		//playCtrl = new PlayController(nlv, Input.KEY_J); // TODO possibly change default key from 'j' to something else
 		this.addChild(createCtrl);
-		this.addChild(playCtrl);
+		//this.addChild(playCtrl);
 		GameElement switchButton = new AButton("Switch Modes!", 200, 40){
 
 			@Override
@@ -53,12 +53,16 @@ public class GameController extends GameElement {
 				Input input = GameWorld.getGameContainer().getInput();
 				if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
 					int mx = input.getMouseX(), my = input.getMouseY();
-					
+					System.out.format("Mouse: (%d, %d)", mx, my);
+					if(this.hitTestPoint(this.globalToLocal(mx, my))){
+						System.out.println("clicked!");
+					}
 				}
 				
 			}
 			
 		};
+		this.addChild(switchButton);
 	}
 
 	@Override

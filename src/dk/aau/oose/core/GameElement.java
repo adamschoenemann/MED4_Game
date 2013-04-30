@@ -4,6 +4,7 @@ package dk.aau.oose.core;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 import dk.aau.oose.container.Container;
 import dk.aau.oose.display.IDrawable;
@@ -29,7 +30,9 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 	 */
 	public abstract void onUpdate();
 	/**
-	 * Called in the draw loop
+	 * Called in the draw loop. Override to to create visuals
+	 * REMEMBER! call setDimensions() with your graphical dimensions
+	 * in order to the rest of the functionality to work properly
 	 * @param gfx - a Graphics to use for drawing 
 	 */
 	public abstract void onDraw(Graphics gfx);
@@ -39,6 +42,8 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 	 */
 	public final void update(){
 		this.onUpdate();
+		Input input = GameWorld.getGameContainer().getInput();
+		// TODO: Do something with mousePressed
 		for(int i = 0; i < numChildren(); i++){
 			getChildAt(i).update();
 		}
@@ -113,8 +118,13 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 		dimensions.y = y;
 	}
 	
+	/**
+	 * Converts an input global coordinate into local coordinate space
+	 * @param input - a global coordinate vector
+	 * @return a vector containing the local coordinates of input
+	 */
 	public Vector2f globalToLocal(Vector2f input){
-		
+		// TODO: Test rigorously! Especially the scale part probably doesn't work
 		GameElement parent = (GameElement) getParent();
 		if(parent != null){
 			input = parent.globalToLocal(input);
@@ -136,7 +146,23 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 		return input;
 	}
 	
+	/**
+	 * See {@link #globalToLocal(Vector2f)}
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public Vector2f globalToLocal(float x, float y){
+		return globalToLocal(new Vector2f(x, y));
+	}
+	
+	/**
+	 * Converts a local coordinate into global coordinate space
+	 * @param input - a local coordinate
+	 * @return the global coordinates of input
+	 */
 	public Vector2f localToGlobal(Vector2f input){
+		// TODO: Test rigorously! Especially the scale part probably doesn't work
 		
 		// Subtract rotation
 		double rads = Math.toRadians(getRotation());
@@ -154,6 +180,45 @@ public abstract class GameElement extends Container<GameElement> implements IDra
 			input = parent.localToGlobal(input);
 		}
 		return input;
+	}
+	
+	/**
+	 * See {@link #localToGlobal(Vector2f)}
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public Vector2f localToGlobal(float x, float y){
+		return localToGlobal(new Vector2f(x, y));
+	}
+	
+	/**
+	 * See {{@link #hitTestPoint(float, float)}
+	 * @param vec
+	 * @return
+	 */
+	public boolean hitTestPoint(Vector2f vec){
+		return hitTestPoint(vec.x, vec.y);
+	}
+	
+	/**
+	 * Test whether a point is within the bounding box of this object
+	 * Remember to convert global coordinates to local coordinates first
+	 * using {@link #globalToLocal(Vector2f)}
+	 * @param x
+	 * @param y
+	 * @return true if the point is within the bounding box, else false
+	 */
+	public boolean hitTestPoint(float x, float y){
+		Vector2f pos = getPosition();
+		Vector2f dim = getDimensions();
+		Vector2f scale = getScale();
+		if(x >= pos.x && x <= (pos.x + dim.x * scale.x)
+				&& y >= pos.y && y < (pos.y + dim.y * scale.y)){
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public Transform getTransform(){
