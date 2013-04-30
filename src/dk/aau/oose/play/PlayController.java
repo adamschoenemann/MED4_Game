@@ -45,7 +45,8 @@ public class PlayController extends GameElement {
 		this.jumpKey = jumpKey;
 		initiatePerfectJumpTimes();
 		
-		runner = new Runner(); //TODO probably update constructor parameters
+		runner = new Runner(nlv);
+		this.addChild(runner);
 		score =  new Score();  //TODO probably update constructor parameters
 	}
 	
@@ -58,13 +59,11 @@ public class PlayController extends GameElement {
 	 * This method initiates the array perfectJumpTimes so that, beginning from time = 0 ms, it contains the relative time in millis that the user should hit for a perfect score.
 	 */
 	private void initiatePerfectJumpTimes(){
-		System.out.println("Initiating perfect jump times...");
 		int noOfBeats = nl.getNumBeats();
 		
 		assert noOfBeats > 0;
 		
 		expectedKeyDownTimes = new int[noOfBeats]; //plus one to allow for an offset at index 0.
-		System.out.println("noOfBeats in playcontroller: " + noOfBeats);
 		expectedKeyDownTimes[0] = START_TIME_OFFSET + nlp.getNoteDurationAt(0);
 		int expectedKeyDownTimesIndex = 1;
 		for(int i = 1; i < noOfBeats; i++){
@@ -102,9 +101,12 @@ public class PlayController extends GameElement {
 			score.add(points, runner.getPosition());
 		}
 		
+		
+		
 		//FOR TESTING ONLY
 		if(input.isKeyDown(Input.KEY_T)){
-			start();
+			//start();
+			runner.moveOneStep();
 		}
 		
 

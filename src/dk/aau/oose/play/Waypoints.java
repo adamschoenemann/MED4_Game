@@ -4,31 +4,39 @@ import org.lwjgl.util.vector.Vector2f;
 import org.objectweb.asm.tree.IntInsnNode;
 
 import dk.aau.oose.noteline.NoteLine;
+import dk.aau.oose.noteline.NoteLinePlayer;
+import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.util.MathUtils;
+
+
+// TODO Make interpolations into curves rather than straight lines.
 
 public class Waypoints {
 	
-	private NoteLine notes;
+	private NoteLineView noteLineView;
 	private int numberOfStepsPerNote;
 	private int currentNoteIndex = -1;
 	private float steps[];
 	private int currentStep = 0;
 	
 	
-	public Waypoints(NoteLine notes, int numberOfStepsPerNote){
+	public Waypoints(NoteLineView noteLineView, int numberOfStepsPerNote){
+		this.noteLineView = noteLineView;
 		this.numberOfStepsPerNote = numberOfStepsPerNote;
-		initiateSteps(notes); 
+		initiateSteps(noteLineView.getNoteLinePlayer().getNoteLine()); 
 	}
 	
 	public static void main(String[] args){
 		System.out.println("Testing Waypoints...");
 		NoteLine notes = new NoteLine(10, 20);
+		NoteLinePlayer nlp = new NoteLinePlayer(notes, 0, 5, 100);
+		NoteLineView nlv = new NoteLineView(nlp, 1000, 400);
 		for(int i = 0; i < notes.getNumBeats(); i++){
 			int value = i%11;
 			notes.setNoteValue( value, i);
 			System.out.println("note index " + i + " is set to " + value);
 		}
-		Waypoints wp = new Waypoints(notes, 5);
+		Waypoints wp = new Waypoints(nlv, 5);
 		wp.print();
 	}
 	
@@ -83,18 +91,31 @@ public class Waypoints {
 	}
 	
 	/**
-	 * @return The next waypoint step. The unit is Note heights.
+	 * @return The next waypoint step. The unit is Note heights. If there are no more steps, it returns -1.
 	 */
 	public float getNextStep(){
-		
-		return steps[currentStep++];
+		if(currentStep < steps.length)
+			return steps[currentStep++];
+		else
+			return -1.0f;
+	}
+	
+	public float getNextYCoordinateRelativeToNoteLineView(){
+		float nextStep = getNextStep();
+		return getYValueInNoteLineView(nextStep);
+	}
+	
+	private float getYValueInNoteLineView(float stepValue){
+		float cellHeight = noteLineView.getCellDimensions().y; 
+		float viewHeight = noteLineView.getDimensions().y;
+		return (viewHeight - stepValue * cellHeight);
 	}
 	
 	
 	public void print(){
 		System.out.println("Waypoint:");
 		for(int i = 0; i < steps.length; i++){
-			System.out.println("Index " + i + ": " + steps[i]);
+			System.out.println("Index " + i + ": " + steps[i] + " y-value: " + getYValueInNoteLineView(steps[i]));
 		}
 	}
 	

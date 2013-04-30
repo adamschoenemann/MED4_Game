@@ -19,7 +19,11 @@ public class NoteLineView extends GameElement {
 	private Color color = Color.white;
 	private final Grid grid;
 	
-	
+	/**
+	 * @param nlp
+	 * @param width The total width of this view, in pixels.
+	 * @param height The total height of this view, in pixels.
+	 */
 	public NoteLineView(NoteLinePlayer nlp, float width, float height){
 		this.nlp = nlp;
 		this.nl = nlp.getNoteLine();
@@ -78,6 +82,10 @@ public class NoteLineView extends GameElement {
 	
 	public void setColor(Color col){
 		this.color = col;
+	}
+
+	public Vector2f getCellDimensions() {
+		return new Vector2f(cellDim);
 	}
 
 }

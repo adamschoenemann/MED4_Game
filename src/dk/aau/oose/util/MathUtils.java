@@ -1,5 +1,7 @@
 package dk.aau.oose.util;
 
+import org.lwjgl.util.vector.Vector2f;
+
 public class MathUtils {
 	
 
@@ -47,6 +49,20 @@ public class MathUtils {
 */
 		return Math.round((float)y1 + (((float)(x - x1) / (float)(x2 - x1)) * (float)(y2 - y1)));
 		
+	}
+	
+	/**
+	 * @param a The starting point of the curve
+	 * @param b The ending point of the curve
+	 * @param w The weigth point of the curve
+	 * @param p A value between 0 and 1, where 0 is at the beginning of the curve and 1 is at the end.
+	 * @return The requested point on the curve
+	 */
+	public static Vector2f getPointOnBezierCurve(Vector2f a, Vector2f b, Vector2f w, float p){
+		float x = p*p*(a.x + b.x - 2*w.x) + p*(2*w.x - 2*a.x) + a.x;
+		float y = p*p*(a.y + b.y - 2*w.y) + p*(2*w.y - 2*a.y) + a.y;
+		
+		return new Vector2f(x, y);		
 	}
 	
 }

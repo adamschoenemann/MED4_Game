@@ -44,7 +44,9 @@ public class GameController extends GameElement {
 
 		System.out.println(nl);
 		createCtrl = new CreateController(nlv);
-		//playCtrl = new PlayController(nlv, Input.KEY_J); // TODO possibly change default key from 'j' to something else
+
+		playCtrl = new PlayController(nlv, Input.KEY_J); // TODO change default key from 'j' to something else, allowing for two players.
+
 		this.addChild(createCtrl);
 		//this.addChild(playCtrl);
 		GameElement switchButton = new AButton("Switch Modes!", 200, 40){
