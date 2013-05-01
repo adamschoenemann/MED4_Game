@@ -20,13 +20,14 @@ public class Runner extends GameElement{
 	public Runner(NoteLineView notes){
 		
 		try {
-			sprite = new Image("assets/runner/02.png");
+			//TODO use proper animation
+			sprite = new Image("assets/ship.png"); // new Image("assets/runner/02.png"); //
 		} catch (SlickException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 		drawingOffset = new Vector2f( - sprite.getWidth() / 2, - sprite.getHeight());
-		waypoint = new Waypoints(notes, 5);
+		waypoint = new Waypoints(notes, 8); //Fixed resolution at 8 steps per beat
 		this.setPosition( new Vector2f(notes.getDimensions().x * 0.5f, notes.getDimensions().y)); //Set in centre of track, at the bottom line.
 		
 	}
@@ -52,9 +53,15 @@ public class Runner extends GameElement{
 	
 	/**
 	 * Moves the runner to its next position.
-	 */
-	public void moveOneStep(){
-		this.setPosition(new Vector2f(this.getPosition().x, waypoint.getNextStepRelativeToNoteLineView().y));
+	 */	
+	public void move(double trackProgress){
+		Vector2f newPos = waypoint.getNextStepRelativeToNoteLineView(trackProgress);
+		setPosition(getPosition().x, newPos.y);
+	}
+	
+	public void testMove(double trackProgress){
+		Vector2f newPos = waypoint.getNextStepRelativeToNoteLineView(trackProgress);
+		setPosition(newPos);
 	}
 	
 }

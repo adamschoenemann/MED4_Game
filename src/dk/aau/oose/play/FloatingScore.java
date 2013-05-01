@@ -11,7 +11,9 @@ import dk.aau.oose.util.Vec;
 public class FloatingScore extends GameElement {
 	
 	private int value;
-	private int moveSpeed = 1;
+	private float moveSpeed = 1.0f;
+	private int progress;
+	private static final int maxProgress = 50;
 
 	public FloatingScore(Vector2f position, int value){
 		setPosition(position);
@@ -24,7 +26,12 @@ public class FloatingScore extends GameElement {
 		
 		//move up:
 		this.setPosition(Vec.add(this.getPosition(), new Vector2f(0, -moveSpeed)));
-		moveSpeed *= 2;
+		moveSpeed *= 1.2f;
+		progress += 1;
+		if(progress >= maxProgress){
+			
+		}
+			
 	}
 
 	@Override

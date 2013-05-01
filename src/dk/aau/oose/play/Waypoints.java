@@ -1,28 +1,32 @@
 package dk.aau.oose.play;
 
 import org.lwjgl.util.vector.Vector2f;
-import org.objectweb.asm.tree.IntInsnNode;
 
 import dk.aau.oose.noteline.NoteLine;
-import dk.aau.oose.noteline.NoteLinePlayer;
 import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.util.MathUtils;
 
 
-// TODO Make interpolations into curves rather than straight lines.
-
+/**
+ * 
+ * @author Thorbjorn
+ *	Provides a nice path for the Runner. 
+ *
+ */
 public class Waypoints {
 	
 	private NoteLineView noteLineView;
 	private int numberOfStepsPerNote;
 	private float steps[];
-	private int currentStep = 0;
+	private float horizontalOffset;
+	//private int currentStep = 0;
 	
 	
 	public Waypoints(NoteLineView noteLineView, int numberOfStepsPerNote){
 		this.noteLineView = noteLineView;
 		this.numberOfStepsPerNote = numberOfStepsPerNote;
 		initiateSteps(noteLineView.getNoteLinePlayer().getNoteLine()); 
+		horizontalOffset = noteLineView.getCellDimensions().x / 2.0f;
 	}
 	
 	
@@ -66,7 +70,11 @@ public class Waypoints {
 		
 		Vector2f a = new Vector2f((float)fromIndex, (float)fromValue);
 		Vector2f b = new Vector2f((float)toIndex, (float)toValue);
-		Vector2f weight = new Vector2f( b.x - a.x, 2.0f*Math.abs(b.y - a.y) + Math.min(a.y, b.y));
+		Vector2f weight = new Vector2f( b.x - a.x,     2.0f*Math.abs(b.y - a.y) + Math.min(a.y, b.y));
+		
+		if(a.y == b.y){
+			weight.y = a.y + 0.75f;
+		}
 		
 		for(int i = fromIndex; i <= toIndex; i++){				
 			steps[i] = (float) MathUtils.getPointOnBezierCurve(a, b, weight, progress).y;// getValueOnLine(progress, 0.0, (double)fromValue, 1.0, (double)toValue);
@@ -74,17 +82,35 @@ public class Waypoints {
 		}
 	}
 	
+	
+	/**
+	 * @param progress [0;1[
+	 * @return the waypoint that is progress down the route.
+	 */
+	public Vector2f getNextStepRelativeToNoteLineView(double progress){
+		int index = (int)Math.round(steps.length * progress);
+		if(index >= steps.length)
+			index = steps.length - 1;
+		else if(index < 0)
+			index = 0;
+		return stepToNoteLineView(index);
+	}
+	
+	/*
 	public Vector2f getNextStepRelativeToNoteLineView(){
-		
-		Vector2f next = toNoteLineView(currentStep, steps[currentStep]);
+		Vector2f next = stepToNoteLineView(currentStep);
 		if(currentStep + 1 < steps.length)
 			currentStep++;
 		return next;
-	}
+	}*/
 	
-	public Vector2f toNoteLineView(int step, float value){
-		float x = ((float)step/numberOfStepsPerNote) * noteLineView.getCellDimensions().x;
-		float y = noteLineView.getDimensions().y - value * noteLineView.getCellDimensions().y;
+	/**
+	 * @param step A step index.
+	 * @return The vector from this instance's noteLineView's origin to the position of the step & step value. 
+	 */
+	public Vector2f stepToNoteLineView(int step){
+		float x = ((float)step/numberOfStepsPerNote) * noteLineView.getCellDimensions().x + horizontalOffset;
+		float y = noteLineView.getDimensions().y - steps[step] * noteLineView.getCellDimensions().y;
 		
 		return new Vector2f(x, y);
 	}

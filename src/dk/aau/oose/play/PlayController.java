@@ -103,11 +103,6 @@ public class PlayController extends GameElement {
 		
 		
 		
-		//FOR TESTING ONLY
-		if(input.isKeyDown(Input.KEY_T)){
-			//start();
-			runner.moveOneStep();
-		}
 		
 
 		//pass precision information to runner (for animation)

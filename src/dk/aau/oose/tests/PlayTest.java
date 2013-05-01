@@ -15,6 +15,7 @@ import dk.aau.oose.noteline.NoteLinePlayer;
 import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.osc.MaxMSP;
 import dk.aau.oose.play.PlayThread;
+import dk.aau.oose.play.Runner;
 
 public class PlayTest extends BasicGame {
 	
@@ -28,6 +29,8 @@ public class PlayTest extends BasicGame {
 	public GameElement runnerEle;
 	public static final int DIFF_THRESH = 160;
 	
+	private Runner runner;
+	
 	public PlayTest() {
 		super("PlayTest");
 		
@@ -39,6 +42,7 @@ public class PlayTest extends BasicGame {
 		testEle.draw();
 		distanceEle.draw();
 		runnerEle.draw();
+		runner.draw();
 	}
 
 	@Override
@@ -51,6 +55,8 @@ public class PlayTest extends BasicGame {
 				gc.getWidth(), 
 				gc.getHeight());
 
+		runner = new Runner(nlv);
+		
 		testEle = new GameElement(){
 						
 			@Override
@@ -82,7 +88,6 @@ public class PlayTest extends BasicGame {
 			}
 			
 		};
-				//gc.getHeight());		
 	}
 
 	@Override
@@ -105,6 +110,8 @@ public class PlayTest extends BasicGame {
 				Note note = nl.getNote(playThread.getIndex());
 				runnerEle.setPosition((float) elapsed / totalTime * gc.getWidth(),
 						gc.getHeight() - (note.getValue() * nlv.getCellDimensions().y));
+				
+				runner.testMove((double)elapsed/totalTime);
 				
 			}
 			else if(!playThread.isAlive()){

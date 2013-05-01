@@ -10,29 +10,34 @@ public class Score extends GameElement{
 	private int score = 0;
 	
 	public void add(int score, Vector2f position){
-		System.out.println("Add to score: " + score + " totaling " + this.score);
+		
 		if(score <= 0) 
 			return;
 		this.score += score;
 		displayFloatingScore(score, position);
+		
+		System.out.println("Add to score: " + score + " totaling " + this.score);
 	}
 		
 	private void displayFloatingScore(int value, Vector2f position){
 		// TODO fill
-		System.out.println("Floating score: " + value + " at " + position);
+		//System.out.println("Floating score: " + value + " at " + position);
+		addChild(new FloatingScore(position, value));
 	}
 
 	@Override
 	public void onUpdate() {
 		// TODO Auto-generated method stub
 		
+		
+		
 	}
 
 	@Override
-	public void onDraw(Graphics gfx) {
+	public void onDraw(Graphics g) {
 		// TODO Temporary solution
-		gfx.setColor(Color.pink); //Temp color choice
-		gfx.drawString(Integer.toString(score), getPosition().x, getPosition().y);		
+		g.setColor(Color.blue); //Temp color choice
+		g.drawString(Integer.toString(score), 0, 0);
 	}
 	
 	
