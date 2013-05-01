@@ -367,4 +367,9 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	}
 	
 	
+	public void destroy(){
+		((GameElement) this.getParent()).removeChild((GameElement) this);
+	}
+	
+	
 }

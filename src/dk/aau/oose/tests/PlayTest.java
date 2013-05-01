@@ -16,6 +16,7 @@ import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.osc.MaxMSP;
 import dk.aau.oose.play.PlayThread;
 import dk.aau.oose.play.Runner;
+import dk.aau.oose.play.Score;
 
 public class PlayTest extends BasicGame {
 	
@@ -30,6 +31,7 @@ public class PlayTest extends BasicGame {
 	public static final int DIFF_THRESH = 160;
 	
 	private Runner runner;
+	private Score score;
 	
 	public PlayTest() {
 		super("PlayTest");
@@ -56,6 +58,7 @@ public class PlayTest extends BasicGame {
 				gc.getHeight());
 
 		runner = new Runner(nlv);
+		score = new Score(runner);
 		
 		testEle = new GameElement(){
 						
@@ -92,6 +95,9 @@ public class PlayTest extends BasicGame {
 
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
+		
+		nlv.update();
+		
 		if(playThread != null){
 			if(playThread.isAlive() && !playThread.isInterrupted()){
 				int index = playThread.getIndex();
@@ -112,6 +118,7 @@ public class PlayTest extends BasicGame {
 						gc.getHeight() - (note.getValue() * nlv.getCellDimensions().y));
 				
 				runner.testMove((double)elapsed/totalTime);
+				score.add(50);
 				
 			}
 			else if(!playThread.isAlive()){

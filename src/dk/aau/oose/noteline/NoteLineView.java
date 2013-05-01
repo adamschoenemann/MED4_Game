@@ -88,5 +88,13 @@ public class NoteLineView extends GameElement {
 	public Vector2f getCellDimensions() {
 		return new Vector2f(cellDim);
 	}
+	
+	public static NoteLineView newTestInstance(int steps, int numBeats, int startOctave, int notesPerOctave, int tempo, float width, float height){
+		NoteLine nl = NoteLine.newTestInstance(steps, numBeats);
+		NoteLinePlayer nlp = new NoteLinePlayer(nl, startOctave, notesPerOctave, tempo);
+		NoteLineView nlv = new NoteLineView(nlp, width, height);
+		
+		return nlv;
+	}
 
 }

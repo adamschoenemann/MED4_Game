@@ -16,9 +16,10 @@ public class Runner extends GameElement{
 	private Waypoints waypoint;
 	private boolean nextJumpIsGood;
 	private Vector2f drawingOffset;
+	private NoteLineView noteLineView;
 
 	public Runner(NoteLineView notes){
-		
+		noteLineView = notes;
 		try {
 			//TODO use proper animation
 			sprite = new Image("assets/ship.png"); // new Image("assets/runner/02.png"); //
@@ -26,9 +27,12 @@ public class Runner extends GameElement{
 			e.printStackTrace();
 			System.exit(1);
 		}
+		
+		setDimensions(sprite.getWidth(), sprite.getHeight());
+		
 		drawingOffset = new Vector2f( - sprite.getWidth() / 2, - sprite.getHeight());
-		waypoint = new Waypoints(notes, 8); //Fixed resolution at 8 steps per beat
-		this.setPosition( new Vector2f(notes.getDimensions().x * 0.5f, notes.getDimensions().y)); //Set in centre of track, at the bottom line.
+		waypoint = new Waypoints(noteLineView, 8); //Fixed resolution at 8 steps per beat
+		this.setPosition( new Vector2f(noteLineView.getDimensions().x * 0.5f, noteLineView.getDimensions().y)); //Set in centre of track, at the bottom line.
 		
 	}
 	
@@ -62,6 +66,10 @@ public class Runner extends GameElement{
 	public void testMove(double trackProgress){
 		Vector2f newPos = waypoint.getNextStepRelativeToNoteLineView(trackProgress);
 		setPosition(newPos);
+	}
+	
+	public NoteLineView getNoteLineView(){
+		return noteLineView;
 	}
 	
 }

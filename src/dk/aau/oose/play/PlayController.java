@@ -47,7 +47,7 @@ public class PlayController extends GameElement {
 		
 		runner = new Runner(nlv);
 		this.addChild(runner);
-		score =  new Score();  //TODO probably update constructor parameters
+		score =  new Score(runner); 
 	}
 	
 	public void start(){
@@ -98,7 +98,7 @@ public class PlayController extends GameElement {
 				points = 0;
 			else if(points > 100)
 				points = 100;
-			score.add(points, runner.getPosition());
+			score.add(points);
 		}
 		
 		
