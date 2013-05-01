@@ -54,7 +54,7 @@ public class Runner extends GameElement{
 	 * Moves the runner to its next position.
 	 */
 	public void moveOneStep(){
-		this.setPosition(new Vector2f(this.getPosition().x, waypoint.getNextYCoordinateRelativeToNoteLineView()));
+		this.setPosition(new Vector2f(this.getPosition().x, waypoint.getNextStepRelativeToNoteLineView().y));
 	}
 	
 }

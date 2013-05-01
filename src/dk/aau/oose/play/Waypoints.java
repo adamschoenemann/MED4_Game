@@ -15,7 +15,6 @@ public class Waypoints {
 	
 	private NoteLineView noteLineView;
 	private int numberOfStepsPerNote;
-	private int currentNoteIndex = -1;
 	private float steps[];
 	private int currentStep = 0;
 	
@@ -26,22 +25,7 @@ public class Waypoints {
 		initiateSteps(noteLineView.getNoteLinePlayer().getNoteLine()); 
 	}
 	
-	public static void main(String[] args){
-		System.out.println("Testing Waypoints...");
-		NoteLine notes = new NoteLine(10, 20);
-		NoteLinePlayer nlp = new NoteLinePlayer(notes, 0, 5, 100);
-		NoteLineView nlv = new NoteLineView(nlp, 1000, 400);
-		for(int i = 0; i < notes.getNumBeats(); i++){
-			int value = i%11;
-			notes.setNoteValue( value, i);
-			System.out.println("note index " + i + " is set to " + value);
-		}
-		Waypoints wp = new Waypoints(nlv, 5);
-		wp.print();
-	}
 	
-	
-	//For now, make the waypoints straight lines from position to position. Each height is given in units of note heights, i.e. 1 is equal to the height of 1 blue box.
 	private void initiateSteps(NoteLine notes){
 		steps = new float[notes.getNumBeats() * numberOfStepsPerNote];
 		
@@ -82,7 +66,7 @@ public class Waypoints {
 		
 		Vector2f a = new Vector2f((float)fromIndex, (float)fromValue);
 		Vector2f b = new Vector2f((float)toIndex, (float)toValue);
-		Vector2f weight = new Vector2f( b.x - a.x, -2.0f*Math.abs(b.y - a.y) + Math.min(a.y, b.y));
+		Vector2f weight = new Vector2f( b.x - a.x, 2.0f*Math.abs(b.y - a.y) + Math.min(a.y, b.y));
 		
 		for(int i = fromIndex; i <= toIndex; i++){				
 			steps[i] = (float) MathUtils.getPointOnBezierCurve(a, b, weight, progress).y;// getValueOnLine(progress, 0.0, (double)fromValue, 1.0, (double)toValue);
@@ -90,54 +74,22 @@ public class Waypoints {
 		}
 	}
 	
-	/**
-	 * @param steps The number of samples from the curve - the resolution of the curve.
-	 * @return List of y-values of length steps. Equal step length for all steps.
-	 */
-	public byte[] getNextCurve(int steps){
-		return null;
+	public Vector2f getNextStepRelativeToNoteLineView(){
+		
+		Vector2f next = toNoteLineView(currentStep, steps[currentStep]);
+		if(currentStep + 1 < steps.length)
+			currentStep++;
+		return next;
 	}
 	
-	/**
-	 * @param startY The initial y value. x = 0.
-	 * @param weightX The x value of the weight point that defines the curvature. 
-	 * @param weightY The y value of the weight point that defines the curvature.
-	 * @param endX The x value of the ending point.
-	 * @param endY The y value of the ending point.
-	 * @return List of y-values of length steps. Equal step length for all steps.
-	 */
-	private byte[] getCurve(int startY, int weightX, int weightY, int endX, int endY, int steps){
-		return null;
+	public Vector2f toNoteLineView(int step, float value){
+		float x = ((float)step/numberOfStepsPerNote) * noteLineView.getCellDimensions().x;
+		float y = noteLineView.getDimensions().y - value * noteLineView.getCellDimensions().y;
+		
+		return new Vector2f(x, y);
 	}
 	
-	/**
-	 * @return The next waypoint step. The unit is Note heights. If there are no more steps, it returns -1.
-	 */
-	public float getNextStep(){
-		if(currentStep < steps.length)
-			return steps[currentStep++];
-		else
-			return -1.0f;
+	public float[] getSteps(){
+		return steps.clone();
 	}
-	
-	public float getNextYCoordinateRelativeToNoteLineView(){
-		float nextStep = getNextStep();
-		return getYValueInNoteLineView(nextStep);
-	}
-	
-	private float getYValueInNoteLineView(float stepValue){
-		float cellHeight = noteLineView.getCellDimensions().y; 
-		float viewHeight = noteLineView.getDimensions().y;
-		return (viewHeight - stepValue * cellHeight);
-	}
-	
-	
-	public void print(){
-		System.out.println("Waypoint:");
-		for(int i = 0; i < steps.length; i++){
-			System.out.println("Index " + i + ": " + steps[i] + " y-value: " + getYValueInNoteLineView(steps[i]));
-		}
-	}
-	
-
 }

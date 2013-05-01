@@ -13,6 +13,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
 
+import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
 import dk.aau.oose.util.MathUtils;
 
@@ -48,7 +49,8 @@ public class BezierCurveTest extends BasicGame {
 	}
 
 	@Override
-	public void init(GameContainer arg0) throws SlickException {
+	public void init(GameContainer gc) throws SlickException {
+		GameElement.setGameContainer(gc);
 		updateLine();
 	}
 

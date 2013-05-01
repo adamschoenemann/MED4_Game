@@ -49,10 +49,12 @@ public class NoteLineView extends GameElement {
 				float ypos = height - cellDim.y * val;
 				
 				float cellWidth = cellDim.x;
+				
+				
 				if(nl.getNote(i).isDistinct() == true){
 					cellWidth -= X_PADDING;
 				}
-				gfx.fillRect(xpos, ypos, cellWidth, height);
+				gfx.fillRect(xpos, ypos, cellWidth, height - ypos);
 			}
 		}
 		grid.draw();

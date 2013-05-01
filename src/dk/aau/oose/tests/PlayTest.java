@@ -82,6 +82,7 @@ public class PlayTest extends BasicGame {
 			}
 			
 		};
+				//gc.getHeight());		
 	}
 
 	@Override
