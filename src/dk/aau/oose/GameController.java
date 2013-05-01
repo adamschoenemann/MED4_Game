@@ -63,7 +63,7 @@ public class GameController extends GameElement {
 			}
 			
 		};
-		GameWorld.getGameContainer().getInput().addListener(switchButton);
+		//GameWorld.getGameContainer().getInput().addListener(switchButton);
 		this.addChild(switchButton);
 		switchButton.setPosition(100, 0);
 	}
