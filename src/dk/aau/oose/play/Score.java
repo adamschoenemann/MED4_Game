@@ -24,14 +24,11 @@ public class Score extends GameElement{
 			return;
 		this.score += score;
 		displayFloatingScore(score);
-		
-		System.out.println("Add to score: " + score + " totaling " + this.score);
 	}
 		
 	private void displayFloatingScore(int value){
+		//TODO currently, in PlayControllerTest, it seems that floats follow the runner. Not intended!
 		Vector2f fsPos = Vec.add(runner.getPosition(), new Vector2f(0.0f, - runner.getDimensions().y));
-		
-		System.out.println("runner.getDimensions().y: " + runner.getDimensions().y);
 		nlv.addChild(new FloatingScore(fsPos, value));
 	}
 

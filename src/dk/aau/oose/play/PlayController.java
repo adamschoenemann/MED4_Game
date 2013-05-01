@@ -5,146 +5,100 @@ import org.newdawn.slick.Input;
 
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
+import dk.aau.oose.noteline.Note;
 import dk.aau.oose.noteline.NoteLine;
 import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.noteline.NoteLinePlayer;
 import dk.aau.oose.util.MathUtils;
 
 public class PlayController extends GameElement {
-	
+
 
 	private NoteLineView nlv;
-	private NoteLinePlayer nlp;
-	private NoteLine nl;
-	
 	private int jumpKey;
+	private int lastAcceptedNoteIndex;
 	private Runner runner;
 	private Score score;
-	private Input input;
-	private int expectedKeyDownTimes [];
-	private int nextJumpIndex = 0;
-	private long startTime;
-	
-	private boolean nextNoteIsPerfect;
-	
-	private static final int TIME_FOR_PERFECT_NOTE = 15,
-							 TIME_FOR_FAILED_NOTE = 100,
-							 TIME_FOR_LISTENING_FOR_INPUT = 200, // TODO ok value?
-							 START_TIME_OFFSET = 0;
-						
-	
-	
+
+	//New
+	private int pureTimeToNextNote; 
+	private static final int PURITY_DIFFERENCE_THRESHOLD = 100;
+	private PlayThread playThread;
+
 	/**
 	 * @param nlv 
 	 * @param jumpKey Must accord to the values found in Input.KEY_...
 	 */
 	public PlayController(NoteLineView nlv, int jumpKey){
 		this.nlv = nlv;
-		this.nlp = nlv.getNoteLinePlayer();
-		this.nl = nlp.getNoteLine();
 		this.jumpKey = jumpKey;
-		initiatePerfectJumpTimes();
-		
+		updatePureTimeToNextNote();
+		lastAcceptedNoteIndex = -1;
+
 		runner = new Runner(nlv);
+		score =  new Score(runner);
+
 		this.addChild(runner);
-		score =  new Score(runner); 
+		this.addChild(nlv);
+		this.addChild(score);
 	}
-	
-	public void start(){
-		startTime = System.currentTimeMillis();
+
+	private void updatePureTimeToNextNote(){
+		pureTimeToNextNote = nlv.getNoteLinePlayer().getBeatDuration()/2;
 	}
-	
-	
-	/**
-	 * This method initiates the array perfectJumpTimes so that, beginning from time = 0 ms, it contains the relative time in millis that the user should hit for a perfect score.
-	 */
-	private void initiatePerfectJumpTimes(){
-		int noOfBeats = nl.getNumBeats();
-		
-		assert noOfBeats > 0;
-		
-		expectedKeyDownTimes = new int[noOfBeats]; //plus one to allow for an offset at index 0.
-		expectedKeyDownTimes[0] = START_TIME_OFFSET + nlp.getNoteDurationAt(0);
-		int expectedKeyDownTimesIndex = 1;
-		for(int i = 1; i < noOfBeats; i++){
-			if(nlp.getNoteLine().getNote(i - 1).isDistinct()){
-				expectedKeyDownTimes[expectedKeyDownTimesIndex] = nlp.getNoteDurationAt(i) + expectedKeyDownTimes[expectedKeyDownTimesIndex - 1];
-				expectedKeyDownTimesIndex++;
-			}
-			
-		}
-	}
+
+
 
 	@Override
 	public void onUpdate() {
+		nlv.update();
 
-		int timeToNearestPerfectJump = getTimeToNearestPerfectJump();
-		input = GameWorld.getGameContainer().getInput();
-				
-		//Check whether 
-		//	1) we are close enough to a jump to care about user input and
-		//	2) if that is the case, whether the user inputs correct stuff
-		if(Math.abs(timeToNearestPerfectJump) < TIME_FOR_LISTENING_FOR_INPUT
-			&& input.isKeyDown(jumpKey) ){
-			
-			if(Math.abs(timeToNearestPerfectJump) < TIME_FOR_FAILED_NOTE){
-				nlp.setNextNoteIsPure(true); //TODO this implementation will be moved.
-			}  // Else leave next note at the default fail state
-			
-			
-			//Calculate points, and display floating point thingy 
-			int points = MathUtils.getValueOnLine(timeToNearestPerfectJump, TIME_FOR_FAILED_NOTE, 0, TIME_FOR_PERFECT_NOTE, 100);
-			if(points < 0)
-				points = 0;
-			else if(points > 100)
-				points = 100;
-			score.add(points);
-		}
-		
-		
-		
-		
+		if(playThread != null){
+			if(playThread.isAlive() && !playThread.isInterrupted()){
+				long elapsedTime = playThread.getElapsedTime() ;
+				long totalTime = playThread.getTotalTime();
 
-		//pass precision information to runner (for animation)
-		
-		//pass precision information to score
-		
-		//pass precision information to music player
+				runner.testMove((double)elapsedTime/totalTime);
 
-				
-	}
-	
-	private int getTimeToNearestPerfectJump(){
-		return getNearestPerfectJumpTime() - getTimeSinceStart();
-	}
-	
-	private int getTimeSinceStart(){
-		return (int)(System.currentTimeMillis() - startTime);
-	}
-	
-	private int getNearestPerfectJumpTime(){
-		
-		assert expectedKeyDownTimes.length > 0;
-		
-		int currentTime = getTimeSinceStart();
-		int lastInterval = Math.abs(expectedKeyDownTimes[0] - currentTime);
-		int index = 1;
-		while(index < expectedKeyDownTimes.length){
-			int nextInterval = Math.abs(expectedKeyDownTimes[index] - currentTime);
-			if(nextInterval < lastInterval){
-				lastInterval = nextInterval;
-				index++;
-			} else {
-				break;
+				if( GameElement.getGameContainer().getInput().isKeyPressed(jumpKey)){
+					settleNextNotePurity();
+				}
 			}
+			else if(!playThread.isAlive()){
+				playThread = null;
+			}
+		}	
+	}
+
+	private void settleNextNotePurity() {
+		int noteIndexNumber = playThread.getIndex();
+		long timeToNextNote = playThread.getTimeToNextNote();
+		long difference = Math.abs(timeToNextNote - pureTimeToNextNote);
+		
+		// TODO We need to do something so that it'll only accept one button push per note, so that you can't just idly push the button until you get it right.
+		if(lastAcceptedNoteIndex < noteIndexNumber && difference < PURITY_DIFFERENCE_THRESHOLD){
+			lastAcceptedNoteIndex = noteIndexNumber;
+			playThread.getNoteLinePlayer().setNextNoteIsPure(true);
+			int points = (int)Math.round((float)difference*100.0f/PURITY_DIFFERENCE_THRESHOLD); 
+			score.add(points);
+			// TODO send do-not-stumble to runner here.
 		}
-		return expectedKeyDownTimes[index - 1];
 	}
 
 	@Override
 	public void onDraw(Graphics gfx) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
+	public void startPlaying(){
+		lastAcceptedNoteIndex = -1;
+		if(playThread == null){
+			playThread = new PlayThread(nlv.getNoteLinePlayer());
+			playThread.start();
+		}
+	}
+
+
+
 }

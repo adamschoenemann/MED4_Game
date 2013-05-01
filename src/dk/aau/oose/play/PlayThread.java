@@ -48,6 +48,10 @@ public class PlayThread extends Thread {
 		return ++i * nlp.getBeatDuration();
 	}
 	
+	public long getTimeToNextNote(){
+		return (getNextNoteTime() - getElapsedTime());
+	}
+	
 	public void setNextNoteIsPure(boolean val){
 		nlp.setNextNoteIsPure(val);
 	}

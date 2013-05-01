@@ -11,9 +11,9 @@ import dk.aau.oose.util.Vec;
 public class FloatingScore extends GameElement {
 	
 	private int value;
-	private float moveSpeed = 3.0f;
+	private float moveSpeed = 1.7f;
 	private int noOfUpdates = 0;
-	private static final int MAX_UPDATES = 30;
+	private static final int MAX_UPDATES = 60;
 	private Color color;
 
 	public FloatingScore(Vector2f position, int value){
@@ -26,7 +26,6 @@ public class FloatingScore extends GameElement {
 	public void onUpdate() {
 		//move up:
 		this.setPosition(Vec.add(this.getPosition(), new Vector2f(0, -moveSpeed)));
-		//moveSpeed *= 1.2f;
 		if(++noOfUpdates >= MAX_UPDATES){
 			destroy();
 		}	
@@ -37,7 +36,6 @@ public class FloatingScore extends GameElement {
 	@Override
 	public void onDraw(Graphics gfx) {
 		
-		// TODO Temporary solution
 		color.a = 1.0f - (float)noOfUpdates/MAX_UPDATES;
 		gfx.setColor(color); 
 		gfx.drawString(Integer.toString(value), 0, 0);
