@@ -9,6 +9,9 @@ public class PlayThread extends Thread {
 	private NoteLine nl;
 	private long startTime;
 	private int index = 0;
+	private final static byte NUMBER_OF_COUNTIN_CLICKS = 4;
+	
+	private boolean inIntro = true;
 	
 	public PlayThread(NoteLinePlayer nlp){
 		this.nlp = nlp;
@@ -56,8 +59,24 @@ public class PlayThread extends Thread {
 		nlp.setNextNoteIsPure(val);
 	}
 	
+	public boolean isInIntro(){
+		return inIntro;
+	}
+	
 	@Override
 	public void run(){
+		inIntro = true;
+		for(byte i = 0; i < NUMBER_OF_COUNTIN_CLICKS; i++){
+			nlp.playClick();
+			try {
+				Thread.sleep(nlp.getBeatDuration());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		inIntro = false;		
+		setNextNoteIsPure(true);
+		
 		startTime = System.currentTimeMillis();
 		index = 0;
 		int noteDuration = 1;

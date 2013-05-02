@@ -5,7 +5,8 @@ import dk.aau.oose.osc.MaxMSP;
 
 public class NoteLinePlayer {
 	
-	public final static String LABEL = "note";
+	public final static String NOTE_LABEL = "note";
+	public final static String CLICK_LABEL = "click";
 	
 	private final NoteLine nl;
 	private final int startOctave;
@@ -74,6 +75,12 @@ public class NoteLinePlayer {
 		
 		return mult;
 	}
+	
+	public void playClick(){
+		OscMessage msg = new OscMessage(CLICK_LABEL);
+		System.out.println("Click sent to Max.");
+		MaxMSP.send(msg);
+	}
 
 
 	private void playNote(int note, int duration){
@@ -89,13 +96,10 @@ public class NoteLinePlayer {
 	}
 	
 	private void sendNote(int value, int octave, long duration){
-		OscMessage msg = new OscMessage(LABEL);
+		OscMessage msg = new OscMessage(NOTE_LABEL);
 		msg.add(value);
 		msg.add(octave);
 		msg.add(duration);
-		
-		//boolean purity = true;
-		//msg.add(purity);
 		msg.add(nextNoteIsPure);
 		nextNoteIsPure = false;
 		

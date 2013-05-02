@@ -10,7 +10,7 @@ import dk.aau.oose.util.MathUtils;
 /**
  * 
  * @author Thorbjorn
- *	Provides a nice path for the Runner. 
+ *	Provides a nice path for the PlaybackIndicators. 
  *
  */
 public class Waypoints {
@@ -90,7 +90,7 @@ public class Waypoints {
 	public Vector2f getNextStepRelativeToNoteLineView(double progress){
 		int index = (int)Math.round(steps.length * progress);
 		if(index >= steps.length)
-			index = steps.length - 1;
+			return noteLineView.getDimensions();
 		else if(index < 0)
 			index = 0;
 		return stepToNoteLineView(index);

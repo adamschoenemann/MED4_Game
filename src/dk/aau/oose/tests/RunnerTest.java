@@ -15,6 +15,7 @@ import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLine;
 import dk.aau.oose.noteline.NoteLinePlayer;
 import dk.aau.oose.noteline.NoteLineView;
+import dk.aau.oose.play.PlaybackIndicator;
 import dk.aau.oose.play.Runner;
 import dk.aau.oose.play.Waypoints;
 
@@ -22,7 +23,7 @@ import dk.aau.oose.play.Waypoints;
 public class RunnerTest extends BasicGame{
 
 
-	private Runner runner;
+	private PlaybackIndicator runner;
 	private NoteLineView nlv;
 	private double progress = 0.0;
 	private float steps[];

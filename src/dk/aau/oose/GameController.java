@@ -44,7 +44,7 @@ public class GameController extends GameElement {
 		System.out.println(nl);
 		createCtrl = new CreateController(nlv);
 
-		playCtrl = new PlayController(nlv, Input.KEY_J); // TODO change default key from 'j' to something else, allowing for two players.
+		playCtrl = new PlayController(nlv, Input.KEY_J, true); // TODO change default key from 'j' to something else, allowing for two players.
 
 		this.addChild(createCtrl);
 		//this.addChild(playCtrl);

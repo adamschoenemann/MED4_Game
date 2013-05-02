@@ -11,6 +11,7 @@ import org.newdawn.slick.SlickException;
 
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLineView;
+import dk.aau.oose.play.PlaybackIndicator;
 import dk.aau.oose.play.Runner;
 import dk.aau.oose.play.Score;
 import dk.aau.oose.util.Vec;

@@ -9,6 +9,7 @@ import org.newdawn.slick.SlickException;
 
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLineView;
+import dk.aau.oose.osc.MaxMSP;
 import dk.aau.oose.play.PlayController;
 
 public class PlayControllerTest extends BasicGame {
@@ -20,6 +21,7 @@ public class PlayControllerTest extends BasicGame {
 	}
 
 	public static void main(String[] args) {
+		MaxMSP.Connect("127.0.0.1", 7400);
 		try {
 			AppGameContainer container = new AppGameContainer(new PlayControllerTest());
 			container.setDisplayMode(800,600,false);
@@ -35,8 +37,8 @@ public class PlayControllerTest extends BasicGame {
 	@Override
 	public void init(GameContainer gc) throws SlickException {
 		GameElement.setGameContainer(gc);
-		NoteLineView nlv = NoteLineView.newTestInstance(10, 16, 2, 5, 60, 750, 300);
-		pc = new PlayController(nlv, Input.KEY_Z);
+		NoteLineView nlv = NoteLineView.newTestInstance(10, 32, 2, 5, 60, 2*750, 300);
+		pc = new PlayController(nlv, Input.KEY_Z, false);
 		pc.setPosition(0, 200);
 		
 	}
