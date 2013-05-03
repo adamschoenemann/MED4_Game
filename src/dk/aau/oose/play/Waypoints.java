@@ -123,7 +123,7 @@ public class Waypoints {
 	public Vector2f stepToNoteLineView(int step){
 
 		float x = ((float)(step - introLength)/numberOfStepsPerNote) * noteLineView.getCellDimensions().x + horizontalOffset;
-		float y = noteLineView.getBounds().y - steps[step] * noteLineView.getCellDimensions().y;
+		float y = noteLineView.getBounds().height - steps[step] * noteLineView.getCellDimensions().y;
 		
 		return new Vector2f(x, y);
 	}

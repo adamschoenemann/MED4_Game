@@ -25,7 +25,7 @@ public class CreateController extends GameElement {
 		ct2 = new CreateTrack(nlv2);
 		
 		ct1.setPosition(0.0f, PT_VERTICAL_OFFSET);
-		ct2.setPosition(0.0f, PT_VERTICAL_OFFSET + ct1.getPosition().y + ct1.getBounds().y);
+		ct2.setPosition(0.0f, PT_VERTICAL_OFFSET + ct1.getPosition().y + ct1.getBounds().height);
 		
 		this.addChild(ct1);
 		this.addChild(ct2);

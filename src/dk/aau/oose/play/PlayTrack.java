@@ -1,6 +1,7 @@
 package dk.aau.oose.play;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLineView;
@@ -37,7 +38,10 @@ public class PlayTrack extends GameElement {
 		} else {
 			playbackIndicator = new PlaybackLine(nlv); 
 		} 
-
+		
+		// Subscribe to events
+		GameElement.getGameContainer().getInput().addListener(this);
+		
 		this.addChild(playbackIndicator);
 	}
 
@@ -77,7 +81,23 @@ public class PlayTrack extends GameElement {
 		}	
 		updatePosition(); // TODO inefficient; it should only update position when a change has happened. Put this here to ensure proper startup position. 
 	}
-
+	
+	/*
+	@Override
+	public void keyPressed(int key, char c){
+		if(key == Input.KEY_A){
+			if(playThread != null && playThread.isAlive()){
+				long curTime = System.currentTimeMillis() - playThread.getStartTime();
+				long diff = Math.abs(curTime - playThread.getNextNoteTime());
+				if(diff < 160){
+					playThread.getNoteLinePlayer().setNextNoteIsPure(true);
+				}
+				System.out.println("Diff: " + diff);
+			}
+		}
+	}
+	*/
+	
 	private void settleNextNotePurity() {
 		int noteIndexNumber = playThread.getIndex();
 		long timeToNextNote = playThread.getTimeToNextNote();
@@ -125,7 +145,7 @@ public class PlayTrack extends GameElement {
 		float windowWidth = GameElement.getGameContainer().getWidth();
 		
 		if(score != null)
-			score.setPosition( pbiX + windowWidth * 0.5f - score.getBounds().x, 0.0f);
+			score.setPosition( pbiX + windowWidth * 0.5f - score.getBounds().width, 0.0f);
 		setPosition( windowWidth * 0.5f - pbiX, getPosition().y);
 	}
 

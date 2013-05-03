@@ -140,8 +140,8 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	}
 	
 	public void setBounds(float w, float h){
-		bounds.x = w; // I know this is not exactly how it should be. No time to explain.
-		bounds.y = h;
+		bounds.width = w; // I know this is not exactly how it should be. No time to explain.
+		bounds.height = h;
 	}
 	
 	public void setBounds(float x, float y, float width, float height){
