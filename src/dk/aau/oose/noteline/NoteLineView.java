@@ -3,11 +3,9 @@ package dk.aau.oose.noteline;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 
 import dk.aau.oose.Grid;
 import dk.aau.oose.core.GameElement;
-import dk.aau.oose.core.GameWorld;
 
 public class NoteLineView extends GameElement {
 	
@@ -15,7 +13,6 @@ public class NoteLineView extends GameElement {
 	private Vector2f cellDim;
 	private NoteLinePlayer nlp;
 	private NoteLine nl;
-	private Graphics gfx;
 	private Color color = Color.white;
 	private final Grid grid;
 	
@@ -63,13 +60,21 @@ public class NoteLineView extends GameElement {
 	}
 	
 	public int calculateNoteHeight(float y){
-		int height = (int) Math.floor((y - getPosition().y) / cellDim.y);
-		return nl.getMaxNote() - height;
+		float globalY = localToGlobal(0.0f, getPosition().y).y;
+		int height = (int) Math.floor((y - globalY) / cellDim.y);
+		if(height > nl.getMaxNote() || height < 0)
+			return -1;
+		else
+			return nl.getMaxNote() - height;
 	}
 	
 	public int calculateNoteIndex(float x){
-		int index = (int) ((x - getPosition().x) / cellDim.x);
-		return index;
+		float globalX = localToGlobal(getPosition().x, 0.0f).x;
+		int index = (int) ((x - globalX) / cellDim.x); 
+		if(index < 0 || index >= nl.getNumBeats())
+			return -1;
+		else
+			return index;
 	}
 	
 	@Override

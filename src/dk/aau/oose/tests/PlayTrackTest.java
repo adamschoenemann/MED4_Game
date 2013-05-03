@@ -10,21 +10,21 @@ import org.newdawn.slick.SlickException;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.osc.MaxMSP;
-import dk.aau.oose.play.PlayController;
+import dk.aau.oose.play.PlayTrack;
 
-public class PlayControllerTest extends BasicGame {
+public class PlayTrackTest extends BasicGame {
 
-	private PlayController pc;
+	private PlayTrack pc;
 	
-	public PlayControllerTest() {
-		super("PlayController test");
+	public PlayTrackTest() {
+		super("PlayTrack test");
 	}
 
 	public static void main(String[] args) {
 		MaxMSP.Connect("127.0.0.1", 7400);
 		try {
-			AppGameContainer container = new AppGameContainer(new PlayControllerTest());
-			container.setDisplayMode(1000,800,false);
+			AppGameContainer container = new AppGameContainer(new PlayTrackTest());
+			container.setDisplayMode(800,600,false);
 			container.setMinimumLogicUpdateInterval(20);
 			container.start();
 			
@@ -38,14 +38,14 @@ public class PlayControllerTest extends BasicGame {
 	public void init(GameContainer gc) throws SlickException {
 		GameElement.setGameContainer(gc);
 		//NoteLineView.newTestInstance(steps, numBeats, startOctave, notesPerOctave, tempo, width, height)
-		NoteLineView nlv1 = NoteLineView.newTestInstance(10, 32, 2, 5, 120, 2*750, 300);
-		NoteLineView nlv2 = NoteLineView.newTestInstance(10, 32, 0, 5, 120, 2*750, 300);
-		pc = new PlayController(nlv1, nlv2, true);
+		NoteLineView nlv = NoteLineView.newTestInstance(10, 32, 2, 5, 120, 2*750, 300);
+		pc = new PlayTrack(nlv, Input.KEY_Z, true);
+		pc.setPosition(0, 200);
+		
 	}
 
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-		// TODO Auto-generated method stub
 		pc.draw();
 		
 	}

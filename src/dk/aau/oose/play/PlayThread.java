@@ -9,13 +9,18 @@ public class PlayThread extends Thread {
 	private NoteLine nl;
 	private long startTime;
 	private int index = 0;
-	private final static byte NUMBER_OF_COUNTIN_CLICKS = 4;
+	private boolean stopFlag;
+	//Intro
+	public final static byte NUMBER_OF_COUNTIN_CLICKS = 4;
+	private long introStartTime;
+	private int introDuration;
 	
 	private boolean inIntro = true;
 	
 	public PlayThread(NoteLinePlayer nlp){
 		this.nlp = nlp;
 		nl = nlp.getNoteLine();
+		stopFlag = false;
 	}
 	
 	
@@ -63,10 +68,32 @@ public class PlayThread extends Thread {
 		return inIntro;
 	}
 	
+	public long getIntroElapsedTime(){
+		return System.currentTimeMillis() - introStartTime;
+	}
+	
+	public long getIntroTimeLeft(){
+		if(inIntro)
+			return (introDuration - (System.currentTimeMillis() - introStartTime));
+		else
+			return -1;
+	}
+	
+	public double getIntroProgress(){
+		return ((double)getIntroElapsedTime() / (double)introDuration); //Goes from 0 to 1
+	}
+	
+	public void stopPlaying(){
+		stopFlag = true;
+	}
+	
 	@Override
 	public void run(){
 		inIntro = true;
+		introDuration = NUMBER_OF_COUNTIN_CLICKS * nlp.getBeatDuration();
+		introStartTime = System.currentTimeMillis();
 		for(byte i = 0; i < NUMBER_OF_COUNTIN_CLICKS; i++){
+			if(stopFlag) break;
 			nlp.playClick();
 			try {
 				Thread.sleep(nlp.getBeatDuration());
@@ -75,12 +102,12 @@ public class PlayThread extends Thread {
 			}
 		}
 		inIntro = false;		
-		setNextNoteIsPure(true);
 		
 		startTime = System.currentTimeMillis();
 		index = 0;
 		int noteDuration = 1;
 		for(int i = 0; i < nl.getNumBeats(); i += noteDuration){
+			if(stopFlag) break;
 			noteDuration = nlp.playNoteAt(i);
 			index = i;
 			try {

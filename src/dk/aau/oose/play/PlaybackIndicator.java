@@ -14,30 +14,11 @@ public abstract class PlaybackIndicator extends GameElement {
 	public PlaybackIndicator(NoteLineView nlv) {
 		noteLineView = nlv;
 		updateWaypoints();
-	}
-
-	@Override
-	public void onUpdate() {
-		// TODO Auto-generated method stub
-		
+		move(-1.0);
 	}
 	
 	abstract public void move(double trackProgress); 
 
-	
-	/*
-	 * Moves the runner to its next position.
-	 *
-	public void moveHorizontal(double trackProgress) {
-		Vector2f newPos = waypoint.getNextStepRelativeToNoteLineView(trackProgress);
-		setPosition(newPos.x, getPosition().y);
-	}
-
-	public void move2D(double trackProgress) {
-		Vector2f newPos = waypoint.getNextStepRelativeToNoteLineView(trackProgress);
-		setPosition(newPos);
-	}
-*/
 	public NoteLineView getNoteLineView() {
 		return noteLineView;
 	}

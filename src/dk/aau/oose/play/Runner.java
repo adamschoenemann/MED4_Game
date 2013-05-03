@@ -22,8 +22,6 @@ public class Runner extends PlaybackIndicator{
 		
 		setBounds(0f, 0f, sprite.getWidth(), sprite.getHeight());
 		drawingOffset = new Vector2f( - sprite.getWidth() / 2, - sprite.getHeight());
-		
-		this.setPosition((float) noteLineView.getBounds().getWidth() * 0.5f, (float) noteLineView.getBounds().getHeight()); //Set in centre of track, at the bottom line.
 	}
 	
 	@Override

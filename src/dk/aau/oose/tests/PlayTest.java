@@ -15,7 +15,6 @@ import dk.aau.oose.noteline.NoteLinePlayer;
 import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.osc.MaxMSP;
 import dk.aau.oose.play.PlayThread;
-import dk.aau.oose.play.PlaybackIndicator;
 import dk.aau.oose.play.PlaybackLine;
 import dk.aau.oose.play.Runner;
 import dk.aau.oose.play.Score;

@@ -67,4 +67,17 @@ public class MathUtils {
 		return new Vector2f(x, y);		
 	}
 	
+	public static double scale(double value, double minIn, double maxIn, double minOut, double maxOut){
+		return (minOut + (((value - minIn) / (maxIn - minIn)) * (maxOut - minOut)));
+	}
+	
+	public static int clip(int val, int min, int max){
+		if(val < min)
+			return min;
+		else if(val > max)
+			return max;
+		else
+			return val;
+	}
+	
 }

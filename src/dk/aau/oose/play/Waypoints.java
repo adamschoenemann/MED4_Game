@@ -19,36 +19,51 @@ public class Waypoints {
 	private int numberOfStepsPerNote;
 	private float steps[];
 	private float horizontalOffset;
-	//private int currentStep = 0;
+	private int introLength;
 	
 	
 	public Waypoints(NoteLineView noteLineView, int numberOfStepsPerNote){
 		this.noteLineView = noteLineView;
 		this.numberOfStepsPerNote = numberOfStepsPerNote;
 		initiateSteps(noteLineView.getNoteLinePlayer().getNoteLine()); 
-		horizontalOffset = noteLineView.getCellDimensions().x / 2.0f;
+		horizontalOffset = 0.0f;//noteLineView.getCellDimensions().x / 2.0f;
 	}
 	
 	
 	private void initiateSteps(NoteLine notes){
-		steps = new float[notes.getNumBeats() * numberOfStepsPerNote];
+		introLength = PlayThread.NUMBER_OF_COUNTIN_CLICKS * numberOfStepsPerNote;
+		int jumpToFirstNoteStart = (PlayThread.NUMBER_OF_COUNTIN_CLICKS - 1) * numberOfStepsPerNote;
 		
+		steps = new float[introLength + notes.getNumBeats() * numberOfStepsPerNote + 1];
+		
+		//Set up the intro part
+		for(int i = 0; i < jumpToFirstNoteStart; i++){
+			steps[i] = 0.0f;
+		}
+
+		makeBezierTransition(steps, jumpToFirstNoteStart, introLength - 1, 0.0, (double) notes.getNote(0).getValue());
+		
+		//Set up waypoints for the main track
 		for(int noteIndex = 0; noteIndex < notes.getNumBeats() ; noteIndex++){
 			double currentHeight = (double) notes.getNote(noteIndex).getValue();
-			double nextHeight =  (noteIndex + 1 >= notes.getNumBeats()) ? 0 : (double) notes.getNote(noteIndex + 1).getValue();
+			double nextHeight =  (noteIndex == notes.getNumBeats() - 1) ? 0.0 : (double) notes.getNote(noteIndex + 1).getValue();
 			
-			makeBezierTransition(steps, numberOfStepsPerNote * noteIndex, numberOfStepsPerNote * (noteIndex + 1) - 1, currentHeight, nextHeight);
+			int fromIndex = numberOfStepsPerNote * noteIndex + introLength;
+			int toIndex = numberOfStepsPerNote * (noteIndex + 1) - 1 + introLength;
+
+			makeBezierTransition(steps, fromIndex, toIndex, currentHeight, nextHeight);
 			//makeStraightTransition(steps, numberOfStepsPerNote * noteIndex, numberOfStepsPerNote * (noteIndex + 1) - 1, currentHeight, nextHeight);
 		}
+		steps[steps.length - 1] = 0.0f;
 	}
 	
-	/**
+	/*
 	 * @param steps The array into which the transition should be put
 	 * @param fromIndex The first index number of the transition. Inclusive. 
 	 * @param toIndex The last index number of the transition. Inclusive.
 	 * @param fromValue The beginning value of the transition.
 	 * @param toValue Then end value of the transition.
-	 */
+	 *
 	private void makeStraightTransition(float [] steps, int fromIndex, int toIndex, double fromValue, double toValue){
 		double progress = 0.0;
 		
@@ -56,7 +71,8 @@ public class Waypoints {
 			steps[i] = (float) MathUtils.getValueOnLine(progress, 0.0, (double)fromValue, 1.0, (double)toValue);
 			progress += 1.0 / (double)(toIndex - fromIndex + 1);				
 		}
-	}
+	}*/
+	
 	
 	/**
 	 * @param steps The array into which the transition should be put
@@ -77,7 +93,7 @@ public class Waypoints {
 		}
 		
 		for(int i = fromIndex; i <= toIndex; i++){				
-			steps[i] = (float) MathUtils.getPointOnBezierCurve(a, b, weight, progress).y;// getValueOnLine(progress, 0.0, (double)fromValue, 1.0, (double)toValue);
+			steps[i] = (float) MathUtils.getPointOnBezierCurve(a, b, weight, progress).y;
 			progress += 1.0 / (float)(toIndex - fromIndex + 1);				
 		}
 	}
@@ -88,34 +104,37 @@ public class Waypoints {
 	 * @return the waypoint that is progress down the route.
 	 */
 	public Vector2f getNextStepRelativeToNoteLineView(double progress){
-		int index = (int)Math.round(steps.length * progress);
-		if(index >= steps.length)
-			return new Vector2f(noteLineView.getBounds().width, noteLineView.getBounds().height);
-		else if(index < 0)
-			index = 0;
+		int index;
+		if(progress < 0.0){
+			index =  (int)Math.round(MathUtils.scale(progress, -1.0, 0.0, 0.0, (double)introLength));
+		} else {
+			index = (int)Math.round(MathUtils.scale(progress, 0.0, 1.0, introLength, steps.length));
+		}
+
+		index = MathUtils.clip(index, 0, steps.length - 1);
+		
 		return stepToNoteLineView(index);
 	}
-	
-	/*
-	public Vector2f getNextStepRelativeToNoteLineView(){
-		Vector2f next = stepToNoteLineView(currentStep);
-		if(currentStep + 1 < steps.length)
-			currentStep++;
-		return next;
-	}*/
 	
 	/**
 	 * @param step A step index.
 	 * @return The vector from this instance's noteLineView's origin to the position of the step & step value. 
 	 */
 	public Vector2f stepToNoteLineView(int step){
-		float x = ((float)step/numberOfStepsPerNote) * noteLineView.getCellDimensions().x + horizontalOffset;
-		float y = (float) noteLineView.getBounds().getHeight() - steps[step] * noteLineView.getCellDimensions().y;
+
+		float x = ((float)(step - introLength)/numberOfStepsPerNote) * noteLineView.getCellDimensions().x + horizontalOffset;
+		float y = noteLineView.getDimensions().y - steps[step] * noteLineView.getCellDimensions().y;
 		
 		return new Vector2f(x, y);
 	}
 	
 	public float[] getSteps(){
 		return steps.clone();
+	}
+	
+	public void printSteps(){
+		for(int i = 0; i < steps.length; i++){
+			System.out.println("i: " + i + "\tstep: " + steps[i]);
+		}
 	}
 }

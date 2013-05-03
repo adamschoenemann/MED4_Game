@@ -51,6 +51,7 @@ public class WaypointsTest extends BasicGame{
 		
 		wp = new Waypoints(nlv, NO_OF_STEPS);
 		steps = wp.getSteps();
+		wp.printSteps();
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class WaypointsTest extends BasicGame{
 		if(nlv != null)
 			nlv.draw();
 
-		for(int i = 0; i < steps.length - 1; i++){
+		for(int i = 0; i < steps.length; i++){
 			
 			if(i%NO_OF_STEPS == 0)
 				g.setColor(Color.green);

@@ -1,79 +1,64 @@
 package dk.aau.oose.create;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import dk.aau.oose.core.GameElement;
-import dk.aau.oose.core.GameWorld;
-import dk.aau.oose.noteline.Note;
-import dk.aau.oose.noteline.NoteLine;
-import dk.aau.oose.noteline.NoteLinePlayer;
 import dk.aau.oose.noteline.NoteLineView;
-import dk.aau.oose.play.PlayThread;
 
 public class CreateController extends GameElement {
+	private CreateTrack ct1, ct2;
+	private static final int SCROLL_RIGHT = Input.KEY_D, 
+							 SCROLL_LEFT = Input.KEY_A, 
+							 SCROLL_SPEED = 10,
+							 MAX_NOTE = 10,
+							 NUMBER_OF_BEATS = 32,
+							 TRACK1_OCTAVE = 3,
+							 TRACK2_OCTAVE = 1,
+							 TEMPO = 100,
+							 WIDTH = NUMBER_OF_BEATS * 50,
+							 HEIGHT = 300,
+							 PT_VERTICAL_OFFSET = 90;
 	
-	public NoteLine nl;
-	public NoteLineView nle;
-	public NoteLinePlayer nlp;
-	public PlayThread playThread;
 	
-	public CreateController(NoteLineView nle) {
-		// NoteLine
-		this.nle = nle;
-		this.nlp = nle.getNoteLinePlayer();
-		this.nl = nlp.getNoteLine();
-		this.addChild(nle);
-
+	public CreateController(NoteLineView nlv1, NoteLineView nlv2){
+		ct1 = new CreateTrack(nlv1);
+		ct2 = new CreateTrack(nlv2);
 		
+		ct1.setPosition(0.0f, PT_VERTICAL_OFFSET);
+		ct2.setPosition(0.0f, PT_VERTICAL_OFFSET + ct1.getPosition().y + ct1.getDimensions().y);
+		
+		this.addChild(ct1);
+		this.addChild(ct2);
+	}
+	
+	public CreateController(){
+		this(NoteLineView.newTestInstance(MAX_NOTE, NUMBER_OF_BEATS, TRACK1_OCTAVE, 5, TEMPO, WIDTH, HEIGHT), 
+			 NoteLineView.newTestInstance(MAX_NOTE, NUMBER_OF_BEATS, TRACK2_OCTAVE, 5, TEMPO, WIDTH, HEIGHT));
 	}
 	
 	@Override
 	public void onUpdate() {
-		Input input = GameWorld.getGameContainer().getInput();
-		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
-			float mx = input.getMouseX(), my = input.getMouseY();
-			int noteHeight = nle.calculateNoteHeight(my);
-			int index = nle.calculateNoteIndex(mx);
-			if(input.isKeyDown(Input.KEY_LSHIFT)){
-				nl.setNoteValue(noteHeight, index);
-			}
-			else if(input.isKeyDown(Input.KEY_LCONTROL)){
-				Note note = nl.getNote(index);
-				note.setDistinct(!note.isDistinct());
-				nl.setNote(note, index);
-			}
-			else {
-				nlp.playNoteAt(index);
-				System.out.println("Index: " + index);
-			}
-		}
-		if(input.isKeyPressed(Input.KEY_SPACE)){
-			if(playThread == null){
-				playThread = new PlayThread(nlp);
-				playThread.start();
-			}
-		}
-		if(playThread != null) {
-			if(playThread.isAlive()) {
-				System.out.format("Index: %d, elapsedTime: %d, nextNoteTime: %d\n", 
-						playThread.getIndex(), 
-						playThread.getElapsedTime(),
-						playThread.getNextNoteTime());
-			} else {
-				playThread = null;
-			}
+		Input input = getGameContainer().getInput();
+		if(input.isKeyDown(SCROLL_LEFT)){ // TODO find alternative input to scroll
+			scroll(SCROLL_SPEED);
+		} else if(input.isKeyDown(SCROLL_RIGHT)){
+			scroll(-SCROLL_SPEED);
 		}
 		
 	}
-
-	@Override
-	public void onDraw(Graphics gfx) {
-		long ms = System.currentTimeMillis();
-		gfx.setColor(Color.green);
-		gfx.fillOval(100f, 100f, (float) Math.cos(ms) * 100, (float) Math.sin(ms) * 100);
-		
+	
+	public void scroll(float pixels){
+		System.out.println("Scroll " + pixels);
+		ct1.moveTrack(pixels);
+		ct2.moveTrack(pixels);
 	}
-
+	
+	public NoteLineView[] getTracks(){
+		NoteLineView[] nlvs = new NoteLineView[2];
+		nlvs[0] = ct1.getNoteLineView();
+		nlvs[1] = ct2.getNoteLineView();
+		
+		return nlvs;
+	}
+	
 }
