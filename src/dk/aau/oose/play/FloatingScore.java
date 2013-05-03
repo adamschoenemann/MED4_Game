@@ -27,15 +27,10 @@ public class FloatingScore extends GameElement {
 		//move up:
 		this.setPosition(Vec.add(this.getPosition(), new Vector2f(0, -moveSpeed)));
 
-		moveSpeed *= 1.2f;
-		progress += 1;
-		if(progress >= maxProgress){
-			if(this.getParent() != null){
-				((GameElement) this.getParent()).removeChild((GameElement) this);
-			}
-		}
-			
-
+		if(++noOfUpdates >= MAX_UPDATES){
+			destroy();
+		}	
+		
 	}
 
 	@Override
