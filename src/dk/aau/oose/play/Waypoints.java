@@ -90,7 +90,7 @@ public class Waypoints {
 	public Vector2f getNextStepRelativeToNoteLineView(double progress){
 		int index = (int)Math.round(steps.length * progress);
 		if(index >= steps.length)
-			return noteLineView.getDimensions();
+			return new Vector2f(noteLineView.getBounds().width, noteLineView.getBounds().height);
 		else if(index < 0)
 			index = 0;
 		return stepToNoteLineView(index);
@@ -110,7 +110,7 @@ public class Waypoints {
 	 */
 	public Vector2f stepToNoteLineView(int step){
 		float x = ((float)step/numberOfStepsPerNote) * noteLineView.getCellDimensions().x + horizontalOffset;
-		float y = noteLineView.getDimensions().y - steps[step] * noteLineView.getCellDimensions().y;
+		float y = (float) noteLineView.getBounds().getHeight() - steps[step] * noteLineView.getCellDimensions().y;
 		
 		return new Vector2f(x, y);
 	}

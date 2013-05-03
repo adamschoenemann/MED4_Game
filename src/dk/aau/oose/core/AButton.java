@@ -16,14 +16,14 @@ public abstract class AButton extends GameElement {
 	private MouseListener onMousePressed;
 	*/
 	public AButton(String text, float w, float h){
-		setDimensions(w, h);
+		setBounds(0, 0, w, h);
 		setText(text);
 	}
 
 	@Override
 	public void onDraw(Graphics gfx) {
 		gfx.setColor(bgColor);
-		gfx.fillRect(0, 0, getDimensions().x, getDimensions().y);
+		gfx.fillRect(0f, 0f, (float) getBounds().getWidth(), (float) getBounds().getHeight());
 		gfx.setColor(fgColor);
 		gfx.drawString(getText(), 0, 0);
 	}

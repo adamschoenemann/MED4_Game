@@ -4,8 +4,6 @@ package dk.aau.oose.core;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
 
-import dk.aau.oose.Game;
-import dk.aau.oose.notmat.NoteMatrix;
 import dk.aau.oose.osc.MaxMSP;
 
 /**

@@ -27,7 +27,7 @@ public class NoteLineView extends GameElement {
 	public NoteLineView(NoteLinePlayer nlp, float width, float height){
 		this.nlp = nlp;
 		this.nl = nlp.getNoteLine();
-		setDimensions(new Vector2f(width, height));
+		setBounds(0, 0, width, height);
 		cellDim = new Vector2f();
 		cellDim.x = (float) width / nl.getNumBeats();
 		cellDim.y = (float) height / nl.getMaxNote();
@@ -38,7 +38,7 @@ public class NoteLineView extends GameElement {
 	
 	@Override
 	public void onDraw(Graphics gfx) {
-		float height = getDimensions().y;
+		float height = getBounds().height;
 		//gfx.pushTransform();   THESE  ARE ALREADY COVERED IN draw()
 		//gfx.translate(getPosition().x, getPosition().y);
 		gfx.setColor(color);

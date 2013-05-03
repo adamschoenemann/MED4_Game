@@ -2,6 +2,10 @@ package dk.aau.oose.core;
 
 
 
+import java.awt.geom.Rectangle2D;
+import java.util.List;
+
+
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -26,8 +30,11 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 
 	
 	private final Transform transform = new Transform();
-	private final Vector2f dimensions = new Vector2f();
+	private final Rectangle2D.Float bounds = new Rectangle2D.Float();
 	private static GameContainer gc;
+	private String name;
+	private final int id;
+	private static int ID = 0;
 	
 	public static void setGameContainer(GameContainer gc){
 		GameElement.gc = gc;
@@ -38,8 +45,8 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	}
 	
 	public GameElement(){
-		Input input = GameElement.gc.getInput();
-		input.addListener(this);
+		id = ID++;
+		setName("GameElement_" + id);
 	}
 	
 	/**
@@ -124,17 +131,16 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 		transform.setScale(w, h);
 	}
 
-	public Vector2f getDimensions(){
-		return dimensions;
+	public Rectangle2D.Float getBounds(){
+		return bounds;
 	}
 	
-	public void setDimensions(Vector2f vec){
-		setDimensions(vec.x, vec.y);
+	public void setBounds(Rectangle2D rect){
+		bounds.setRect(rect);
 	}
 	
-	public void setDimensions(float x, float y){
-		dimensions.x = x;
-		dimensions.y = y;
+	public void setBounds(float x, float y, float width, float height){
+		bounds.setRect(x, y, width, height);		
 	}
 	
 	/**
@@ -229,15 +235,15 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	 * @return true if the point is within the bounding box, else false
 	 */
 	public boolean hitTestPoint(float x, float y){
-		Vector2f pos = getPosition();
-		Vector2f dim = getDimensions();
-		Vector2f scale = getScale();
-		if(x >= pos.x && x <= (pos.x + dim.x * scale.x)
-				&& y >= pos.y && y < (pos.y + dim.y * scale.y)){
+		Rectangle2D bounds = getBounds();
+		/*
+		if(x >= bounds.getMinX() && x <= (bounds.getMaxX() * scale.x)
+				&& y >= bounds.getMinY() && y < (bounds.getMaxY() * scale.y)){
 			return true;
 		}
-		
-		return false;
+		*/
+		return bounds.contains(x, y);
+
 	}
 	
 	public Transform getTransform(){
@@ -261,8 +267,7 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	}
 	@Override
 	public void mousePressed(int btn, int x, int y) {
-		
-		
+		System.out.println("Mouse pressed: " + this);
 	}
 	@Override
 	public void mouseReleased(int btn, int x, int y) {
@@ -370,6 +375,48 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	public void destroy(){
 		((GameElement) this.getParent()).removeChild((GameElement) this);
 	}
+	
+	public GameElement getRoot(){
+		GameElement root = (GameElement) this.getParent();
+		while(root.getParent() != null){
+			root = (GameElement) root.getParent();
+		}
+		return root;
+	}
+	
+	public void getChildrenUnderCoordinates(float x, float y, List<GameElement> result){
+		for(int i = 0; i < numChildren(); i++){
+			GameElement child = getChildAt(i);
+			if(child.hitTestPoint(child.globalToLocal(x, y))){
+				result.add(child);
+			}
+			child.getChildrenUnderCoordinates(x, y, result);
+		}
+	}
+	
+	public void getLeafNodes(List<GameElement> leaves){
+		if(this.numChildren() == 0){
+			leaves.add(this);
+		} else {
+			for(int i = 0; i < numChildren(); i++){
+				getChildAt(i).getLeafNodes(leaves);
+			}
+		}
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String toString(){
+		return getName();
+	}
+	
+	
 	
 	
 }

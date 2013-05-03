@@ -25,7 +25,7 @@ public class PlaybackLine extends PlaybackIndicator {
 	
 	public void onDraw(Graphics gfx){
 		gfx.setColor(color);
-		gfx.fillRect(-1, 0, 3, noteLineView.getDimensions().y);
+		gfx.fillRect(-1, 0, 3, (float) noteLineView.getBounds().getHeight());
 	}
 
 	@Override

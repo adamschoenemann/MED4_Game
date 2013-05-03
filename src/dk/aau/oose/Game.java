@@ -2,18 +2,11 @@ package dk.aau.oose;
 
 
 import org.apache.log4j.BasicConfigurator;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
-import dk.aau.oose.noteline.Note;
-import dk.aau.oose.noteline.NoteLine;
-import dk.aau.oose.noteline.NoteLineView;
-import dk.aau.oose.noteline.NoteLinePlayer;
-import dk.aau.oose.notmat.NoteMatrixPlayer;
 
 /**
  * The main game class
