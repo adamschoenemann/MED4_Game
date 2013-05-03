@@ -24,7 +24,7 @@ public class PlayTrack extends GameElement {
 	public PlayTrack(NoteLineView nlv, int jumpKey, boolean usesRunner){
 		this.nlv = nlv;
 		this.jumpKey = jumpKey;
-		this.setDimensions(nlv.getDimensions());
+		this.setBounds(nlv.getBounds());
 		
 		updatePureTimeToNextNote();
 		lastAcceptedNoteIndex = -1;
@@ -125,7 +125,7 @@ public class PlayTrack extends GameElement {
 		float windowWidth = GameElement.getGameContainer().getWidth();
 		
 		if(score != null)
-			score.setPosition( pbiX + windowWidth * 0.5f - score.getDimensions().x, 0.0f);
+			score.setPosition( pbiX + windowWidth * 0.5f - score.getBounds().x, 0.0f);
 		setPosition( windowWidth * 0.5f - pbiX, getPosition().y);
 	}
 

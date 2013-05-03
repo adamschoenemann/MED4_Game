@@ -21,7 +21,7 @@ public class CreateTrack extends GameElement {
 		this.nlp = nlv.getNoteLinePlayer();
 		this.nl = nlp.getNoteLine();
 		this.addChild(nlv);
-		this.setDimensions(nlv.getDimensions());
+		this.setBounds(nlv.getBounds());
 	}
 	
 	@Override

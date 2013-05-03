@@ -17,7 +17,7 @@ public class PlayController extends GameElement {
 		pt2 = new PlayTrack(nlv2, PT2_CONTROLLER, true);
 		
 		pt1.setPosition(0.0f, PT_VERTICAL_OFFSET);
-		pt2.setPosition(0.0f, PT_VERTICAL_OFFSET + pt1.getPosition().y + pt1.getDimensions().y);
+		pt2.setPosition(0.0f, PT_VERTICAL_OFFSET + pt1.getPosition().y + pt1.getBounds().y);
 		
 		this.addChild(pt1);
 		this.addChild(pt2);

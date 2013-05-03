@@ -31,7 +31,7 @@ public class NoteMatrixElement extends GameElement {
 	public NoteMatrixElement(NoteMatrix nm, int width, int height){
 		this.nm = nm;
 		this.nmp = new NoteMatrixPlayer(nm, 180);
-		setDimensions(width, height);
+		setBounds(width, height);
 		this.rowHeight = height / nm.getRows();
 		this.colWidth = width / nm.getColumns();
 	}
