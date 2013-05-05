@@ -20,7 +20,7 @@ public class HighScoreManager {
 	public static void main(String[] args) {
 		HighScoreManager hsm = new HighScoreManager();
 		
-		hsm.clear();
+		hsm.deleteRecords();
 		
 		hsm.add("A", 1000);
 		hsm.add("B", 10);
@@ -128,7 +128,7 @@ public class HighScoreManager {
 		}
 	}
 	
-	public void clear(){
+	public void deleteRecords(){
 		scoreRecords.clear();
 	}
 	
@@ -141,6 +141,37 @@ public class HighScoreManager {
 		return out.toString();
 	}
 	
+	public int size(){
+		return scoreRecords.size();
+	}
 	
-
+	public String getNameAt(int index){
+		ScoreRecord s = getScoreRecordAt(index);
+		if(s != null){
+			return s.getName();
+		} else {
+			return null;
+		}
+	}
+	
+	public String getScoreAt(int index){
+		ScoreRecord s = getScoreRecordAt(index);
+		if(s != null){
+			return Integer.toString(s.getScore());
+		} else {
+			return null;
+		}
+	}
+	
+	public ScoreRecord getScoreRecordAt(int index){
+		if(index >= 0 && index < size()){
+			int currentIndex = 0;
+			for(ScoreRecord s : scoreRecords){
+				if(currentIndex++ == index){
+					return s;
+				}
+			}
+		}
+		return null;
+	}
 }
