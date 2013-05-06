@@ -1,5 +1,6 @@
 package dk.aau.oose.play;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.newdawn.slick.Input;
@@ -86,15 +87,20 @@ public class PlayController extends GameElement {
 		this.addChild(saveButton);
 	}
 	
-	private void saveLastPlaythrough(){
-		Date date = new Date();
-		if(cooperative){
-			saveAs("Coop " + date.toString());
-		} else {
-			saveAs("Single " + date.toString());
-		}
+	private void saveLastPlaythrough(){		
+		Calendar rightNow = Calendar.getInstance();
+		int dayOfMonth = rightNow.get(Calendar.DAY_OF_MONTH);
+		int hour = rightNow.get(Calendar.HOUR_OF_DAY);
+		int minutes = rightNow.get(Calendar.MINUTE);
+		int seconds = rightNow.get(Calendar.SECOND);
 		
-		System.out.println("Save last playthrough...");
+		String dateString = new String(Integer.toString(dayOfMonth) + "-" + Integer.toString(hour) + "-" + Integer.toString(minutes) + "-" + Integer.toString(seconds)); 
+				
+		if(cooperative){
+			saveAs("Coop-" + dateString);
+		} else {
+			saveAs("Single-" + dateString);
+		}
 	}
 	
 	private void saveAs(String name){
