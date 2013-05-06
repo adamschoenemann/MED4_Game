@@ -132,14 +132,13 @@ public class NoteLinePlayer {
 	//TODO put elsewhere?
 	public void saveLastTakeAs(String name){
 		OscMessage m = new OscMessage("save");
-		m.add(name);
+		m.add(name + ".aiff"); //Presume aiff file format
 		MaxMSP.send(m);
 	}
 	
 	
 	public static void main(String[] args) throws InterruptedException{
 		MaxMSP.Connect("127.0.0.1", 7400);
-		
 		
 		NoteLine nl = NoteLine.newTestInstance(5, 16);
 		System.out.println(nl);
@@ -150,11 +149,6 @@ public class NoteLinePlayer {
 			nlp.playNote(i, nlp.getBeatDuration());
 			Thread.sleep(200);
 		}
-		
-		//nlp.play();
-		
 	}
-	
-
 	
 }
