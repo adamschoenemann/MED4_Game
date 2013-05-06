@@ -3,8 +3,8 @@ package dk.aau.oose.create;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import dk.aau.oose.noteline.Note;
 import dk.aau.oose.core.GameElement;
+import dk.aau.oose.noteline.Note;
 import dk.aau.oose.noteline.NoteLine;
 import dk.aau.oose.noteline.NoteLinePlayer;
 import dk.aau.oose.noteline.NoteLineView;
@@ -113,6 +113,18 @@ public class CreateTrack extends GameElement {
 		}
 	}
 		
+	
+	@Override
+	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+		Input input = getGameContainer().getInput();
+		if(input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)){
+			int noteHeight = nlv.calculateNoteHeight(newy);
+			int noteIndex = nlv.calculateNoteIndex(newx);
+			if(noteHeight >= 0 && noteIndex >= 0){
+				nl.setNoteValue(noteHeight, noteIndex);
+			}
+		}
+	}
 
 	@Override
 	public void onDraw(Graphics gfx) {

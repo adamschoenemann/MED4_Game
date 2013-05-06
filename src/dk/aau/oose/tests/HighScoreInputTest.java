@@ -9,10 +9,10 @@ import org.newdawn.slick.SlickException;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.osc.MaxMSP;
 import dk.aau.oose.play.scores.HighScoreInput;
+import dk.aau.oose.play.scores.HighScoreManager;
 import dk.aau.oose.play.scores.HighScoreView;
 
 public class HighScoreInputTest extends BasicGame {
-
 
 	private HighScoreInput hsi;
 	
@@ -36,23 +36,20 @@ public class HighScoreInputTest extends BasicGame {
 	public void init(GameContainer gc) throws SlickException {
 		GameElement.setGameContainer(gc);
 		
-		hsi = new HighScoreInput();
+		hsi = new HighScoreInput(30);
+		hsi.setPosition((gc.getWidth() - hsi.getWidth()) / 2,
+				(gc.getHeight() - hsi.getHeight()) / 2);
 		
-		
-		/*hsi = new HighScoreInput(30);
-		hsi.setPosition(300, 300);
-		*/
 	}
 
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-		//hsi.draw();
-		//hsi.paint((java.awt.Graphics)g);
+		hsi.draw();
 	}
 
 	@Override
 	public void update(GameContainer gc, int arg1) throws SlickException {
-		//hsi.update();
+		hsi.update();
 	}
 
 }

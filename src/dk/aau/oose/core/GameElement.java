@@ -79,7 +79,7 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	 * Draw the element and all its children
 	 */
 	public final void draw(){
-		Graphics gfx = GameElement.gc.getGraphics();
+		Graphics gfx = getGameContainer().getGraphics();
 		gfx.pushTransform();
 		gfx.translate(getPosition().x, getPosition().y);
 		gfx.rotate(0, 0, getRotation());
@@ -427,8 +427,53 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 		return getName();
 	}
 	
+	public float getWidth(){
+		return (float) bounds.getWidth();
+	}
+	
+	public float getHeight(){
+		return (float) bounds.getHeight();
+	}
+	
+	public float getX(){
+		return getPosition().x;
+	}
+	
+	public float getY(){
+		return getPosition().y;
+	}
+		
 	public void listen(){
 		getGameContainer().getInput().addListener(this);
+	}
+	
+	
+	@Override
+	public void addChild(GameElement child) {
+		child.onAdded(this);
+		super.addChild(child);
+	}
+
+	@Override
+	public boolean removeChild(GameElement child) {
+		child.onRemoved();
+		return super.removeChild(child);
+	}
+	
+	
+	@Override
+	public GameElement removeChildAt(int index) {
+		GameElement child = super.removeChildAt(index);
+		child.onRemoved();
+		return child;
+	}
+
+	public void onAdded(GameElement parent){
+		
+	}
+
+	public void onRemoved(){
+		
 	}
 
 }

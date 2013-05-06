@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.util.TreeSet;
 
 public class HighScoreManager {
-
+	
+	private static HighScoreManager instance;
+	
 	private File file;
 	private BufferedReader reader;
 	private BufferedWriter writer;
@@ -48,6 +50,13 @@ public class HighScoreManager {
 			}
 		} 
 		scoreRecords = readAll();
+	}
+	
+	public static HighScoreManager getInstance(){
+		if(instance == null){
+			instance = new HighScoreManager();
+		}
+		return instance;
 	}
 	
 	public void add(ScoreRecord s){
