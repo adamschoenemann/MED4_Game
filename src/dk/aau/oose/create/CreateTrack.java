@@ -3,6 +3,7 @@ package dk.aau.oose.create;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
+import dk.aau.oose.noteline.Note;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLine;
 import dk.aau.oose.noteline.NoteLinePlayer;
@@ -22,6 +23,8 @@ public class CreateTrack extends GameElement {
 		this.nl = nlp.getNoteLine();
 		this.addChild(nlv);
 		this.setBounds(nlv.getBounds());
+		
+		listen();
 	}
 	
 	@Override
@@ -44,6 +47,9 @@ public class CreateTrack extends GameElement {
 	}
 
 	private void handleInput() {
+		Input input = getGameContainer().getInput();
+		
+		
 		
 		/*
 		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
@@ -92,25 +98,21 @@ public class CreateTrack extends GameElement {
 			int noteIndex = nlv.calculateNoteIndex(x);
 
 			//System.out.println(System.currentTimeMillis()%1000 + "\tMouse pressed on " + mx + ", " + my + "; noteHeight is " + noteHeight + " and noteIndex is " + index);
-
+			
 			if (noteHeight >= 0 && noteIndex >= 0) {
-				//int index = nlv.calculateNoteIndex(mx);
-				//if (input.isKeyDown(Input.KEY_LSHIFT)) {
-				nl.setNoteValue(noteHeight, noteIndex);
-				/*} else if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyDown(input.KEY_RCONTROL)) {
+				if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(input.KEY_RSHIFT)) {
 
-				System.out.println("KEY_LCONTROL down - as it should be!");
-				Note note = nl.getNote(noteIndex);
-				note.setDistinct(!note.isDistinct());
-				nl.setNote(note, noteIndex);
-			} else {
-				nlp.playNoteAt(noteIndex);
-				System.out.println("Index: " + noteIndex);
-			}*/
-			}
+					System.out.println("shift down - as it should be!");
+					Note note = nl.getNote(noteIndex);
+					note.setDistinct(!note.isDistinct());
+					nl.setNote(note, noteIndex);
+				} else {
+					nl.setNoteValue(noteHeight, noteIndex);
+				}
+			}  
 		}
-		
 	}
+		
 
 	@Override
 	public void onDraw(Graphics gfx) {

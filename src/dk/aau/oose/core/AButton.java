@@ -13,6 +13,7 @@ public abstract class AButton extends GameElement {
 	public AButton(String text, float w, float h){
 		setBounds(0, 0, w, h);
 		setText(text);
+		listen();
 	}
 
 	@Override

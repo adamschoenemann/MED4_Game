@@ -8,7 +8,6 @@ import org.newdawn.slick.SlickException;
 
 import dk.aau.oose.GameController;
 import dk.aau.oose.core.GameElement;
-import dk.aau.oose.create.CreateController;
 import dk.aau.oose.osc.MaxMSP;
 
 public class GameControllerTest extends BasicGame {
@@ -29,7 +28,7 @@ public class GameControllerTest extends BasicGame {
 	@Override
 	public void init(GameContainer gc) throws SlickException {
 		GameElement.setGameContainer(gc);
-		gameController = new GameController(false);
+		gameController = new GameController();
 	}
 
 	@Override

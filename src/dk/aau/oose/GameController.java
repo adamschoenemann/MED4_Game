@@ -1,5 +1,6 @@
 package dk.aau.oose;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
@@ -13,18 +14,23 @@ public class GameController extends GameElement {
 	
 	private CreateController createController;
 	private PlayController playController;
-	private boolean cooperative;
+	private boolean cooperative = false;
 	
-	public GameController(boolean cooperative){
-		this.cooperative = cooperative;
+	private AButton modeSelect;
+	private AButton onePlayerSelect, twoPlayerSelect;
+	
+	public GameController(){
 		startCreate();
 		
-		GameElement switchButton = new AButton("Switch Modes!", 200, 40){
-			
+		initiateButtons();
+	}
+
+	private void initiateButtons() {
+		modeSelect = new AButton("Play!", 100, 40){
 			@Override
 			public void mousePressed(int btn, int x, int y){
 				if(btn == Input.MOUSE_LEFT_BUTTON){
-					if(this.hitTestPoint(x, y)){
+					if(this.hitTestPoint(this.globalToLocal(x, y))){
 						if(playController != null){
 							switchToCreate(playController.getTracks());
 						} else {
@@ -33,11 +39,37 @@ public class GameController extends GameElement {
 					}
 				}
 			}
-			
 		};
+		
+		onePlayerSelect = new AButton("Singleplayer", 150, 40){
+			@Override
+			public void mousePressed(int btn, int x, int y){
+				if(btn == Input.MOUSE_LEFT_BUTTON){
+					if(this.hitTestPoint(this.globalToLocal(x, y))){
+						cooperative = false;
+					}
+				}
+			}
+		};
+		
+		twoPlayerSelect = new AButton("Cooperative", 150, 40){
+			@Override
+			public void mousePressed(int btn, int x, int y){
+				if(btn == Input.MOUSE_LEFT_BUTTON){
+					if(this.hitTestPoint(this.globalToLocal(x, y))){
+						cooperative = true;
+					}
+				}
+			}
+		};
+		
+		modeSelect.setPosition(100, 10);
+		onePlayerSelect.setPosition(300, 10);
+		twoPlayerSelect.setPosition(500, 10);
 
-		this.addChild(switchButton);
-		switchButton.setPosition(100, 0);
+		this.addChild(modeSelect);
+		this.addChild(onePlayerSelect);
+		this.addChild(twoPlayerSelect);
 	}
 
 	@Override
@@ -53,18 +85,22 @@ public class GameController extends GameElement {
 	
 	private void switchToPlay(NoteLineView [] nlvs){
 		playController = new PlayController(nlvs[0], nlvs[1], cooperative);
-		this.addChild(playController);
-		createController.destroy();
+		System.out.println("cooperative? " + cooperative);
+		this.addChildAt(playController, 0);
+		this.removeChild(createController);
 		createController = null;
+		modeSelect.setText("Create!");
+		
 	}
 	
 	private void switchToCreate(NoteLineView [] nlvs){
 		createController = new CreateController(nlvs[0], nlvs[1]);
-		this.addChild(createController);
+		this.addChildAt(createController, 0);
 		if(playController.isPlaying())
 			playController.stopPlaying();
-		playController.destroy();
+		this.removeChild(playController);
 		playController = null;
+		modeSelect.setText("Play!");
 	}
 	
 	private void startCreate(){

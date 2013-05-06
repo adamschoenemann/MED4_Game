@@ -35,18 +35,24 @@ public class HighScoreInputTest extends BasicGame {
 	@Override
 	public void init(GameContainer gc) throws SlickException {
 		GameElement.setGameContainer(gc);
-		hsi = new HighScoreInput(30);
+		
+		hsi = new HighScoreInput();
+		
+		
+		/*hsi = new HighScoreInput(30);
 		hsi.setPosition(300, 300);
+		*/
 	}
 
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-		hsi.draw();
+		//hsi.draw();
+		//hsi.paint((java.awt.Graphics)g);
 	}
 
 	@Override
 	public void update(GameContainer gc, int arg1) throws SlickException {
-		hsi.update();
+		//hsi.update();
 	}
 
 }

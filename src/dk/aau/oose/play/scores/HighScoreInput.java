@@ -1,5 +1,37 @@
 package dk.aau.oose.play.scores;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class HighScoreInput extends Panel {
+	
+	private Button testbtn;
+	
+	public HighScoreInput(){
+		testbtn = new Button("Test");
+		add(testbtn);
+		testbtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				buttonPressed();
+			}
+		});
+	}
+	
+	private void buttonPressed(){
+		System.out.println("Button pressed");
+	}
+	
+	
+}
+
+
+
+/*
+package dk.aau.oose.play.scores;
+
+import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -35,26 +67,35 @@ public class HighScoreInput extends GameElement {
 			
 			@Override
 			public void mousePressed(int btn, int x, int y){
+				Vector2f loc = this.globalToLocal(x, y);
+				System.out.format("(%f, %f)\n", loc.x, loc.y);
 				if(btn == Input.MOUSE_LEFT_BUTTON){
-					if(this.hitTestPoint(x, y)){
+					if(this.hitTestPoint(this.globalToLocal(x, y))){
+						System.out.println("Hey!");
 						submit();
 					}
 				}
 			}
 		};
 		button.setPosition(0.0f, 50.0f);
+		button.listen();
+		this.addChild(button);
 	}
 
 	@Override
 	public void onDraw(Graphics g) {
-		//txt.render(getGameContainer(), g);
-		button.draw();
+		txt.render(getGameContainer(), g);
+		//button.draw();
 	}
 	
-	private void submit(){
+	public void submit(){
 		System.out.println("Submitting name: " + txt.getText() + " and score: " + score );
 	}
 	
 	
 	
 }
+
+ * 
+ * 
+ */

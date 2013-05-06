@@ -35,9 +35,9 @@ public class NoteLineView extends GameElement {
 	
 	@Override
 	public void onDraw(Graphics gfx) {
+
 		float height = getBounds().height;
-		//gfx.pushTransform();   THESE  ARE ALREADY COVERED IN draw()
-		//gfx.translate(getPosition().x, getPosition().y);
+
 		gfx.setColor(color);
 		for(int i = 0; i < nl.getNumBeats(); i++){
 			int val = nl.getNote(i).getValue();
@@ -55,7 +55,6 @@ public class NoteLineView extends GameElement {
 			}
 		}
 		grid.draw();
-		//gfx.popTransform();
 		
 	}
 	

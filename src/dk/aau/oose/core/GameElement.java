@@ -272,7 +272,7 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	}
 	@Override
 	public void mousePressed(int btn, int x, int y) {
-		System.out.println("Mouse pressed: " + this);
+		//System.out.println("Mouse pressed: " + this);
 	}
 	@Override
 	public void mouseReleased(int btn, int x, int y) {
@@ -425,6 +425,10 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	
 	public String toString(){
 		return getName();
+	}
+	
+	public void listen(){
+		getGameContainer().getInput().addListener(this);
 	}
 
 }

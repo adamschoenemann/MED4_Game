@@ -31,7 +31,7 @@ public class Game {
 		
 		GameContainer gc = GameWorld.getGameContainer();
 		GameElement.setGameContainer(gc);
-		controller = new GameController(false); //TODO figure out a way to set no of players without hardcoding it.
+		controller = new GameController();
 		GameWorld.add(controller);
 		
 		

@@ -101,13 +101,18 @@ public class PlayThread extends Thread {
 				e.printStackTrace();
 			}
 		}
-		inIntro = false;		
+		inIntro = false;	
+		
+		nlp.startRecording();
 		
 		startTime = System.currentTimeMillis();
 		index = 0;
 		int noteDuration = 1;
 		for(int i = 0; i < nl.getNumBeats(); i += noteDuration){
-			if(stopFlag) break;
+			if(stopFlag){
+				nlp.stopRecording();
+				break;
+			}
 			noteDuration = nlp.playNoteAt(i);
 			index = i;
 			try {
@@ -116,6 +121,7 @@ public class PlayThread extends Thread {
 				e.printStackTrace();
 			}
 		}
+		nlp.stopRecording();
 		Thread.currentThread().interrupt();
 	}
 	

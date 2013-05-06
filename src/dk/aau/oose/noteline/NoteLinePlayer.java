@@ -75,13 +75,6 @@ public class NoteLinePlayer {
 		
 		return mult;
 	}
-	
-	public void playClick(){
-		OscMessage msg = new OscMessage(CLICK_LABEL);
-		System.out.println("Click sent to Max.");
-		MaxMSP.send(msg);
-	}
-
 
 	private void playNote(int note, int duration){
 		// First calculate actual value based on octaves
@@ -115,9 +108,32 @@ public class NoteLinePlayer {
 		return beatDuration;
 	}
 	
-	//TODO remove nextNoteIsPure from NoteLinePlayer
 	public void setNextNoteIsPure(boolean nextNoteIsPure){
 		this.nextNoteIsPure = nextNoteIsPure;
+	}
+	
+	public void playClick(){
+		sendLabel(CLICK_LABEL);
+	}
+	
+	public void startRecording(){
+		sendLabel("startRecording");
+	}
+	
+	public void stopRecording(){
+		sendLabel("stopRecording");
+	}
+	
+	private void sendLabel(String label){
+		OscMessage msg = new OscMessage(label);
+		MaxMSP.send(msg);
+	}
+	
+	//TODO put elsewhere?
+	public void saveLastTakeAs(String name){
+		OscMessage m = new OscMessage("save");
+		m.add(name);
+		MaxMSP.send(m);
 	}
 	
 	
