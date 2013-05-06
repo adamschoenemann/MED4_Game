@@ -105,7 +105,7 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	public void setPosition(float x, float y) {
 		transform.setPosition(x, y);
 	}
-
+	
 	@Override
 	public float getRotation() {
 		return transform.getRotation();
