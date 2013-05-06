@@ -49,8 +49,6 @@ public class PlayTrack extends GameElement {
 		pureTimeToNextNote = nlv.getNoteLinePlayer().getBeatDuration()/2;
 	}
 
-
-
 	@Override
 	public void onUpdate() {
 		nlv.update();

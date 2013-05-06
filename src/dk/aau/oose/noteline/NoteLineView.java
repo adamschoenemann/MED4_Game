@@ -100,5 +100,19 @@ public class NoteLineView extends GameElement {
 		
 		return nlv;
 	}
+	
+	public static NoteLineView newEmptyInstance(int steps, int numBeats, int startOctave, int notesPerOctave, int tempo, float width, float height){	
+		return newFixedValueInstance(0, steps, numBeats, startOctave, notesPerOctave, tempo, width, height);
+	}
+	
+	public static NoteLineView newFixedValueInstance(int value, int steps, int numBeats, int startOctave, int notesPerOctave, int tempo, float width, float height){
+		NoteLine nl = NoteLine.newFixedValueInstance(value, steps, numBeats);
+		NoteLinePlayer nlp = new NoteLinePlayer(nl, startOctave, notesPerOctave, tempo);
+		NoteLineView nlv = new NoteLineView(nlp, width, height);
+		
+		return nlv;
+	}
+	
+	
 
 }

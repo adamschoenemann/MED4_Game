@@ -40,7 +40,7 @@ public class PlayControllerTest extends BasicGame {
 		//NoteLineView.newTestInstance(steps, numBeats, startOctave, notesPerOctave, tempo, width, height)
 		NoteLineView nlv1 = NoteLineView.newTestInstance(10, 32, 2, 5, 120, 2*750, 300);
 		NoteLineView nlv2 = NoteLineView.newTestInstance(10, 32, 0, 5, 120, 2*750, 300);
-		pc = new PlayController(nlv1, nlv2, true);
+		pc = new PlayController(nlv1, nlv2, 2);
 	}
 
 	@Override

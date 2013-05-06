@@ -89,6 +89,9 @@ public class NoteLinePlayer {
 	}
 	
 	private void sendNote(int value, int octave, long duration){
+		if(value == 0)
+			return;
+		
 		OscMessage msg = new OscMessage(NOTE_LABEL);
 		msg.add(value);
 		msg.add(octave);
@@ -136,7 +139,7 @@ public class NoteLinePlayer {
 		MaxMSP.send(m);
 	}
 	
-	
+	/*
 	public static void main(String[] args) throws InterruptedException{
 		MaxMSP.Connect("127.0.0.1", 7400);
 		
@@ -150,5 +153,6 @@ public class NoteLinePlayer {
 			Thread.sleep(200);
 		}
 	}
+	*/
 	
 }

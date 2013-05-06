@@ -14,18 +14,19 @@ public class PlayController extends GameElement {
 	private PlayTrack pt1, pt2;
 	private Background bg;
 	private AButton saveButton;
-	private boolean cooperative;
+	private int numberOfPlayers;
 	
-	private static final int PT1_CONTROLLER = Input.KEY_A, 
+	private static final int SINGLEPLAYER_CONTROLLER = Input.KEY_SPACE,
+							 PT1_CONTROLLER = Input.KEY_A, 
 							 PT2_CONTROLLER = Input.KEY_L,
 							 PT_VERTICAL_OFFSET = 50;
 	
 	
-	public PlayController(NoteLineView nlv1, NoteLineView nlv2, boolean cooperative){
-		pt1 = new PlayTrack(nlv1, PT1_CONTROLLER, true);
-		pt2 = new PlayTrack(nlv2, PT2_CONTROLLER, cooperative);
+	public PlayController(NoteLineView nlv1, NoteLineView nlv2, int numberOfPlayers){
+		pt1 = new PlayTrack(nlv1, (numberOfPlayers > 1) ? SINGLEPLAYER_CONTROLLER : PT1_CONTROLLER, (numberOfPlayers > 0));
+		pt2 = new PlayTrack(nlv2, PT2_CONTROLLER, (numberOfPlayers > 1));
 		bg = new Background();
-		this.cooperative = cooperative;
+		this.numberOfPlayers = numberOfPlayers;
 		
 		pt1.setPosition(0.0f, PT_VERTICAL_OFFSET);
 		pt2.setPosition(0.0f, PT_VERTICAL_OFFSET + pt1.getPosition().y + pt1.getBounds().height);
@@ -35,8 +36,8 @@ public class PlayController extends GameElement {
 		this.addChild(pt2);
 		
 		initiateButton();
-		
 		listen();
+		startPlaying(); //Start right away; no need to press space.
 	}
 	
 	public void startPlaying(){
@@ -73,7 +74,7 @@ public class PlayController extends GameElement {
 	}
 	
 	private void initiateButton(){
-		saveButton = new AButton("Save", 700, 40){
+		saveButton = new AButton("Save last playthrough", 100, 40){
 			@Override
 			public void mousePressed(int btn, int x, int y){
 				if(btn == Input.MOUSE_LEFT_BUTTON){
@@ -84,10 +85,17 @@ public class PlayController extends GameElement {
 			}
 		};
 		
+		saveButton.setPosition(800, 10);
+		
 		this.addChild(saveButton);
 	}
 	
 	private void saveLastPlaythrough(){		
+		pt1.getNoteLineView().getNoteLinePlayer().saveLastTakeAs( generateFilename(numberOfPlayers > 1));
+	}
+	
+	
+	private static String generateFilename(boolean cooperative){
 		Calendar rightNow = Calendar.getInstance();
 		int dayOfMonth = rightNow.get(Calendar.DAY_OF_MONTH);
 		int hour = rightNow.get(Calendar.HOUR_OF_DAY);
@@ -97,15 +105,10 @@ public class PlayController extends GameElement {
 		String dateString = new String(Integer.toString(dayOfMonth) + "-" + Integer.toString(hour) + "-" + Integer.toString(minutes) + "-" + Integer.toString(seconds)); 
 				
 		if(cooperative){
-			saveAs("Coop-" + dateString);
+			return new String("Coop-" + dateString);
 		} else {
-			saveAs("Single-" + dateString);
+			return new String("Single-" + dateString);
 		}
-	}
-	
-	private void saveAs(String name){
-		System.out.println("Save as " + name);
-		pt1.getNoteLineView().getNoteLinePlayer().saveLastTakeAs(name);
 	}
 	
 }

@@ -26,65 +26,7 @@ public class CreateTrack extends GameElement {
 		
 		listen();
 	}
-	
-	@Override
-	public void onUpdate() {
-		handleInput();
-		
-		
-		/*
-		if(playThread != null) {
-			if(playThread.isAlive()) {
-				System.out.format("Index: %d, elapsedTime: %d, nextNoteTime: %d\n", 
-						playThread.getIndex(), 
-						playThread.getElapsedTime(),
-						playThread.getNextNoteTime());
-			} else {
-				playThread = null;
-			}
-		}*/
-		
-	}
 
-	private void handleInput() {
-		Input input = getGameContainer().getInput();
-		
-		
-		
-		/*
-		if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
-			float mx = input.getMouseX(), my = input.getMouseY();
-			int noteHeight = nlv.calculateNoteHeight(my);
-			int index = nlv.calculateNoteIndex(mx);
-			
-			System.out.println(System.currentTimeMillis()%1000 + "\tMouse pressed on " + mx + ", " + my + "; noteHeight is " + noteHeight + " and noteIndex is " + index);
-			
-			
-			if (noteHeight >= 0) {
-				//int index = nlv.calculateNoteIndex(mx);
-				if (input.isKeyDown(Input.KEY_LSHIFT)) {
-					nl.setNoteValue(noteHeight, index);
-				} else if (input.isKeyDown(Input.KEY_LCONTROL) || input.isKeyDown(input.KEY_RCONTROL)) {
-					
-					System.out.println("KEY_LCONTROL down - as it should be!");
-					Note note = nl.getNote(index);
-					note.setDistinct(!note.isDistinct());
-					nl.setNote(note, index);
-				} else {
-					nlp.playNoteAt(index);
-					System.out.println("Index: " + index);
-				}
-			}
-		}*/
-	/*	if(input.isKeyPressed(Input.KEY_SPACE)){
-			if(playThread == null){
-				playThread = new PlayThread(nlp);
-				playThread.start();
-			}
-		}*/
-	
-	}
-	
 	public void moveTrack(float numberOfPixels){
 		setPosition(getPosition().x + numberOfPixels, getPosition().y);
 	}

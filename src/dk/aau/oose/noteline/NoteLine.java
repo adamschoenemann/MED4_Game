@@ -61,6 +61,20 @@ public class NoteLine {
 		return nl;
 	}
 	
+	public static NoteLine newEmptyInstance(int steps, int numBeats){
+		return newFixedValueInstance(0, steps, numBeats);
+	}
+	
+	public static NoteLine newFixedValueInstance(int value, int steps, int numBeats){
+		NoteLine nl = new NoteLine(steps, numBeats);
+		
+		for(int i = 0; i < numBeats; i++){
+			nl.setNoteValue(value, i);
+		}
+		
+		return nl;
+	}
+	
 	public void fixDistinct(int index){
 		if(index == getNumBeats() - 1){
 			beats[index].setDistinct(true);

@@ -10,6 +10,7 @@ public class CreateController extends GameElement {
 	private static final int SCROLL_RIGHT = Input.KEY_D, 
 							 SCROLL_LEFT = Input.KEY_A, 
 							 SCROLL_SPEED = 10,
+							 SCROLL_BUTTON = 1,
 							 MAX_NOTE = 10,
 							 NUMBER_OF_BEATS = 32,
 							 TRACK1_OCTAVE = 5,
@@ -18,6 +19,9 @@ public class CreateController extends GameElement {
 							 WIDTH = NUMBER_OF_BEATS * 50,
 							 HEIGHT = 300,
 							 PT_VERTICAL_OFFSET = 90;
+	
+	private boolean scrolling;
+	private float scrollStartX;
 	
 	
 	public CreateController(NoteLineView nlv1, NoteLineView nlv2){
@@ -29,26 +33,45 @@ public class CreateController extends GameElement {
 		
 		this.addChild(ct1);
 		this.addChild(ct2);
+		
+		listen();
 	}
 	
 	public CreateController(){
-		this(NoteLineView.newTestInstance(MAX_NOTE, NUMBER_OF_BEATS, TRACK1_OCTAVE, 5, TEMPO, WIDTH, HEIGHT), 
-			 NoteLineView.newTestInstance(MAX_NOTE, NUMBER_OF_BEATS, TRACK2_OCTAVE, 5, TEMPO, WIDTH, HEIGHT));
+		this(NoteLineView.newEmptyInstance(MAX_NOTE, NUMBER_OF_BEATS, TRACK1_OCTAVE, 5, TEMPO, WIDTH, HEIGHT), 
+			 NoteLineView.newEmptyInstance(MAX_NOTE, NUMBER_OF_BEATS, TRACK2_OCTAVE, 5, TEMPO, WIDTH, HEIGHT));
 	}
 	
 	@Override
 	public void onUpdate() {
-		Input input = getGameContainer().getInput();
-		if(input.isKeyDown(SCROLL_LEFT)){ // TODO find alternative input to scroll
-			scroll(SCROLL_SPEED);
-		} else if(input.isKeyDown(SCROLL_RIGHT)){
-			scroll(-SCROLL_SPEED);
+		
+		if(scrolling){
+			float speed = (scrollStartX - getGameContainer().getInput().getMouseX()) * 0.075f;
+			scroll(speed);
 		}
+
+	}
+	
+	@Override
+	public void keyPressed(int key, char c) {
 		
 	}
 	
+	@Override
+	public void mousePressed(int btn, int x, int y) {
+		if(btn == SCROLL_BUTTON){
+			scrolling = true;
+			scrollStartX = x;
+		}
+	}
+	
+	public void mouseReleased(int btn, int x, int y) {
+		if(btn == SCROLL_BUTTON){
+			scrolling = false;
+		}
+	}
+	
 	public void scroll(float pixels){
-		System.out.println("Scroll " + pixels);
 		ct1.moveTrack(pixels);
 		ct2.moveTrack(pixels);
 	}

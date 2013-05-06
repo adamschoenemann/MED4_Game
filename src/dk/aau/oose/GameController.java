@@ -21,7 +21,6 @@ public class GameController extends GameElement {
 	
 	public GameController(){
 		startCreate();
-		
 		initiateButtons();
 	}
 
@@ -84,13 +83,11 @@ public class GameController extends GameElement {
 	}
 	
 	private void switchToPlay(NoteLineView [] nlvs){
-		playController = new PlayController(nlvs[0], nlvs[1], cooperative);
-		System.out.println("cooperative? " + cooperative);
+		playController = new PlayController(nlvs[0], nlvs[1], (cooperative ? 2 : 1) );
 		this.addChildAt(playController, 0);
 		this.removeChild(createController);
 		createController = null;
 		modeSelect.setText("Create!");
-		
 	}
 	
 	private void switchToCreate(NoteLineView [] nlvs){

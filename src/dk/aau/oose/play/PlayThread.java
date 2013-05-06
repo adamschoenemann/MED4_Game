@@ -107,6 +107,8 @@ public class PlayThread extends Thread {
 		
 		startTime = System.currentTimeMillis();
 		index = 0;
+		setNextNoteIsPure(true); //Make first note pure; user can't do so in time.
+
 		int noteDuration = 1;
 		for(int i = 0; i < nl.getNumBeats(); i += noteDuration){
 			if(stopFlag){
