@@ -9,12 +9,7 @@ public abstract class AButton extends GameElement {
 	
 	private String text;
 	private Color bgColor = Color.white, fgColor = Color.black;
-	/*
-	public static interface MouseListener {
-		public void handle(int btn, float mx, float my);
-	}
-	private MouseListener onMousePressed;
-	*/
+
 	public AButton(String text, float w, float h){
 		setBounds(0, 0, w, h);
 		setText(text);
