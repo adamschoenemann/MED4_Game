@@ -5,12 +5,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.MouseListener;
 
-public abstract class AButton extends GameElement {
+public class Button extends GameElement {
 	
 	private String text;
 	private Color bgColor = Color.white, fgColor = Color.black;
 
-	public AButton(String text, float w, float h){
+	public Button(String text, float w, float h){
 		setBounds(0, 0, w, h);
 		setText(text);
 		listen();

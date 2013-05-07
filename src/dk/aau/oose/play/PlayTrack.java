@@ -106,6 +106,13 @@ public class PlayTrack extends GameElement {
 		lastAcceptedNoteIndex = -1;
 		if(playThread == null){
 			playThread = new PlayThread(nlv.getNoteLinePlayer());
+			playThread.setOnStopCallback(new PlayThread.Callback() {
+				@Override
+				public void call() {
+					
+					
+				}
+			});
 			playThread.start();
 		}
 	}
@@ -134,7 +141,8 @@ public class PlayTrack extends GameElement {
 	public NoteLineView getNoteLineView() {
 		return nlv;
 	}
-
+	
+	
 
 
 }

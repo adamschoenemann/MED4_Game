@@ -16,7 +16,7 @@ public class Application {
 		//Creates a new instance of the game engine
 		AppGameContainer app = new AppGameContainer(GameWorld.getInstance());
 		//Sets the resolution
-		app.setDisplayMode(1000, 400, false);
+		app.setDisplayMode(1000, 800, false);
 		//Sets the update interval to 50 times per second
 		app.setMinimumLogicUpdateInterval(20);
 		//Starts the game

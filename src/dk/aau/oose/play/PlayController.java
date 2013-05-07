@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.newdawn.slick.Input;
 
-import dk.aau.oose.core.AButton;
+import dk.aau.oose.core.Button;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.graphics.Background;
 import dk.aau.oose.noteline.NoteLineView;
@@ -13,7 +13,7 @@ import dk.aau.oose.noteline.NoteLineView;
 public class PlayController extends GameElement {
 	private PlayTrack pt1, pt2;
 	private Background bg;
-	private AButton saveButton;
+	private Button saveButton;
 	private int numberOfPlayers;
 	
 	private static final int SINGLEPLAYER_CONTROLLER = Input.KEY_SPACE,
@@ -74,7 +74,7 @@ public class PlayController extends GameElement {
 	}
 	
 	private void initiateButton(){
-		saveButton = new AButton("Save last playthrough", 100, 40){
+		saveButton = new Button("Save last playthrough", 100, 40){
 			@Override
 			public void mousePressed(int btn, int x, int y){
 				if(btn == Input.MOUSE_LEFT_BUTTON){

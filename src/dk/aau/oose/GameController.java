@@ -4,7 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-import dk.aau.oose.core.AButton;
+import dk.aau.oose.core.Button;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.create.CreateController;
 import dk.aau.oose.noteline.NoteLineView;
@@ -16,8 +16,8 @@ public class GameController extends GameElement {
 	private PlayController playController;
 	private boolean cooperative = false;
 	
-	private AButton modeSelect;
-	private AButton onePlayerSelect, twoPlayerSelect;
+	private Button modeSelect;
+	private Button onePlayerSelect, twoPlayerSelect;
 	
 	public GameController(){
 		startCreate();
@@ -25,7 +25,7 @@ public class GameController extends GameElement {
 	}
 
 	private void initiateButtons() {
-		modeSelect = new AButton("Play!", 100, 40){
+		modeSelect = new Button("Play!", 100, 40){
 			@Override
 			public void mousePressed(int btn, int x, int y){
 				if(btn == Input.MOUSE_LEFT_BUTTON){
@@ -40,7 +40,7 @@ public class GameController extends GameElement {
 			}
 		};
 		
-		onePlayerSelect = new AButton("Singleplayer", 150, 40){
+		onePlayerSelect = new Button("Singleplayer", 150, 40){
 			@Override
 			public void mousePressed(int btn, int x, int y){
 				if(btn == Input.MOUSE_LEFT_BUTTON){
@@ -51,7 +51,7 @@ public class GameController extends GameElement {
 			}
 		};
 		
-		twoPlayerSelect = new AButton("Cooperative", 150, 40){
+		twoPlayerSelect = new Button("Cooperative", 150, 40){
 			@Override
 			public void mousePressed(int btn, int x, int y){
 				if(btn == Input.MOUSE_LEFT_BUTTON){

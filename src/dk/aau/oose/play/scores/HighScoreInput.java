@@ -6,7 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.gui.TextField;
 
-import dk.aau.oose.core.AButton;
+import dk.aau.oose.core.Button;
 import dk.aau.oose.core.GameElement;
 
 public class HighScoreInput extends GameElement {
@@ -18,7 +18,7 @@ public class HighScoreInput extends GameElement {
 	private HighScoreManager hsm = HighScoreManager.getInstance();
 	private HighScoreView hsv = new HighScoreView();
 	private TextField txt;
-	private AButton button;
+	private Button button;
 	//Also show score
 	
 	public HighScoreInput(int score){
@@ -50,7 +50,7 @@ public class HighScoreInput extends GameElement {
 		txt.setMaxLength(10);
 		*/
 		
-		button = new AButton(" Submit score", 130, 20){
+		button = new Button(" Submit score", 130, 20){
 			
 			@Override
 			public void mousePressed(int btn, int x, int y){

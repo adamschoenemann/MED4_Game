@@ -14,8 +14,17 @@ public class PlayThread extends Thread {
 	public final static byte NUMBER_OF_COUNTIN_CLICKS = 4;
 	private long introStartTime;
 	private int introDuration;
-	
 	private boolean inIntro = true;
+
+	public static interface Callback {
+		public void call();
+	}
+	
+	private Callback onStopped;
+	
+	public void setOnStopCallback(Callback cb){
+		onStopped = cb;
+	}
 	
 	public PlayThread(NoteLinePlayer nlp){
 		this.nlp = nlp;
@@ -124,6 +133,9 @@ public class PlayThread extends Thread {
 			}
 		}
 		nlp.stopRecording();
+		if(onStopped != null){
+			onStopped.call();
+		}
 		Thread.currentThread().interrupt();
 	}
 	
