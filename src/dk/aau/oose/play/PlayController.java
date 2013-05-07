@@ -19,7 +19,7 @@ public class PlayController extends GameElement {
 	
 	public PlayController(NoteLineView nlv1, NoteLineView nlv2, int numberOfPlayers){
 		pt1 = new PlayTrack(nlv1, (numberOfPlayers > 1) ? PT1_CONTROLLER : SINGLEPLAYER_CONTROLLER, (numberOfPlayers > 0));
-		pt2 = new PlayTrack(nlv2, PT2_CONTROLLER, (numberOfPlayers > 1));
+		pt2 = new PlayTrack(nlv2, (numberOfPlayers > 1) ? PT2_CONTROLLER : 0, (numberOfPlayers > 1));
 		bg = new Background();
 		
 		pt1.setPosition(0.0f, CreateController.VERTICAL_OFFSET_1);

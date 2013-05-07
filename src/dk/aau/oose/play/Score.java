@@ -41,7 +41,8 @@ public class Score extends GameElement{
 	@Override
 	public void onDraw(Graphics g) {
 		// TODO Temporary solution
-		g.setColor(Color.blue); //Temp color choice
+		g.setColor(Color.white);
+		
 		g.drawString(Integer.toString(score), 0, 0);
 	}
 	

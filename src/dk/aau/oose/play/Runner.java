@@ -59,7 +59,7 @@ public class Runner extends PlaybackIndicator{
 			e.printStackTrace();
 		}
 		anim.stop();
-		drawingOffset = new Vector2f( - anim.getWidth() / 4, - (anim.getHeight() - 8)); //Manual offsetting for better look.
+		drawingOffset = new Vector2f( - anim.getWidth() / 4, - (anim.getHeight()));
 	}
 	
 }

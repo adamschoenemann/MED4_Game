@@ -30,4 +30,8 @@ public class ButtonWithImage extends GameElement {
 	public void onDraw(Graphics gfx) {
 		sprite.draw();
 	}
+
+	public void updateImage() {
+		
+	}
 }

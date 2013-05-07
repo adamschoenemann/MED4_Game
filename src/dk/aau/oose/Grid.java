@@ -7,7 +7,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import dk.aau.oose.core.GameElement;
-import dk.aau.oose.core.GameWorld;
 
 public class Grid extends GameElement {
 	
@@ -56,11 +55,12 @@ public class Grid extends GameElement {
 		gfx.fillRect(0, 0, width, height);
 		gfx.setColor(fgColor);
 		
-		for(int r = 0; r < rows; r++){
+		for(int r = 0; r <= rows; r++){
 			gfx.setColor((superDivisions.y > 0 && (r % superDivisions.y == 0)) ? superColor : fgColor);
 			gfx.drawLine(0, r * cellHeight, width, r * cellHeight);
 		}
-		for(int c = 0; c < cols; c++){
+		
+		for(int c = 0; c <= cols; c++){
 			gfx.setColor((superDivisions.x > 0 && (c % superDivisions.x == 0)) ? superColor : fgColor);
 			gfx.drawLine(c * cellWidth, 0, c * cellWidth, height);
 		}

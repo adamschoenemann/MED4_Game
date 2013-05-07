@@ -46,8 +46,8 @@ public class GameControllerTest extends BasicGame {
 			AppGameContainer container = new AppGameContainer(new GameControllerTest());
 			container.setDisplayMode(800,600,false);
 			container.setMinimumLogicUpdateInterval(20);
-			container.start();
 			container.setShowFPS(false);
+			container.start();
 
 		} catch (SlickException e) {
 			e.printStackTrace();

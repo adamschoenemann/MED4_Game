@@ -21,20 +21,22 @@ public class GameController extends GameElement {
 	private boolean cooperative = false;
 	private Foreground foreground;
 	
-	private ButtonWithImage modeSelect,
-							singleSelect, 
-							coopSelect,
-							savePerfectVersion;
+	private ButtonWithImage modeButton,
+							cooperativeButton, 
+							bounceButton;
 	
 	public GameController(){
 		startCreate();
 		initiateButtons();
 		foreground = new Foreground();
 		this.addChild(foreground);
+		
+		listen();
 	}
 
 	private void initiateButtons() {
-		modeSelect = new ButtonWithImage("assets/buttons/play.png"){
+		
+		modeButton = new ButtonWithImage("assets/buttons/play.png"){
 			@Override
 			public void mousePressed(int btn, int x, int y){
 				if(btn == Input.MOUSE_LEFT_BUTTON){
@@ -47,34 +49,54 @@ public class GameController extends GameElement {
 					}
 				}
 			}
-		};
-		
-		singleSelect = new ButtonWithImage("assets/buttons/single.png"){
+			
 			@Override
-			public void mousePressed(int btn, int x, int y){
-				if(btn == Input.MOUSE_LEFT_BUTTON){
-					if(this.hitTestPoint(this.globalToLocal(x, y))){
-						setCooperative(false);
-					}
+			public void updateImage(){
+				if(createController == null){
+					setImage("assets/buttons/create.png");
+				} else {
+					setImage("assets/buttons/play.png");
 				}
 			}
 		};
 		
-		coopSelect = new ButtonWithImage("assets/buttons/coopDark.png"){
+		
+		
+		cooperativeButton = new ButtonWithImage("assets/buttons/solo.png"){
 			@Override
 			public void mousePressed(int btn, int x, int y){
-				if(btn == Input.MOUSE_LEFT_BUTTON){
+				if(btn == Input.MOUSE_LEFT_BUTTON && playController == null){
 					if(this.hitTestPoint(this.globalToLocal(x, y))){
-						setCooperative(true);
+						setCooperative( !cooperative);
+						updateImage();
 					}
 				}
 			}
+			
+			@Override
+			public void updateImage(){
+				if(cooperative){
+					if(createController == null){
+						cooperativeButton.setImage("assets/buttons/coopDark.png");
+					} else {
+						cooperativeButton.setImage("assets/buttons/coop.png");	
+					}
+				} else {
+					if(createController == null){
+						cooperativeButton.setImage("assets/buttons/soloDark.png");
+					} else {
+						cooperativeButton.setImage("assets/buttons/solo.png");	
+					}
+				}
+			}
+			
 		};
+
 		
-		savePerfectVersion = new ButtonWithImage("assets/buttons/bounce.png"){
+		bounceButton = new ButtonWithImage("assets/buttons/bounce.png"){
 			@Override
 			public void mousePressed(int btn, int x, int y){
-				if(btn == Input.MOUSE_LEFT_BUTTON){
+				if(btn == Input.MOUSE_LEFT_BUTTON && bounceButton.getParent() != null){
 					if(this.hitTestPoint(this.globalToLocal(x, y))){
 						savePerfectVersion();
 					}
@@ -82,16 +104,25 @@ public class GameController extends GameElement {
 			}
 		};
 		
-		modeSelect.setPosition(38, 50);
-		singleSelect.setPosition(620, 50);
-		coopSelect.setPosition(640, 350);
-		savePerfectVersion.setPosition(800, 10);
+		modeButton.setPosition(37, 35);
+		cooperativeButton.setPosition(37, 335);
+		bounceButton.setPosition(300, 50);
 
-		this.addChild(modeSelect);
-		this.addChild(singleSelect);
-		this.addChild(coopSelect);
-		this.addChild(savePerfectVersion);
+		this.addChild(modeButton);
+		this.addChild(cooperativeButton);
+
 		
+	}
+	
+	@Override
+	public void keyPressed(int key, char c) {
+		if(c == '@'){
+			if(bounceButton.getParent() == null){
+				this.addChild(bounceButton);
+			} else {
+				this.removeChild(bounceButton);
+			}
+		}
 	}
 
 	@Override
@@ -109,7 +140,9 @@ public class GameController extends GameElement {
 		this.addChildAt(playController, 0);
 		this.removeChild(createController);
 		createController = null;
-		modeSelect.setImage("assets/buttons/create.png");
+		
+		modeButton.updateImage();//setImage("assets/buttons/create.png");
+		cooperativeButton.updateImage();
 	}
 	
 	private void switchToCreate(NoteLineView [] nlvs){
@@ -119,7 +152,9 @@ public class GameController extends GameElement {
 			playController.stopPlaying();
 		this.removeChild(playController);
 		playController = null;
-		modeSelect.setImage("assets/buttons/play.png");
+		
+		modeButton.updateImage();//setImage("assets/buttons/play.png");
+		cooperativeButton.updateImage();
 	}
 	
 	private void startCreate(){
@@ -140,13 +175,6 @@ public class GameController extends GameElement {
 	
 	private void setCooperative(boolean cooperative){
 		this.cooperative = cooperative;
-		if(cooperative){
-			singleSelect.setImage("assets/buttons/singleDark.png");
-			coopSelect.setImage("assets/buttons/coop.png");
-		} else {
-			coopSelect.setImage("assets/buttons/coopDark.png");
-			singleSelect.setImage("assets/buttons/single.png");
-		}
 	}
 	
 }
