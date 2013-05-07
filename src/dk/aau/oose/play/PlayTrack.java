@@ -77,7 +77,11 @@ public class PlayTrack extends GameElement {
 			else if(!playThread.isAlive()){
 				playThread = null;
 			}
-		}	
+		} else {
+			if(usesRunner){
+				((Runner)playbackIndicator).stop();
+			}
+		}
 		updatePosition(); // TODO inefficient; it should only update position when a change has happened. Put this here to ensure proper startup position. 
 	}
 	

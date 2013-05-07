@@ -4,6 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import dk.aau.oose.core.Button;
+import dk.aau.oose.core.ButtonWithImage;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.create.CreateController;
 import dk.aau.oose.noteline.NoteLineView;
@@ -16,9 +17,10 @@ public class GameController extends GameElement {
 	private PlayController playController;
 	private boolean cooperative = false;
 	
-	private Button modeSelect,
-				   onePlayerSelect, twoPlayerSelect,
-				   savePerfectVersion;
+	private ButtonWithImage modeSelect,
+							singleSelect, 
+							coopSelect,
+							savePerfectVersion;
 	
 	public GameController(){
 		startCreate();
@@ -26,44 +28,44 @@ public class GameController extends GameElement {
 	}
 
 	private void initiateButtons() {
-		modeSelect = new Button("Play!", 100, 40){
+		modeSelect = new ButtonWithImage("assets/buttons/play.png"){
 			@Override
 			public void mousePressed(int btn, int x, int y){
 				if(btn == Input.MOUSE_LEFT_BUTTON){
 					if(this.hitTestPoint(this.globalToLocal(x, y))){
-						if(playController != null){
-							switchToCreate(playController.getTracks());
-						} else {
+						if(playController == null){
 							switchToPlay(createController.getTracks());
+						} else {
+							switchToCreate(playController.getTracks());
 						}
 					}
 				}
 			}
 		};
 		
-		onePlayerSelect = new Button("Singleplayer", 150, 40){
+		singleSelect = new ButtonWithImage("assets/buttons/single.png"){
 			@Override
 			public void mousePressed(int btn, int x, int y){
 				if(btn == Input.MOUSE_LEFT_BUTTON){
 					if(this.hitTestPoint(this.globalToLocal(x, y))){
-						cooperative = false;
+						setCooperative(false);
 					}
 				}
 			}
 		};
 		
-		twoPlayerSelect = new Button("Cooperative", 150, 40){
+		coopSelect = new ButtonWithImage("assets/buttons/coopDark.png"){
 			@Override
 			public void mousePressed(int btn, int x, int y){
 				if(btn == Input.MOUSE_LEFT_BUTTON){
 					if(this.hitTestPoint(this.globalToLocal(x, y))){
-						cooperative = true;
+						setCooperative(true);
 					}
 				}
 			}
 		};
 		
-		savePerfectVersion = new Button("Bounce to disk", 100, 40){
+		savePerfectVersion = new ButtonWithImage("assets/buttons/bounce.png"){
 			@Override
 			public void mousePressed(int btn, int x, int y){
 				if(btn == Input.MOUSE_LEFT_BUTTON){
@@ -75,20 +77,19 @@ public class GameController extends GameElement {
 		};
 		
 		modeSelect.setPosition(100, 10);
-		onePlayerSelect.setPosition(300, 10);
-		twoPlayerSelect.setPosition(500, 10);
+		singleSelect.setPosition(300, 10);
+		coopSelect.setPosition(500, 10);
 		savePerfectVersion.setPosition(800, 10);
 
 		this.addChild(modeSelect);
-		this.addChild(onePlayerSelect);
-		this.addChild(twoPlayerSelect);
+		this.addChild(singleSelect);
+		this.addChild(coopSelect);
 		this.addChild(savePerfectVersion);
 	}
 
 	@Override
 	public void onUpdate() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -101,7 +102,7 @@ public class GameController extends GameElement {
 		this.addChildAt(playController, 0);
 		this.removeChild(createController);
 		createController = null;
-		modeSelect.setText("Create!");
+		modeSelect.setImage("assets/buttons/create.png");
 	}
 	
 	private void switchToCreate(NoteLineView [] nlvs){
@@ -111,7 +112,7 @@ public class GameController extends GameElement {
 			playController.stopPlaying();
 		this.removeChild(playController);
 		playController = null;
-		modeSelect.setText("Play!");
+		modeSelect.setImage("assets/buttons/play.png");
 	}
 	
 	private void startCreate(){
@@ -128,6 +129,17 @@ public class GameController extends GameElement {
 			nlvs = createController.getTracks();
 		}
 		this.addChild(new SavePerfect(nlvs[0], nlvs[1], (cooperative ? 2 : 1), 180)); //TODO perhaps make a ui for setting the tempo?
+	}
+	
+	private void setCooperative(boolean cooperative){
+		this.cooperative = cooperative;
+		if(cooperative){
+			singleSelect.setImage("assets/buttons/singleDark.png");
+			coopSelect.setImage("assets/buttons/coop.png");
+		} else {
+			coopSelect.setImage("assets/buttons/coopDark.png");
+			singleSelect.setImage("assets/buttons/single.png");
+		}
 	}
 	
 }
