@@ -44,7 +44,6 @@ public class CreateTrack extends GameElement {
 			if (noteHeight >= 0 && noteIndex >= 0) {
 				if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(input.KEY_RSHIFT)) {
 
-					System.out.println("shift down - as it should be!");
 					Note note = nl.getNote(noteIndex);
 					note.setDistinct(!note.isDistinct());
 					nl.setNote(note, noteIndex);

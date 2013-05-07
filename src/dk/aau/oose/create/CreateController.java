@@ -1,24 +1,20 @@
 package dk.aau.oose.create;
 
-import org.newdawn.slick.Input;
-
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLineView;
 
 public class CreateController extends GameElement {
 	private CreateTrack ct1, ct2;
-	private static final int SCROLL_RIGHT = Input.KEY_D, 
-							 SCROLL_LEFT = Input.KEY_A, 
-							 SCROLL_SPEED = 10,
-							 SCROLL_BUTTON = 1,
+	public static final int SCROLL_BUTTON = 1,
 							 MAX_NOTE = 10,
 							 NUMBER_OF_BEATS = 32,
 							 TRACK1_OCTAVE = 5,
 							 TRACK2_OCTAVE = 3,
 							 TEMPO = 100,
-							 WIDTH = NUMBER_OF_BEATS * 50,
-							 HEIGHT = 300,
-							 PT_VERTICAL_OFFSET = 90;
+							 WIDTH = NUMBER_OF_BEATS * 30,
+							 HEIGHT = 150,
+							 VERTICAL_OFFSET_1 = 130,
+							 VERTICAL_OFFSET_2 = 150;
 	
 	private boolean scrolling;
 	private float scrollStartX;
@@ -28,8 +24,8 @@ public class CreateController extends GameElement {
 		ct1 = new CreateTrack(nlv1);
 		ct2 = new CreateTrack(nlv2);
 		
-		ct1.setPosition(0.0f, PT_VERTICAL_OFFSET);
-		ct2.setPosition(0.0f, PT_VERTICAL_OFFSET + ct1.getPosition().y + ct1.getBounds().height);
+		ct1.setPosition(0.0f, VERTICAL_OFFSET_1);
+		ct2.setPosition(0.0f, VERTICAL_OFFSET_2 + ct1.getPosition().y + ct1.getBounds().height);
 		
 		this.addChild(ct1);
 		this.addChild(ct2);

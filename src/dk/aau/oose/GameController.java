@@ -1,12 +1,15 @@
 package dk.aau.oose;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 
 import dk.aau.oose.core.Button;
 import dk.aau.oose.core.ButtonWithImage;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.create.CreateController;
+import dk.aau.oose.graphics.Foreground;
 import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.play.PlayController;
 import dk.aau.oose.play.SavePerfect;
@@ -16,6 +19,7 @@ public class GameController extends GameElement {
 	private CreateController createController;
 	private PlayController playController;
 	private boolean cooperative = false;
+	private Foreground foreground;
 	
 	private ButtonWithImage modeSelect,
 							singleSelect, 
@@ -25,6 +29,8 @@ public class GameController extends GameElement {
 	public GameController(){
 		startCreate();
 		initiateButtons();
+		foreground = new Foreground();
+		this.addChild(foreground);
 	}
 
 	private void initiateButtons() {
@@ -76,15 +82,16 @@ public class GameController extends GameElement {
 			}
 		};
 		
-		modeSelect.setPosition(100, 10);
-		singleSelect.setPosition(300, 10);
-		coopSelect.setPosition(500, 10);
+		modeSelect.setPosition(38, 50);
+		singleSelect.setPosition(620, 50);
+		coopSelect.setPosition(640, 350);
 		savePerfectVersion.setPosition(800, 10);
 
 		this.addChild(modeSelect);
 		this.addChild(singleSelect);
 		this.addChild(coopSelect);
 		this.addChild(savePerfectVersion);
+		
 	}
 
 	@Override

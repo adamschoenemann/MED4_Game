@@ -3,41 +3,34 @@ package dk.aau.oose.play;
 import org.newdawn.slick.Input;
 
 import dk.aau.oose.core.GameElement;
+import dk.aau.oose.create.CreateController;
 import dk.aau.oose.graphics.Background;
+import dk.aau.oose.graphics.ImageElement;
 import dk.aau.oose.noteline.NoteLineView;
 
 public class PlayController extends GameElement {
 	protected PlayTrack pt1, pt2;
-	private Background bg;
+	private ImageElement bg;
 	
 	private static final int SINGLEPLAYER_CONTROLLER = Input.KEY_SPACE,
 							 PT1_CONTROLLER = Input.KEY_A, 
-							 PT2_CONTROLLER = Input.KEY_L,
-							 PT_VERTICAL_OFFSET = 50;
+							 PT2_CONTROLLER = Input.KEY_L;
 	
 	
 	public PlayController(NoteLineView nlv1, NoteLineView nlv2, int numberOfPlayers){
-		pt1 = new PlayTrack(nlv1, (numberOfPlayers > 1) ? SINGLEPLAYER_CONTROLLER : PT1_CONTROLLER, (numberOfPlayers > 0));
+		pt1 = new PlayTrack(nlv1, (numberOfPlayers > 1) ? PT1_CONTROLLER : SINGLEPLAYER_CONTROLLER, (numberOfPlayers > 0));
 		pt2 = new PlayTrack(nlv2, PT2_CONTROLLER, (numberOfPlayers > 1));
 		bg = new Background();
 		
-		pt1.setPosition(0.0f, PT_VERTICAL_OFFSET);
-		pt2.setPosition(0.0f, PT_VERTICAL_OFFSET + pt1.getPosition().y + pt1.getBounds().height);
+		pt1.setPosition(0.0f, CreateController.VERTICAL_OFFSET_1);
+		pt2.setPosition(0.0f, CreateController.VERTICAL_OFFSET_2 + pt1.getPosition().y + pt1.getBounds().height);
 		
 		this.addChild(bg);	
 		this.addChild(pt1);
 		this.addChild(pt2);
 		
-		//listen();
 		//Start right away; no need to press space.
-		startPlaying(new PlayThread.Callback() {
-			
-			@Override
-			public void call() {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		startPlaying();
 	}
 	
 	public void startPlaying(){

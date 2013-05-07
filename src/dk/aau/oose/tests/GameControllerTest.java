@@ -44,9 +44,10 @@ public class GameControllerTest extends BasicGame {
 		MaxMSP.Connect("127.0.0.1", 7400);
 		try {
 			AppGameContainer container = new AppGameContainer(new GameControllerTest());
-			container.setDisplayMode(1000,800,false);
+			container.setDisplayMode(800,600,false);
 			container.setMinimumLogicUpdateInterval(20);
 			container.start();
+			container.setShowFPS(false);
 
 		} catch (SlickException e) {
 			e.printStackTrace();
