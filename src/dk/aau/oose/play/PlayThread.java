@@ -123,6 +123,7 @@ public class PlayThread extends Thread {
 		}
 		inIntro = false;	
 		
+		nlp.setBufferSize(getTotalTime());
 		nlp.startRecording();
 		
 		startTime = System.currentTimeMillis();

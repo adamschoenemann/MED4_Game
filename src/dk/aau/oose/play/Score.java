@@ -44,7 +44,7 @@ public class Score extends GameElement{
 	public void onDraw(Graphics g) {
 		// TODO Temporary solution
 		g.setColor(Color.white);
-		
+		g.scale(2f, 2f);
 		g.drawString(Integer.toString(score), 0, 0);
 	}
 	

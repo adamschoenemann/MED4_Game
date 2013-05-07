@@ -15,7 +15,6 @@ public class PlayController extends GameElement {
 
 	private Background bg;
 	private HighScoreScreen hss;
-
 	
 	private static final int SINGLEPLAYER_CONTROLLER = Input.KEY_SPACE,
 							 PT1_CONTROLLER = Input.KEY_A, 
@@ -25,7 +24,9 @@ public class PlayController extends GameElement {
 	public PlayController(NoteLineView nlv1, NoteLineView nlv2, int numberOfPlayers){
 		pt1 = new PlayTrack(nlv1, (numberOfPlayers > 1) ? PT1_CONTROLLER : SINGLEPLAYER_CONTROLLER, (numberOfPlayers > 0));
 		pt2 = new PlayTrack(nlv2, (numberOfPlayers > 1) ? PT2_CONTROLLER : 0, (numberOfPlayers > 1));
-		bg = new Background();
+		
+		
+		bg = new Background(0.5f);
 		
 		pt1.setPosition(0.0f, CreateController.VERTICAL_OFFSET_1);
 		pt2.setPosition(0.0f, CreateController.VERTICAL_OFFSET_2 + pt1.getPosition().y + pt1.getBounds().height);
@@ -123,4 +124,10 @@ public class PlayController extends GameElement {
 		
 	}
 	
+	@Override
+	public void onUpdate() {
+		if(! isPlaying()){
+			bg.stop();
+		}
+	}
 }

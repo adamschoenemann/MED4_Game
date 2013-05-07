@@ -7,10 +7,10 @@ public class CreateController extends GameElement {
 	private CreateTrack ct1, ct2;
 	public static final int SCROLL_BUTTON = 1,
 							 MAX_NOTE = 10,
-							 NUMBER_OF_BEATS = 32,
+							 NUMBER_OF_BEATS = 128,
 							 TRACK1_OCTAVE = 5,
 							 TRACK2_OCTAVE = 3,
-							 TEMPO = 100,
+							 TEMPO = 200,
 							 WIDTH = NUMBER_OF_BEATS * 30,
 							 HEIGHT = 150,
 							 VERTICAL_OFFSET_1 = 130,

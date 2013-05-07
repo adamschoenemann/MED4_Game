@@ -132,6 +132,12 @@ public class NoteLinePlayer {
 		MaxMSP.send(msg);
 	}
 	
+	public void setBufferSize(long milliseconds){
+		OscMessage msg = new OscMessage("setBufferSize");
+		msg.add( (milliseconds + 200));
+		MaxMSP.send(msg);
+	}
+	
 	//TODO put elsewhere?
 	public void saveLastTakeAs(String name){
 		OscMessage m = new OscMessage("save");
