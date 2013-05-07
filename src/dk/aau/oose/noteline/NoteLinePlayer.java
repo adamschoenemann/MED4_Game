@@ -138,6 +138,14 @@ public class NoteLinePlayer {
 		m.add(name + ".aiff"); //Presume aiff file format
 		MaxMSP.send(m);
 	}
+
+	public int getStartOctave() {
+		return startOctave;
+	}
+
+	public int getNotesPerOctave() {
+		return notesPerOctave;
+	}
 	
 	/*
 	public static void main(String[] args) throws InterruptedException{
