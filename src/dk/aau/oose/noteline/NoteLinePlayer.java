@@ -98,7 +98,7 @@ public class NoteLinePlayer {
 		msg.add(duration);
 		msg.add(nextNoteIsPure);
 		
-		System.out.format("Note: %d, %d, %d, %b\n", value, octave, duration, nextNoteIsPure);
+		//System.out.format("Note: %d, %d, %d, %b\n", value, octave, duration, nextNoteIsPure);
 		nextNoteIsPure = false;
 		MaxMSP.send(msg);
 	}

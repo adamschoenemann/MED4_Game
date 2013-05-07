@@ -15,12 +15,16 @@ public class PlayThread extends Thread {
 	private long introStartTime;
 	private int introDuration;
 	private boolean inIntro = true;
+	
+	private boolean alwaysPure = false;
 
+	private Callback onStopped;
+	
 	public static interface Callback {
 		public void call();
 	}
 	
-	private Callback onStopped;
+	
 	
 	public void setOnStopCallback(Callback cb){
 		onStopped = cb;
@@ -30,6 +34,11 @@ public class PlayThread extends Thread {
 		this.nlp = nlp;
 		nl = nlp.getNoteLine();
 		stopFlag = false;
+	}
+	
+	public PlayThread(NoteLinePlayer nlp, boolean alwaysPure){
+		this(nlp);
+		this.alwaysPure = alwaysPure;
 	}
 	
 	
@@ -124,6 +133,8 @@ public class PlayThread extends Thread {
 				nlp.stopRecording();
 				break;
 			}
+			if(alwaysPure)
+				setNextNoteIsPure(true);
 			noteDuration = nlp.playNoteAt(i);
 			index = i;
 			try {
@@ -133,6 +144,7 @@ public class PlayThread extends Thread {
 			}
 		}
 		nlp.stopRecording();
+
 		if(onStopped != null){
 			onStopped.call();
 		}

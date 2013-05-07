@@ -1,6 +1,5 @@
 package dk.aau.oose;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
@@ -9,6 +8,7 @@ import dk.aau.oose.core.GameElement;
 import dk.aau.oose.create.CreateController;
 import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.play.PlayController;
+import dk.aau.oose.play.SavePerfect;
 
 public class GameController extends GameElement {
 	
@@ -16,8 +16,9 @@ public class GameController extends GameElement {
 	private PlayController playController;
 	private boolean cooperative = false;
 	
-	private Button modeSelect;
-	private Button onePlayerSelect, twoPlayerSelect;
+	private Button modeSelect,
+				   onePlayerSelect, twoPlayerSelect,
+				   savePerfectVersion;
 	
 	public GameController(){
 		startCreate();
@@ -62,13 +63,26 @@ public class GameController extends GameElement {
 			}
 		};
 		
+		savePerfectVersion = new Button("Bounce to disk", 100, 40){
+			@Override
+			public void mousePressed(int btn, int x, int y){
+				if(btn == Input.MOUSE_LEFT_BUTTON){
+					if(this.hitTestPoint(this.globalToLocal(x, y))){
+						savePerfectVersion();
+					}
+				}
+			}
+		};
+		
 		modeSelect.setPosition(100, 10);
 		onePlayerSelect.setPosition(300, 10);
 		twoPlayerSelect.setPosition(500, 10);
+		savePerfectVersion.setPosition(800, 10);
 
 		this.addChild(modeSelect);
 		this.addChild(onePlayerSelect);
 		this.addChild(twoPlayerSelect);
+		this.addChild(savePerfectVersion);
 	}
 
 	@Override
@@ -103,6 +117,17 @@ public class GameController extends GameElement {
 	private void startCreate(){
 		createController = new CreateController();
 		this.addChild(createController);
+	}
+	
+	private void savePerfectVersion(){
+		NoteLineView nlvs[];
+		if(playController != null){
+			playController.stopPlaying();
+			nlvs = playController.getTracks();
+		} else {
+			nlvs = createController.getTracks();
+		}
+		this.addChild(new SavePerfect(nlvs[0], nlvs[1], (cooperative ? 2 : 1), 180)); //TODO perhaps make a ui for setting the tempo?
 	}
 	
 }

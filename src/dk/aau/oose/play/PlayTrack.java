@@ -1,7 +1,5 @@
 package dk.aau.oose.play;
 
-import org.newdawn.slick.Graphics;
-
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLineView;
 
@@ -16,6 +14,7 @@ public class PlayTrack extends GameElement {
 	private int pureTimeToNextNote; 
 	private static final int PURITY_DIFFERENCE_THRESHOLD = 100;
 	private PlayThread playThread;
+	private boolean usesRunner;
 
 	/**
 	 * @param nlv 
@@ -25,6 +24,7 @@ public class PlayTrack extends GameElement {
 		this.nlv = nlv;
 		this.jumpKey = jumpKey;
 		this.setBounds(nlv.getBounds());
+		this.usesRunner = usesRunner;
 		
 		updatePureTimeToNextNote();
 		lastAcceptedNoteIndex = -1;
@@ -67,9 +67,7 @@ public class PlayTrack extends GameElement {
 
 				playbackIndicator.move(progress);
 				
-				if(playbackIndicator instanceof PlaybackLine){
-					playThread.getNoteLinePlayer().setNextNoteIsPure(true); //TODO inefficient; is set every frame atm.
-				} else if(GameElement.getGameContainer().getInput().isKeyPressed(jumpKey)){
+				if(GameElement.getGameContainer().getInput().isKeyPressed(jumpKey)){
 					settleNextNotePurity();
 				}
 			}
@@ -94,25 +92,24 @@ public class PlayTrack extends GameElement {
 		}
 	}
 
-	@Override
-	public void onDraw(Graphics gfx) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public void startPlaying(){
+		
+		startPlaying(new PlayThread.Callback() {
+				@Override
+				public void call() {
+					
+				}
+		});
+	}
+	
+	public void startPlaying(PlayThread.Callback callback){
+		
 		if(score != null)
 			score.reset();
 		lastAcceptedNoteIndex = -1;
 		if(playThread == null){
-			playThread = new PlayThread(nlv.getNoteLinePlayer());
-			playThread.setOnStopCallback(new PlayThread.Callback() {
-				@Override
-				public void call() {
-					
-					
-				}
-			});
+			playThread = new PlayThread(nlv.getNoteLinePlayer(), !usesRunner);
+			playThread.setOnStopCallback(callback);
 			playThread.start();
 		}
 	}
