@@ -17,7 +17,7 @@ import dk.aau.oose.core.GameElement;
 import dk.aau.oose.core.GameWorld;
 import dk.aau.oose.util.MathUtils;
 
-public class BezierCurveTest extends BasicGame {
+public class TestBezierCurve extends BasicGame {
 
     /** The container holding this test */
     private AppGameContainer app;
@@ -29,7 +29,7 @@ public class BezierCurveTest extends BasicGame {
     private Vector2f b = new Vector2f(400, 300);
     private Vector2f weight = new Vector2f(400, 0);
     
-	public BezierCurveTest(int resolution){
+	public TestBezierCurve(int resolution){
 		super("BezierCurve Test");
 		points = new Vector2f[resolution];
 	}
@@ -85,7 +85,7 @@ public class BezierCurveTest extends BasicGame {
      */
     public static void main(String[] argv) {
             try {
-                    AppGameContainer container = new AppGameContainer(new BezierCurveTest(20));
+                    AppGameContainer container = new AppGameContainer(new TestBezierCurve(20));
                     container.setDisplayMode(800,600,false);
                     container.start();
             } catch (SlickException e) {

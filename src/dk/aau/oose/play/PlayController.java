@@ -7,10 +7,15 @@ import dk.aau.oose.create.CreateController;
 import dk.aau.oose.graphics.Background;
 import dk.aau.oose.graphics.ImageElement;
 import dk.aau.oose.noteline.NoteLineView;
+import dk.aau.oose.play.scores.HighScoreInput;
+import dk.aau.oose.play.scores.HighScoreScreen;
 
 public class PlayController extends GameElement {
 	protected PlayTrack pt1, pt2;
-	private ImageElement bg;
+
+	private Background bg;
+	private HighScoreScreen hss;
+
 	
 	private static final int SINGLEPLAYER_CONTROLLER = Input.KEY_SPACE,
 							 PT1_CONTROLLER = Input.KEY_A, 
@@ -28,14 +33,44 @@ public class PlayController extends GameElement {
 		this.addChild(bg);	
 		this.addChild(pt1);
 		this.addChild(pt2);
-		
-		//Start right away; no need to press space.
-		startPlaying();
+
+		startPlaying(); //Start right away; no need to press space.
+
 	}
 	
 	public void startPlaying(){
+		
+		hss = new HighScoreScreen(){
+			@Override
+			public void onRemoved(){
+				toggleHighScoreScreen(false);
+			}
+		};
+		
 		pt1.startPlaying();
 		pt2.startPlaying();
+		
+		(new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				
+				
+				try {
+					pt1.getThread().join();
+					pt2.getThread().join();
+				} catch (InterruptedException e) {
+					
+					e.printStackTrace();
+				}
+				addHighScoreInput(pt1);
+				addHighScoreInput(pt2);
+				toggleHighScoreScreen(true);
+				System.out.println("Both done!");
+			}
+			
+		})).start();
+		
 	}
 	
 	public boolean isPlaying(){
@@ -65,4 +100,27 @@ public class PlayController extends GameElement {
 			startPlaying();
 		}
 	}
+
+	private synchronized void addHighScoreInput(PlayTrack pt) {
+		HighScoreInput hsi = new HighScoreInput(pt.getScore().getScore());
+//		hsi.setPosition((getGameContainer().getWidth() - hsi.getWidth()) / 2,
+//				(getGameContainer().getHeight() - hsi.getHeight()) / 2);
+		hss.addHighScoreInput(hsi);
+	}
+	
+	private synchronized void toggleHighScoreScreen(boolean toggle){
+		if(toggle){
+			this.removeChild(pt1);
+			this.removeChild(pt2);
+			this.removeChild(bg);
+			this.addChild(hss);
+		} else {
+			this.addChild(bg);
+			this.addChild(pt1);
+			this.addChild(pt2);
+
+		}
+		
+	}
+	
 }

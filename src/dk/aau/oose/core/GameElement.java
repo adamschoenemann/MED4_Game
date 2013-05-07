@@ -5,7 +5,6 @@ package dk.aau.oose.core;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
-
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -472,6 +471,44 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	
 	public void unListen(){
 		getGameContainer().getInput().removeListener(this);
+	}
+	
+	public Rectangle2D computeBounds(){
+		for(int i = 0; i < numChildren(); i++){
+			GameElement child = getChildAt(i);
+			Rectangle2D cb = (Rectangle2D) child.getBounds().clone();
+			Vector2f A = globalToLocal(
+					child.localToGlobal(
+						(float) cb.getX(), 
+						(float) cb.getY()
+					)
+				);
+			
+			Vector2f B = globalToLocal(
+					child.localToGlobal(
+						(float) (cb.getX() + cb.getWidth()), 
+						(float) (cb.getX() + cb.getHeight())
+					)
+				);
+			
+			Rectangle2D.union(getBounds(), 
+					new Rectangle2D.Float(A.x, A.y, B.x, B.y), 
+					getBounds()
+				);
+		}
+		return getBounds();
+	}
+	
+	public void center(boolean x, boolean y){
+		GameElement parent = ((GameElement) getParent());
+		if(parent != null){
+			if(x){
+				this.setPosition((parent.getWidth() - getWidth()) / 2, getY());
+			}
+			if(y){
+				this.setPosition(getX(), (parent.getHeight() - getHeight()) / 2);
+			}
+		}
 	}
 
 }

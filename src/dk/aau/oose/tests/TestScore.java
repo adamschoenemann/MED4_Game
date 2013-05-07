@@ -16,13 +16,13 @@ import dk.aau.oose.play.Runner;
 import dk.aau.oose.play.Score;
 import dk.aau.oose.util.Vec;
 
-public class ScoreTest extends BasicGame{
+public class TestScore extends BasicGame{
 
 	private Score score;
 	private NoteLineView nlv;
 	private Runner runner;
 	
-	public ScoreTest() {
+	public TestScore() {
 		super("Score test");
 	}
 
@@ -31,7 +31,7 @@ public class ScoreTest extends BasicGame{
 	 */
 	public static void main(String[] args) {
 		try {
-			AppGameContainer container = new AppGameContainer(new ScoreTest());
+			AppGameContainer container = new AppGameContainer(new TestScore());
 			container.setDisplayMode(800,600,false);
 			container.setMinimumLogicUpdateInterval(30);
 			container.start();

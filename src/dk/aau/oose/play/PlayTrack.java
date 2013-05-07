@@ -42,7 +42,6 @@ public class PlayTrack extends GameElement {
 		GameElement.getGameContainer().getInput().addListener(this);
 		
 		this.addChild(playbackIndicator);
-		listen();
 	}
 
 	private void updatePureTimeToNextNote(){
@@ -106,7 +105,7 @@ public class PlayTrack extends GameElement {
 		});
 	}
 	
-	public void startPlaying(PlayThread.Callback callback){
+	public PlayThread startPlaying(PlayThread.Callback callback){
 		if(score != null)
 			score.reset();
 		lastAcceptedNoteIndex = -1;
@@ -115,6 +114,7 @@ public class PlayTrack extends GameElement {
 			playThread.setOnStopCallback(callback);
 			playThread.start();
 		}
+		return playThread;
 	}
 	
 	public boolean isPlaying(){
@@ -142,7 +142,13 @@ public class PlayTrack extends GameElement {
 		return nlv;
 	}
 	
+	public Score getScore(){
+		return score;
+	}
 	
-
+	public Thread getThread(){
+		return playThread;
+	}
+	
 
 }

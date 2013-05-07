@@ -19,7 +19,7 @@ import dk.aau.oose.play.PlaybackLine;
 import dk.aau.oose.play.Runner;
 import dk.aau.oose.play.Score;
 
-public class PlayTest extends BasicGame {
+public class TestPlay extends BasicGame {
 	
 	public NoteLine nl;
 	public NoteLinePlayer nlp;
@@ -36,7 +36,7 @@ public class PlayTest extends BasicGame {
 	private PlaybackLine playbackLine;
 	private Score score;
 	
-	public PlayTest() {
+	public TestPlay() {
 		super("PlayTest");
 		
 	}
@@ -188,7 +188,7 @@ public class PlayTest extends BasicGame {
 	public static void main(String[] args){
 		try {
 			MaxMSP.Connect("127.0.0.1", 7400);
-			AppGameContainer container = new AppGameContainer(new PlayTest());
+			AppGameContainer container = new AppGameContainer(new TestPlay());
 			container.setDisplayMode(800,600,false);
 			container.setMinimumLogicUpdateInterval(20);
 			container.start();

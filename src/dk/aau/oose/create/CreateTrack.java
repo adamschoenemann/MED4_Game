@@ -23,8 +23,6 @@ public class CreateTrack extends GameElement {
 		this.nl = nlp.getNoteLine();
 		this.addChild(nlv);
 		this.setBounds(nlv.getBounds());
-		
-		listen();
 	}
 
 	public void moveTrack(float numberOfPixels){

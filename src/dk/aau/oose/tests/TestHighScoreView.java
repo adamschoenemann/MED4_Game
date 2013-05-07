@@ -10,18 +10,18 @@ import dk.aau.oose.core.GameElement;
 import dk.aau.oose.osc.MaxMSP;
 import dk.aau.oose.play.scores.HighScoreView;
 
-public class HighScoreViewTest extends BasicGame {
+public class TestHighScoreView extends BasicGame {
 
 	private HighScoreView hsv;
 	
-	public HighScoreViewTest() {
+	public TestHighScoreView() {
 		super("HighScoreView test");
 	}
 
 	public static void main(String[] args) {
 		MaxMSP.Connect("127.0.0.1", 7400);
 		try {
-			AppGameContainer container = new AppGameContainer(new HighScoreViewTest());
+			AppGameContainer container = new AppGameContainer(new TestHighScoreView());
 			container.setDisplayMode(800,600,false);
 			container.setMinimumLogicUpdateInterval(20);
 			container.start();

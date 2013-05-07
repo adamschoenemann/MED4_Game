@@ -2,7 +2,7 @@ package dk.aau.oose.tests;
 
 import dk.aau.oose.util.MathUtils;
 
-public class MathUtilsScaleTest {
+public class TestMathUtilsScale {
 	
 	public static void main(String[] args){
 		

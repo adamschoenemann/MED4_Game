@@ -28,9 +28,6 @@ public class PlayThread extends Thread {
 		public void call();
 	}
 	
-	
-	
-	
 	public void setOnStopCallback(Callback cb){
 		onStopped = cb;
 	}

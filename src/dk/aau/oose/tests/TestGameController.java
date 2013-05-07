@@ -10,11 +10,11 @@ import dk.aau.oose.GameController;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.osc.MaxMSP;
 
-public class GameControllerTest extends BasicGame {
+public class TestGameController extends BasicGame {
 
 	private GameController gameController;
 
-	public GameControllerTest() {
+	public TestGameController() {
 		super("GameController test");
 
 	}
@@ -43,8 +43,10 @@ public class GameControllerTest extends BasicGame {
 	public static void main(String[] args) {
 		MaxMSP.Connect("127.0.0.1", 7400);
 		try {
-			AppGameContainer container = new AppGameContainer(new GameControllerTest());
-			container.setDisplayMode(800,600,false);
+
+			AppGameContainer container = new AppGameContainer(new TestGameController());
+			container.setDisplayMode(1000,800,false);
+
 			container.setMinimumLogicUpdateInterval(20);
 			container.setShowFPS(false);
 			container.start();

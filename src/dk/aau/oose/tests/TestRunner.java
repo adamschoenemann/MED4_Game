@@ -8,20 +8,24 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLine;
 import dk.aau.oose.noteline.NoteLinePlayer;
 import dk.aau.oose.noteline.NoteLineView;
+import dk.aau.oose.play.PlaybackIndicator;
+import dk.aau.oose.play.Runner;
 import dk.aau.oose.play.Waypoints;
 
 
-public class WaypointsTest extends BasicGame{
+public class TestRunner extends BasicGame{
 
 
-	private Waypoints wp;
+	private PlaybackIndicator runner;
 	private NoteLineView nlv;
+	private double progress = 0.0;
 	private float steps[];
 	
 	private static final int MAX_NOTE_VALUE = 10;
@@ -29,8 +33,8 @@ public class WaypointsTest extends BasicGame{
 
 
 
-	public WaypointsTest() {
-		super("Waypoints Test");
+	public TestRunner() {
+		super("Runner Test");
 	}
 
 	@Override
@@ -49,9 +53,8 @@ public class WaypointsTest extends BasicGame{
 		
 		nlv.setPosition(new Vector2f(50, 50));
 		
-		wp = new Waypoints(nlv, NO_OF_STEPS);
-		steps = wp.getSteps();
-		wp.printSteps();
+		
+		runner = new Runner(nlv);
 	}
 
 	@Override
@@ -59,21 +62,8 @@ public class WaypointsTest extends BasicGame{
 		if(nlv != null)
 			nlv.draw();
 
-		for(int i = 0; i < steps.length; i++){
-			
-			if(i%NO_OF_STEPS == 0)
-				g.setColor(Color.green);
-			else
-				g.setColor(Color.green.darker());
-			
-			Vector2f localCoords = wp.stepToNoteLineView(i);
-			g.drawOval(localCoords.x - 3 + nlv.getPosition().x, localCoords.y - 3 + nlv.getPosition().y, 6, 6);
-			
-		}
-		
-		
-		g.setColor(Color.orange);
-		g.fillRect(nlv.getPosition().x - 3, nlv.getPosition().y - 3, 6, 6);
+		if(runner != null)
+			runner.draw();
 	}
 	
 	@Override
@@ -85,20 +75,34 @@ public class WaypointsTest extends BasicGame{
 			
 			nlv.setPosition(mouseX, mouseY);
 		}
+		
+		if(gc.getInput().isKeyDown(Input.KEY_SPACE)){
+			progress += 0.02;
+			if(progress >= 1.0)
+				progress = 1.0 - Double.MIN_VALUE;   
+			System.out.println("progress: " + progress);
+			System.out.println(runner.getPosition());
+		}
+		
+		runner.move(progress);
+		
 
 	}
 
 
 	public static void main(String[] argv) {
+		System.out.println("running RunnerTest.");
 		try {
-			AppGameContainer container = new AppGameContainer(new WaypointsTest());
+			AppGameContainer container = new AppGameContainer(new TestRunner());
 			container.setDisplayMode(800,600,false);
-			container.setMinimumLogicUpdateInterval(100);
+			container.setMinimumLogicUpdateInterval(30);
 			container.start();
 			
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+		
+		
 	}
 
 

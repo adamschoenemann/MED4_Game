@@ -17,13 +17,12 @@ public class HighScoreInput extends GameElement {
 	//TODO make this shit work.
 	
 	private int score;
-	private String name;
 	private HighScoreManager hsm = HighScoreManager.getInstance();
 	private HighScoreView hsv = new HighScoreView();
 	private TextField tf;
 	private TextFieldElement tfe;
 	private Button button;
-	private Button closeBtn;
+	//private Button closeBtn;
 	//Also show score
 	
 	public HighScoreInput(int score){
@@ -73,26 +72,22 @@ public class HighScoreInput extends GameElement {
 		button.setPosition(0f, 190f);
 		this.addChild(button);
 		
-		closeBtn = new Button("X", 20, 20){
-			
-			@Override
-			public void mousePressed(int btn, int x, int y){
-				if(this.hitTestPoint(this.globalToLocal(x, y))){
-					if(HighScoreInput.this.getParent() != null){
-						HighScoreInput.this.destroy();
-					}
-				}
-			}
-			
-		};
-		closeBtn.setPosition(hsv.getWidth() - 20, hsv.getY() - 30);
-		this.addChild(closeBtn);
+//		closeBtn = new Button("X", 20, 20){
+//			
+//			@Override
+//			public void mousePressed(int btn, int x, int y){
+//				if(this.hitTestPoint(this.globalToLocal(x, y))){
+//					if(HighScoreInput.this.getParent() != null){
+//						HighScoreInput.this.destroy();
+//					}
+//				}
+//			}
+//			
+//		};
+//		closeBtn.setPosition(hsv.getWidth() - 20, hsv.getY() - 30);
+//		this.addChild(closeBtn);
 
-		Rectangle2D bounds = getBounds();
-		
-		for(int i = 0; i < numChildren(); i++){
-			Rectangle2D.union(bounds, getChildAt(i).getBounds(), bounds);
-		}
+		computeBounds();
 		
 		
 	}
