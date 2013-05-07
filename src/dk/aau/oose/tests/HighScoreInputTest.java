@@ -15,6 +15,7 @@ import dk.aau.oose.play.scores.HighScoreView;
 public class HighScoreInputTest extends BasicGame {
 
 	private HighScoreInput hsi;
+	private GameElement root;
 	
 	public HighScoreInputTest() {
 		super("HighScoreInput test");
@@ -39,12 +40,13 @@ public class HighScoreInputTest extends BasicGame {
 		hsi = new HighScoreInput(30);
 		hsi.setPosition((gc.getWidth() - hsi.getWidth()) / 2,
 				(gc.getHeight() - hsi.getHeight()) / 2);
-		
+		root = new GameElement();
+		root.addChild(hsi);
 	}
 
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-		hsi.draw();
+		root.draw();
 	}
 
 	@Override

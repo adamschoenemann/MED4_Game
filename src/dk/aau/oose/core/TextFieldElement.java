@@ -3,34 +3,38 @@ package dk.aau.oose.core;
 
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.gui.TextField;
 
 public class TextFieldElement extends GameElement {
 
-	private String text = "";
-	private Color txtColor = Color.black;
-	private Color bgColor = Color.white;
+	private TextField tf;
 	
-	
-	public TextFieldElement(String txt){
-		setText(txt);
+	public TextFieldElement(Font font, int width, int height){
+		tf = new TextField(getGameContainer(), font, 0, 0, width, height){
+			
+			@Override
+			public void mouseReleased(int btn, int x, int y){
+				//System.out.format("(%d, %d)\n", x, y);
+				if(hitTestPoint(globalToLocal(x, y))){
+					tf.setFocus(true);
+				} else {
+					tf.setFocus(false);
+				}
+			}
+			
+		};
+		setBounds(width, height);
 	}
 	
-	public void setText(String txt){
-		text = txt;
+	public void onDraw(Graphics gfx){
+		gfx.setColor(Color.white);
+		tf.render(getGameContainer(), gfx);
 	}
 	
-	public String getText(){
-		return text;
+	public TextField getTextField(){
+		return tf;
 	}
 	
-	@Override
-	public void onDraw(Graphics g){
-		g.setColor(bgColor);
-		g.drawRoundRect(getBounds().x, getBounds().y, getWidth(), getHeight(), 5);
-		g.setColor(txtColor);
-		g.drawString(text, getBounds().x, getBounds().y);
-		
-	}
 }

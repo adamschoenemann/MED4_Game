@@ -28,8 +28,16 @@ public class PlayController extends GameElement {
 		this.addChild(pt1);
 		this.addChild(pt2);
 		
-		listen();
-		startPlaying(); //Start right away; no need to press space.
+		//listen();
+		//Start right away; no need to press space.
+		startPlaying(new PlayThread.Callback() {
+			
+			@Override
+			public void call() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 	
 	public void startPlaying(){

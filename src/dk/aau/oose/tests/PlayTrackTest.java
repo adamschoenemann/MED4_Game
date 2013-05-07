@@ -15,6 +15,7 @@ import dk.aau.oose.play.PlayTrack;
 public class PlayTrackTest extends BasicGame {
 
 	private PlayTrack pc;
+	private GameElement root;
 	
 	public PlayTrackTest() {
 		super("PlayTrack test");
@@ -41,13 +42,14 @@ public class PlayTrackTest extends BasicGame {
 		NoteLineView nlv = NoteLineView.newTestInstance(10, 32, 2, 5, 120, 2*750, 300);
 		pc = new PlayTrack(nlv, Input.KEY_Z, true);
 		pc.setPosition(0, 200);
+		root = new GameElement();
+		root.addChild(pc);
 		
 	}
 
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-		pc.draw();
-		
+		root.draw();
 	}
 
 	@Override

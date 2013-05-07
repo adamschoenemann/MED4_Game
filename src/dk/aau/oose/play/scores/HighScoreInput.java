@@ -1,5 +1,7 @@
 package dk.aau.oose.play.scores;
 
+import java.awt.geom.Rectangle2D;
+
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -8,6 +10,7 @@ import org.newdawn.slick.gui.TextField;
 
 import dk.aau.oose.core.Button;
 import dk.aau.oose.core.GameElement;
+import dk.aau.oose.core.TextFieldElement;
 
 public class HighScoreInput extends GameElement {
 	
@@ -17,31 +20,20 @@ public class HighScoreInput extends GameElement {
 	private String name;
 	private HighScoreManager hsm = HighScoreManager.getInstance();
 	private HighScoreView hsv = new HighScoreView();
-	private TextField txt;
+	private TextField tf;
+	private TextFieldElement tfe;
 	private Button button;
+	private Button closeBtn;
 	//Also show score
 	
 	public HighScoreInput(int score){
 		this.score = score;
-		txt = new TextField(getGameContainer(), getGameContainer().getDefaultFont(), 0, 0, 130, 20){
-			
-			@Override
-			public void mouseReleased(int btn, int x, int y){
-				
-				if(hitTestPoint(globalToLocal(x, y))){
-					System.out.println("mousePressed on TextField!");
-					this.setFocus(true);
-				} else {
-					this.setFocus(false);
-				}
-				
-			}
-			
-		};
-		txt.setText("Enter name");
-		txt.setBackgroundColor(Color.gray.darker());
-		txt.setTextColor(Color.white);
-		txt.setFocus(true);		
+		tfe = new TextFieldElement(getGameContainer().getDefaultFont(), 130, 20);
+		tf = tfe.getTextField();
+		tf.setText("Enter name");
+		tf.setBackgroundColor(Color.gray.darker());
+		tf.setTextColor(Color.white);
+		tf.setFocus(true);		
 		/*
 		txt.setAcceptingInput(true);
 		txt.setCursorVisible(true);
@@ -70,26 +62,50 @@ public class HighScoreInput extends GameElement {
 				}
 			}
 		};
-		
-		setBounds(130, 120);
-		button.setPosition(0f, 30f);
-		button.listen();
-		this.addChild(button);
-		
-		hsv.setPosition(0, -170);
+				
+		hsv.setPosition(0, 0);
 		hsv.setBounds(130, 150);
 		this.addChild(hsv);
+		
+		tfe.setPosition(0, 160);
+		this.addChild(tfe);
+		
+		button.setPosition(0f, 190f);
+		this.addChild(button);
+		
+		closeBtn = new Button("X", 20, 20){
+			
+			@Override
+			public void mousePressed(int btn, int x, int y){
+				if(this.hitTestPoint(this.globalToLocal(x, y))){
+					if(HighScoreInput.this.getParent() != null){
+						HighScoreInput.this.destroy();
+					}
+				}
+			}
+			
+		};
+		closeBtn.setPosition(hsv.getWidth() - 20, hsv.getY() - 30);
+		this.addChild(closeBtn);
+
+		Rectangle2D bounds = getBounds();
+		
+		for(int i = 0; i < numChildren(); i++){
+			Rectangle2D.union(bounds, getChildAt(i).getBounds(), bounds);
+		}
+		
+		
 	}
 
 	@Override
 	public void onDraw(Graphics g) {
-		g.setColor(Color.white);
-		txt.render(getGameContainer(), g);
+		
+		
 	}
 	
 	public void submit(){
-		System.out.println("Submitting name: " + txt.getText() + " and score: " + score );
-		hsm.add(txt.getText(), score);
+		System.out.println("Submitting name: " + tf.getText() + " and score: " + score );
+		hsm.add(tf.getText(), score);
 	}
 	
 	

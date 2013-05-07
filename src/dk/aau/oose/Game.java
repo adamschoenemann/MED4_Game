@@ -19,6 +19,7 @@ public class Game {
 	 */
 	public static String title = "MED4 Game";
 	private GameController controller;
+	private GameElement root;
 	
 	public String getTitle(){
 		return title;
@@ -32,7 +33,9 @@ public class Game {
 		GameContainer gc = GameWorld.getGameContainer();
 		GameElement.setGameContainer(gc);
 		controller = new GameController();
-		GameWorld.add(controller);
+		root = new GameElement();
+		root.addChild(controller);
+		GameWorld.add(root);
 		
 		
 		

@@ -26,6 +26,7 @@ public class PlayTest extends BasicGame {
 	public NoteLineView nlv;
 	public PlayThread playThread;
 	public GameContainer gc;
+	public GameElement root;
 	public GameElement testEle;
 	public GameElement distanceEle;
 	public GameElement runnerEle;
@@ -42,11 +43,7 @@ public class PlayTest extends BasicGame {
 
 	@Override
 	public void render(GameContainer gc, Graphics gfx) throws SlickException {
-		nlv.draw();
-		testEle.draw();
-		distanceEle.draw();
-		runnerEle.draw();
-		runner.draw();
+		root.draw();
 	}
 
 	@Override
@@ -94,6 +91,19 @@ public class PlayTest extends BasicGame {
 			}
 			
 		};
+		
+		root = new GameElement();
+		root.addChild(nlv);
+		root.addChild(testEle);
+		root.addChild(distanceEle);
+		root.addChild(runnerEle);
+		root.addChild(runner);
+		
+//		nlv.draw();
+//		testEle.draw();
+//		distanceEle.draw();
+//		runnerEle.draw();
+//		runner.draw();
 	}
 
 	@Override

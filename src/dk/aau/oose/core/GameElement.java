@@ -378,13 +378,7 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	
 	
 	public void destroy(){
-		
-		
-		/*for(int i = 0; i < this.numChildren(); i++){
-			getChildAt(i).destroy();
-		}*/
 		((GameElement) this.getParent()).removeChild((GameElement) this);
-		//setParent(null);
 	}
 	
 	public GameElement getRoot(){
@@ -469,11 +463,15 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	}
 
 	public void onAdded(GameElement parent){
-		
+		listen();
 	}
 
 	public void onRemoved(){
-		
+		unListen();
+	}
+	
+	public void unListen(){
+		getGameContainer().getInput().removeListener(this);
 	}
 
 }

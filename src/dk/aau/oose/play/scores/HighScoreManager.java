@@ -73,8 +73,6 @@ public class HighScoreManager {
 				scoreRecords.remove(s);
 			}
 		}
-		
-		
 	}
 	
 	

@@ -1,5 +1,9 @@
 package dk.aau.oose.play;
 
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.BasicGame;
+
+import dk.aau.oose.core.GameWorld;
 import dk.aau.oose.noteline.NoteLine;
 import dk.aau.oose.noteline.NoteLinePlayer;
 
@@ -23,6 +27,7 @@ public class PlayThread extends Thread {
 	public static interface Callback {
 		public void call();
 	}
+	
 	
 	
 	
@@ -148,7 +153,7 @@ public class PlayThread extends Thread {
 		if(onStopped != null){
 			onStopped.call();
 		}
-		Thread.currentThread().interrupt();
+		//Thread.currentThread().interrupt();
 	}
 	
 }

@@ -2,6 +2,9 @@ package dk.aau.oose.play;
 
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLineView;
+import dk.aau.oose.play.scores.HighScoreInput;
+import dk.aau.oose.play.scores.HighScoreManager;
+import dk.aau.oose.play.scores.ScoreRecord;
 
 public class PlayTrack extends GameElement {
 
@@ -103,7 +106,6 @@ public class PlayTrack extends GameElement {
 	}
 	
 	public void startPlaying(PlayThread.Callback callback){
-		
 		if(score != null)
 			score.reset();
 		lastAcceptedNoteIndex = -1;
