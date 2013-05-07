@@ -1,7 +1,6 @@
 package dk.aau.oose.play;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import org.newdawn.slick.Input;
 
@@ -11,7 +10,7 @@ import dk.aau.oose.graphics.Background;
 import dk.aau.oose.noteline.NoteLineView;
 
 public class PlayController extends GameElement {
-	private PlayTrack pt1, pt2;
+	protected PlayTrack pt1, pt2;
 	private Background bg;
 	private Button saveButton;
 	private int numberOfPlayers;
