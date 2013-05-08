@@ -5,7 +5,6 @@ import org.newdawn.slick.Input;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.create.CreateController;
 import dk.aau.oose.graphics.Background;
-import dk.aau.oose.graphics.ImageElement;
 import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.play.scores.HighScoreInput;
 import dk.aau.oose.play.scores.HighScoreScreen;
@@ -41,16 +40,17 @@ public class PlayController extends GameElement {
 	
 	public void startPlaying(){
 		
+		/*
 		hss = new HighScoreScreen(){
 			@Override
 			public void onRemoved(){
 				toggleHighScoreScreen(false);
 			}
 		};
-		
+		*/
 		pt1.startPlaying();
 		pt2.startPlaying();
-		
+		/*
 		(new Thread(new Runnable(){
 
 			@Override
@@ -64,13 +64,14 @@ public class PlayController extends GameElement {
 					
 					e.printStackTrace();
 				}
-				addHighScoreInput(pt1);
-				addHighScoreInput(pt2);
+				//addHighScoreInput(pt1);
+				//addHighScoreInput(pt2);
 				toggleHighScoreScreen(true);
 				System.out.println("Both done!");
 			}
 			
 		})).start();
+		*/
 		
 	}
 	

@@ -134,7 +134,7 @@ public class PlayTrack extends GameElement {
 		float windowWidth = GameElement.getGameContainer().getWidth();
 		
 		if(score != null)
-			score.setPosition( pbiX + windowWidth * 0.5f - (score.getBounds().width + 50), -100.0f);
+			score.setPosition( pbiX + windowWidth * 0.5f - (score.getBounds().width + 70), -100.0f);
 		setPosition( windowWidth * 0.5f - pbiX, getPosition().y);
 	}
 

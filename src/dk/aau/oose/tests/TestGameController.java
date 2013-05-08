@@ -45,7 +45,7 @@ public class TestGameController extends BasicGame {
 		try {
 
 			AppGameContainer container = new AppGameContainer(new TestGameController());
-			container.setDisplayMode(1000,800,false);
+			container.setDisplayMode(800,600,false);
 
 			container.setMinimumLogicUpdateInterval(20);
 			container.setShowFPS(false);

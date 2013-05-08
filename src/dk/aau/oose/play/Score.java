@@ -1,7 +1,5 @@
 package dk.aau.oose.play;
 
-import java.awt.Font;
-
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;

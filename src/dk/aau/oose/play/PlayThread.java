@@ -1,9 +1,5 @@
 package dk.aau.oose.play;
 
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
-
-import dk.aau.oose.core.GameWorld;
 import dk.aau.oose.noteline.NoteLine;
 import dk.aau.oose.noteline.NoteLinePlayer;
 
