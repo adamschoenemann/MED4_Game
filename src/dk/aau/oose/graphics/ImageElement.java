@@ -23,5 +23,13 @@ public class ImageElement extends GameElement {
 	public void onDraw(Graphics gfx) {
 		sprite.draw();
 	}
+	
+	protected void setImage(String image){
+		try {
+			sprite = new Image(image);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

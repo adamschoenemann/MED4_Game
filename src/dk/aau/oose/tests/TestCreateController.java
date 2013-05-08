@@ -28,7 +28,7 @@ public class TestCreateController extends BasicGame {
 	@Override
 	public void init(GameContainer gc) throws SlickException {
 		GameElement.setGameContainer(gc);
-		cc = new CreateController();
+		cc = new CreateController(100);
 	}
 
 	@Override

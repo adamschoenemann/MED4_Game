@@ -1,11 +1,8 @@
 package dk.aau.oose;
 
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
 
-import dk.aau.oose.core.Button;
 import dk.aau.oose.core.ButtonWithImage;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.create.CreateController;
@@ -21,7 +18,11 @@ public class GameController extends GameElement {
 	private boolean cooperative = false;
 	private Foreground foreground;
 	
+	private final static int TEMPO_PLAY = 100,
+							 TEMPO_BOUNCE = 180;
+	
 	private ButtonWithImage modeButton,
+							helpButton,
 							cooperativeButton, 
 							bounceButton;
 	
@@ -104,12 +105,36 @@ public class GameController extends GameElement {
 			}
 		};
 		
+		helpButton = new ButtonWithImage("assets/buttons/help.png"){ //CHANGE THIS IMAGE TO A ? mark
+			@Override
+			public void mousePressed(int btn, int x, int y){
+				if(btn == Input.MOUSE_LEFT_BUTTON && playController == null){
+					if(this.hitTestPoint(this.globalToLocal(x, y))){
+						showHelp();
+					}
+				}
+			}
+			
+			@Override
+			public void updateImage(){
+				if(createController == null){
+					helpButton.setImage("assets/buttons/helpDark.png"); //CHANGE THIS IMAGE TO A ? mark
+				} else {
+					helpButton.setImage("assets/buttons/help.png"); //CHANGE THIS IMAGE TO A ? mark
+				}
+			}
+			
+		};
+		
 		modeButton.setPosition(37, 35);
-		cooperativeButton.setPosition(37, 335);
+		helpButton.setPosition(85, 325);
+		
+		//Secret buttons
+		cooperativeButton.setPosition(330, 350);//37, 335);
 		bounceButton.setPosition(300, 50);
 
 		this.addChild(modeButton);
-		this.addChild(cooperativeButton);
+		this.addChild(helpButton);
 
 		
 	}
@@ -119,8 +144,10 @@ public class GameController extends GameElement {
 		if(c == '@'){
 			if(bounceButton.getParent() == null){
 				this.addChild(bounceButton);
+				this.addChild(cooperativeButton);
 			} else {
 				this.removeChild(bounceButton);
+				this.removeChild(cooperativeButton);
 			}
 		}
 	}
@@ -141,8 +168,8 @@ public class GameController extends GameElement {
 		this.removeChild(createController);
 		createController = null;
 		
-		modeButton.updateImage();//setImage("assets/buttons/create.png");
-		cooperativeButton.updateImage();
+		updateButtonImages();
+		foreground.setIsPlaying(true);
 	}
 	
 	private void switchToCreate(NoteLineView [] nlvs){
@@ -153,12 +180,12 @@ public class GameController extends GameElement {
 		this.removeChild(playController);
 		playController = null;
 		
-		modeButton.updateImage();//setImage("assets/buttons/play.png");
-		cooperativeButton.updateImage();
+		updateButtonImages();
+		foreground.setIsPlaying(false);
 	}
 	
 	private void startCreate(){
-		createController = new CreateController();
+		createController = new CreateController(TEMPO_PLAY);
 		this.addChild(createController);
 	}
 	
@@ -170,11 +197,21 @@ public class GameController extends GameElement {
 		} else {
 			nlvs = createController.getTracks();
 		}
-		this.addChild(new SavePerfect(nlvs[0], nlvs[1], (cooperative ? 2 : 1), 180)); //TODO perhaps make a ui for setting the tempo?
+		this.addChild(new SavePerfect(nlvs[0], nlvs[1], (cooperative ? 2 : 1), TEMPO_BOUNCE)); //TODO perhaps make a ui for setting the tempo?
 	}
 	
 	private void setCooperative(boolean cooperative){
 		this.cooperative = cooperative;
+	}
+	
+	private void showHelp(){
+		System.out.println("show help");
+	}
+	
+	private void updateButtonImages() {
+		modeButton.updateImage();
+		cooperativeButton.updateImage();
+		helpButton.updateImage();
 	}
 	
 }

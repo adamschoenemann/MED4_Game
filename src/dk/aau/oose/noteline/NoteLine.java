@@ -27,6 +27,12 @@ public class NoteLine {
 		setNote(note, pos);
 	}
 	
+	public void flipNoteDistinct(int pos){
+		Note note = getNote(pos);
+		note.setDistinct(!note.isDistinct());
+		setNote(note, pos);
+	}
+	
 	public void setNote(Note note, int pos){
 		int val = note.getValue();
 		if(val <= MAX_NOTE && val >= 0) {
@@ -78,22 +84,26 @@ public class NoteLine {
 	}
 	
 	public void fixDistinct(int index){
-		if(index == getNumBeats() - 1){
+		if(index >= getNumBeats() || index < 0)
+			return; //Bail out if outside array.
+		
+		if(index == getNumBeats() - 1){			//If last note, set to distinct
 			beats[index].setDistinct(true);
 			return;
 		}
-		if(beats[index].isDistinct() == false){
+		if(beats[index].isDistinct() == false){				//if not distinct, but unequal to following note, set to distinct
 			int val = beats[index].getValue();
 			int nextVal = beats[index + 1].getValue();
-			if(val != nextVal){
+			if(val != nextVal){								
 				beats[index].setDistinct(true);
 			}	
 		}
-		if(index > 0 && beats[index - 1].isDistinct() == false){
+		if(index > 0 && beats[index - 1].isDistinct() == false){ //If not first note, and previous note is not distinct, and if value unequal to previous note, set previous to distinct.
 			int val = beats[index].getValue();
 			int prevVal = beats[index - 1].getValue();
-			if(val != prevVal){
+			if(val != prevVal){								
 				beats[index - 1].setDistinct(true);
+				fixDistinct(index - 1);
 			}
 		}
 		

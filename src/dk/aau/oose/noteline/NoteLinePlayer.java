@@ -56,6 +56,15 @@ public class NoteLinePlayer {
 	}
 	
 	/**
+	 * Play the target note, with each beat of length oneBeatDuration. This is meant to override overly slow tempos while creating a track.
+	 * @param pos Position of wanted note in the NoteLine's Note array.
+	 * @param oneBeatDuration Duration of one beat. Notes may stretch over more than one beat.
+	 */
+	public void playNoteAt(int pos, int oneBeatDuration){
+		playNote(nl.getNote(pos).getValue(), getNoteDurationAt(pos) * oneBeatDuration);
+	}
+	
+	/**
 	 * @param pos Position of wanted note in the NoteLine's Note array
 	 * @return Duration of target note in milliseconds.
 	 */

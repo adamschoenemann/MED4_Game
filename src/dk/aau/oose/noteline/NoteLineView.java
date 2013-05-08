@@ -15,6 +15,7 @@ public class NoteLineView extends GameElement {
 	private NoteLine nl;
 	private Color color = Color.white;
 	private final Grid grid;
+	private boolean showGrid = true;
 	
 	/**
 	 * @param nlp
@@ -54,7 +55,8 @@ public class NoteLineView extends GameElement {
 				gfx.fillRect(xpos, ypos, cellWidth, height - ypos);
 			}
 		}
-		grid.draw();
+		if(showGrid)
+			grid.draw();
 		
 	}
 	
@@ -111,6 +113,10 @@ public class NoteLineView extends GameElement {
 		NoteLineView nlv = new NoteLineView(nlp, width, height);
 		
 		return nlv;
+	}
+	
+	public void setShowGrid(boolean showGrid){
+		this.showGrid = showGrid;
 	}
 	
 	

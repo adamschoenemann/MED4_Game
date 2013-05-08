@@ -4,7 +4,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 import dk.aau.oose.core.GameElement;
-import dk.aau.oose.noteline.Note;
 import dk.aau.oose.noteline.NoteLine;
 import dk.aau.oose.noteline.NoteLinePlayer;
 import dk.aau.oose.noteline.NoteLineView;
@@ -36,18 +35,17 @@ public class CreateTrack extends GameElement {
 			Input input = getGameContainer().getInput();
 			int noteHeight = nlv.calculateNoteHeight(y);
 			int noteIndex = nlv.calculateNoteIndex(x);
-
-			//System.out.println(System.currentTimeMillis()%1000 + "\tMouse pressed on " + mx + ", " + my + "; noteHeight is " + noteHeight + " and noteIndex is " + index);
 			
 			if (noteHeight >= 0 && noteIndex >= 0) {
-				if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(input.KEY_RSHIFT)) {
-
-					Note note = nl.getNote(noteIndex);
-					note.setDistinct(!note.isDistinct());
-					nl.setNote(note, noteIndex);
+				
+				if (input.isKeyDown(Input.KEY_LSHIFT) || input.isKeyDown(Input.KEY_RSHIFT)) {
+					nl.flipNoteDistinct(noteIndex);
 				} else {
 					nl.setNoteValue(noteHeight, noteIndex);
 				}
+				nlp.setNextNoteIsPure(true);
+				nlp.playNoteAt(noteIndex, 150);
+				
 			}  
 		}
 	}

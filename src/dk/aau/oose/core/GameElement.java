@@ -450,6 +450,11 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 	@Override
 	public boolean removeChild(GameElement child) {
 		child.onRemoved();
+		
+		for(int i = 0; i < child.numChildren(); i++){
+			child.removeChildAt(i);
+		}
+		
 		return super.removeChild(child);
 	}
 	

@@ -10,7 +10,6 @@ public class CreateController extends GameElement {
 							 NUMBER_OF_BEATS = 32,
 							 TRACK1_OCTAVE = 3,
 							 TRACK2_OCTAVE = 1,
-							 TEMPO = 100,
 							 WIDTH = NUMBER_OF_BEATS * 30,
 							 HEIGHT = 150,
 							 VERTICAL_OFFSET_1 = 130,
@@ -21,6 +20,9 @@ public class CreateController extends GameElement {
 	
 	
 	public CreateController(NoteLineView nlv1, NoteLineView nlv2){
+		nlv1.setShowGrid(true);
+		nlv2.setShowGrid(true);
+		
 		ct1 = new CreateTrack(nlv1);
 		ct2 = new CreateTrack(nlv2);
 		
@@ -33,9 +35,9 @@ public class CreateController extends GameElement {
 		listen();
 	}
 	
-	public CreateController(){
-		this(NoteLineView.newEmptyInstance(MAX_NOTE, NUMBER_OF_BEATS, TRACK1_OCTAVE, 5, TEMPO, WIDTH, HEIGHT), 
-			 NoteLineView.newEmptyInstance(MAX_NOTE, NUMBER_OF_BEATS, TRACK2_OCTAVE, 5, TEMPO, WIDTH, HEIGHT));
+	public CreateController(int tempo){
+		this(NoteLineView.newEmptyInstance(MAX_NOTE, NUMBER_OF_BEATS, TRACK1_OCTAVE, 5, tempo, WIDTH, HEIGHT), 
+			 NoteLineView.newEmptyInstance(MAX_NOTE, NUMBER_OF_BEATS, TRACK2_OCTAVE, 5, tempo, WIDTH, HEIGHT));
 	}
 	
 	@Override

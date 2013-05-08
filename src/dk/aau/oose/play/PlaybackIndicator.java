@@ -24,7 +24,7 @@ public abstract class PlaybackIndicator extends GameElement {
 	}
 	
 	public void updateWaypoints(){
-		waypoint = new Waypoints(noteLineView, 8); //Fixed resolution at 8 steps per beat
+		waypoint = new Waypoints(noteLineView, 20); //Fixed resolution at 8 steps per beat
 	}
 
 }

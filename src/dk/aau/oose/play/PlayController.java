@@ -21,6 +21,9 @@ public class PlayController extends GameElement {
 	
 	
 	public PlayController(NoteLineView nlv1, NoteLineView nlv2, int numberOfPlayers){
+		nlv1.setShowGrid(false);
+		nlv2.setShowGrid(false);
+		
 		pt1 = new PlayTrack(nlv1, (numberOfPlayers > 1) ? PT1_CONTROLLER : SINGLEPLAYER_CONTROLLER, (numberOfPlayers > 0));
 		pt2 = new PlayTrack(nlv2, (numberOfPlayers > 1) ? PT2_CONTROLLER : 0, (numberOfPlayers > 1));
 		
