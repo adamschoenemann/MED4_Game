@@ -73,6 +73,9 @@ public class PlayThread extends Thread {
 	}
 	
 	public long getTimeToNextNote(){
+		if(inIntro){
+			return getIntroTimeLeft();
+		}
 		return (getNextNoteTime() - getElapsedTime());
 	}
 	
@@ -108,6 +111,7 @@ public class PlayThread extends Thread {
 		inIntro = true;
 		introDuration = NUMBER_OF_COUNTIN_CLICKS * nlp.getBeatDuration();
 		introStartTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis() + introDuration;
 		for(byte i = 0; i < NUMBER_OF_COUNTIN_CLICKS; i++){
 			if(stopFlag) break;
 			nlp.playClick();
@@ -122,7 +126,6 @@ public class PlayThread extends Thread {
 		nlp.setBufferSize(getTotalTime());
 		nlp.startRecording();
 		
-		startTime = System.currentTimeMillis();
 		index = 0;
 		setNextNoteIsPure(true); //Make first note pure; user can't do so in time.
 

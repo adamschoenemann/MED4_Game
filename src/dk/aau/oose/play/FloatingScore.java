@@ -35,8 +35,8 @@ public class FloatingScore extends GameElement {
 
 	@Override
 	public void onDraw(Graphics gfx) {
-		
-		color.a = 1.0f - (float)noOfUpdates/MAX_UPDATES;
+		gfx.scale(2f, 2f);
+		color.a = (float) MathUtils.scale((double)noOfUpdates/MAX_UPDATES, 0.75, 1.0, 1.0, 0.0);
 		gfx.setColor(color); 
 		gfx.drawString(Integer.toString(value), 0, 0);
 	}

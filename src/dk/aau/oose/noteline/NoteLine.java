@@ -39,6 +39,8 @@ public class NoteLine {
 	}
 	
 	public Note getNote(int pos){
+		if(pos >= getNumBeats())
+			pos = getNumBeats() - 1;
 		return beats[pos].clone();
 	}
 	

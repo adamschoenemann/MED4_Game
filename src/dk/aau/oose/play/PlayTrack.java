@@ -2,6 +2,7 @@ package dk.aau.oose.play;
 
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.noteline.NoteLineView;
+import dk.aau.oose.util.MathUtils;
 
 public class PlayTrack extends GameElement {
 
@@ -12,7 +13,6 @@ public class PlayTrack extends GameElement {
 	private PlaybackIndicator playbackIndicator;
 	private Score score;
 	private int pureTimeToNextNote; 
-	private static final int PURITY_DIFFERENCE_THRESHOLD = 100;
 	private PlayThread playThread;
 	private boolean usesRunner;
 
@@ -82,16 +82,23 @@ public class PlayTrack extends GameElement {
 	}
 	
 	private void settleNextNotePurity() {
+		
 		int noteIndexNumber = playThread.getIndex();
 		long timeToNextNote = playThread.getTimeToNextNote();
-		long difference = Math.abs(timeToNextNote - pureTimeToNextNote);
+		long difference = pureTimeToNextNote - timeToNextNote;
 		
-		if(lastAcceptedNoteIndex < noteIndexNumber && difference < PURITY_DIFFERENCE_THRESHOLD){
-			lastAcceptedNoteIndex = noteIndexNumber;
-			playThread.getNoteLinePlayer().setNextNoteIsPure(true);
-			int points = (int)Math.round((float)difference*100.0f/PURITY_DIFFERENCE_THRESHOLD); 
-			score.add(points);
-			// TODO send do-not-stumble to runner here.
+		if (	(lastAcceptedNoteIndex < noteIndexNumber &&  nlv.getNoteLinePlayer().getNoteLine().getNote(noteIndexNumber + 1).getValue() != 0) 
+			||  (lastAcceptedNoteIndex == -1 			 &&  nlv.getNoteLinePlayer().getNoteLine().getNote(noteIndexNumber    ).getValue() != 0))  {
+			if (difference > 0){
+				lastAcceptedNoteIndex = noteIndexNumber;
+				playThread.getNoteLinePlayer().setNextNoteIsPure(true);
+				
+				int points = (int)Math.round(MathUtils.scale(timeToNextNote, 0.0, pureTimeToNextNote, 100.0, 0.0));
+				
+				score.add(points);
+			}
+		} else {
+			score.add(-30);
 		}
 	}
 
@@ -125,8 +132,10 @@ public class PlayTrack extends GameElement {
 	}
 	
 	public void stopPlaying(){
-		playThread.stopPlaying();
-		playThread = null;
+		if(playThread != null){
+			playThread.stopPlaying();
+			playThread = null;
+		}
 	}
 	
 	private void updatePosition(){

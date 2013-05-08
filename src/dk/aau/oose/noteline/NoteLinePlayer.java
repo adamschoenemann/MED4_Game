@@ -141,7 +141,7 @@ public class NoteLinePlayer {
 	//TODO put elsewhere?
 	public void saveLastTakeAs(String name){
 		OscMessage m = new OscMessage("save");
-		m.add(name + ".aiff"); //Presume aiff file format
+		m.add(name);
 		MaxMSP.send(m);
 	}
 

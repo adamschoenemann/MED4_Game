@@ -47,18 +47,25 @@ public class SavePerfect extends GameElement {
 	}
 	
 	private static String generateFilename(boolean cooperative){
-		Calendar rightNow = Calendar.getInstance();
-		int dayOfMonth = rightNow.get(Calendar.DAY_OF_MONTH);
-		int hour = rightNow.get(Calendar.HOUR_OF_DAY);
-		int minutes = rightNow.get(Calendar.MINUTE);
-		int seconds = rightNow.get(Calendar.SECOND);
 		
-		String dateString = new String(Integer.toString(dayOfMonth) + "-" + Integer.toString(hour) + "-" + Integer.toString(minutes) + "-" + Integer.toString(seconds)); 
+		//Generate filename like: "Coop_2013-5-8_10-11-56.aiff"
+		
+		Calendar rightNow = Calendar.getInstance();
+		
+		String dateString = new String(
+						Integer.toString(rightNow.get(Calendar.YEAR))
+				+ "-" + Integer.toString(rightNow.get(Calendar.MONTH) + 1) 
+				+ "-" + Integer.toString(rightNow.get(Calendar.DATE)) 
+				+ "_"+ Integer.toString(rightNow.get(Calendar.HOUR_OF_DAY))
+				+ "-" + Integer.toString(rightNow.get(Calendar.MINUTE))
+				+ "-" + Integer.toString(rightNow.get(Calendar.SECOND))
+				 + ".aiff"); 
+				
 				
 		if(cooperative){
-			return new String("Coop-" + dateString);
+			return new String("Coop_" + dateString);
 		} else {
-			return new String("Single-" + dateString);
+			return new String("Solo_" + dateString);
 		}
 	}
 }
