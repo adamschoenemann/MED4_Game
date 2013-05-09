@@ -208,15 +208,13 @@ public class GameController extends GameElement {
 	}
 	
 	private void showHelp(){
-		System.out.println("show help");
-		createController.unListenBranch();
-		
+		createController.unListenBranch();		
 		addChild(new InstructionsPopup(new InstructionsPopup.Callback() {
 			@Override
 			public void call() {
 				createController.listenBranch();
 			}
-		}  ));
+		}, cooperative));
 	}
 	
 	private void updateButtonImages() {
