@@ -478,6 +478,20 @@ public class GameElement extends Container<GameElement> implements IDrawable, IT
 		getGameContainer().getInput().removeListener(this);
 	}
 	
+	public void unListenBranch(){
+		getGameContainer().getInput().removeListener(this);
+		for(int i = 0; i < numChildren(); i++){
+			getChildAt(i).unListenBranch();
+		}
+	}
+	
+	public void listenBranch(){
+		getGameContainer().getInput().addListener(this);
+		for(int i = 0; i < numChildren(); i++){
+			getChildAt(i).listenBranch();
+		}
+	}
+	
 	public Rectangle2D computeBounds(){
 		for(int i = 0; i < numChildren(); i++){
 			GameElement child = getChildAt(i);

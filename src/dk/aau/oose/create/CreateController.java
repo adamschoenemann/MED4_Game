@@ -80,5 +80,4 @@ public class CreateController extends GameElement {
 		
 		return nlvs;
 	}
-	
 }

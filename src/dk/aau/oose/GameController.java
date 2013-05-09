@@ -7,8 +7,10 @@ import dk.aau.oose.core.ButtonWithImage;
 import dk.aau.oose.core.GameElement;
 import dk.aau.oose.create.CreateController;
 import dk.aau.oose.graphics.Foreground;
+import dk.aau.oose.graphics.InstructionsPopup;
 import dk.aau.oose.noteline.NoteLineView;
 import dk.aau.oose.play.PlayController;
+import dk.aau.oose.play.PlayThread;
 import dk.aau.oose.play.SavePerfect;
 
 public class GameController extends GameElement {
@@ -20,7 +22,7 @@ public class GameController extends GameElement {
 	
 	private final static int TEMPO_PLAY = 120,
 							 TEMPO_BOUNCE = 180,
-							 NUMBER_OF_BEATS = 48;
+							 NUMBER_OF_BEATS = 50; //+2 beats for ending
 	
 	private ButtonWithImage modeButton,
 							helpButton,
@@ -207,6 +209,14 @@ public class GameController extends GameElement {
 	
 	private void showHelp(){
 		System.out.println("show help");
+		createController.unListenBranch();
+		
+		addChild(new InstructionsPopup(new InstructionsPopup.Callback() {
+			@Override
+			public void call() {
+				createController.listenBranch();
+			}
+		}  ));
 	}
 	
 	private void updateButtonImages() {
