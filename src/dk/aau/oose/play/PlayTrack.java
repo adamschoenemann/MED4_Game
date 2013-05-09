@@ -87,6 +87,9 @@ public class PlayTrack extends GameElement {
 		long timeToNextNote = playThread.getTimeToNextNote();
 		long difference = pureTimeToNextNote - timeToNextNote;
 		
+		if(timeToNextNote < 0)
+			return;
+		
 		if (	(lastAcceptedNoteIndex < noteIndexNumber &&  nlv.getNoteLinePlayer().getNoteLine().getNote(noteIndexNumber + 1).getValue() != 0) 
 			||  (lastAcceptedNoteIndex == -1 			 &&  nlv.getNoteLinePlayer().getNoteLine().getNote(noteIndexNumber    ).getValue() != 0))  {
 			if (difference > 0){

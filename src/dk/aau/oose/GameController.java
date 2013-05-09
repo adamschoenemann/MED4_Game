@@ -18,8 +18,9 @@ public class GameController extends GameElement {
 	private boolean cooperative = false;
 	private Foreground foreground;
 	
-	private final static int TEMPO_PLAY = 100,
-							 TEMPO_BOUNCE = 180;
+	private final static int TEMPO_PLAY = 120,
+							 TEMPO_BOUNCE = 180,
+							 NUMBER_OF_BEATS = 48;
 	
 	private ButtonWithImage modeButton,
 							helpButton,
@@ -185,7 +186,7 @@ public class GameController extends GameElement {
 	}
 	
 	private void startCreate(){
-		createController = new CreateController(TEMPO_PLAY);
+		createController = new CreateController(NUMBER_OF_BEATS, TEMPO_PLAY);
 		this.addChild(createController);
 	}
 	

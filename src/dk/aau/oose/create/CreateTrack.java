@@ -58,7 +58,11 @@ public class CreateTrack extends GameElement {
 			int noteHeight = nlv.calculateNoteHeight(newy);
 			int noteIndex = nlv.calculateNoteIndex(newx);
 			if(noteHeight >= 0 && noteIndex >= 0){
-				nl.setNoteValue(noteHeight, noteIndex);
+				if(nl.getNote(noteIndex).getValue() != noteHeight){
+					nl.setNoteValue(noteHeight, noteIndex);
+					nlp.setNextNoteIsPure(true);
+					nlp.playNoteAt(noteIndex, 50);
+				}
 			}
 		}
 	}
